@@ -17,9 +17,6 @@ using BusinessCredit.Domain;
 
 namespace WpfUI
 {
-    /// <summary>
-    /// Interaction logic for ClientsWindow.xaml
-    /// </summary>
     public partial class DailyView : Window
     {
         private BusinessCreditContext _context = new BusinessCreditContext();
@@ -32,6 +29,8 @@ namespace WpfUI
 
         private void InitDb()
         {
+            return;
+
             using (var db = new BusinessCreditContext())
             {
                 var acc2 = new Account
@@ -80,12 +79,29 @@ namespace WpfUI
                     GuarantorPrivateNumber = "1005148465654",
                     GuarantorPhysicalAddress = "Paris",
                     GuarantorPhoneNumber = "591445588",
-                    LoanStatus = LoanStatus.Active
+                    LoanStatus = LoanStatus.Active,
+                    Account = acc
                 };
 
                 loan.PlanLoan();
 
                 loan.Initialize();
+
+                foreach (var pmt in db.Payments.ToList())
+                {
+                    foreach (var prop in typeof(Payment).GetProperties())
+                    {
+                        prop.GetValue(pmt);
+                    }
+                }
+
+                db.Accounts.Add(acc);
+
+                db.Loans.Add(loan);
+
+                db.SaveChanges();
+
+
 
                 var loan2 = new Loan
                 {

@@ -40,7 +40,8 @@ namespace BusinessCredit.Domain
                     Payments.Add(new Payment()
                     {
                         PaymentID = i + 1,
-                        Loan = this
+                        Loan = this,
+                        CurrentPayment = 60
                     });
             }
         }

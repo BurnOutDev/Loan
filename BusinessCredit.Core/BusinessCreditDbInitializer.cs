@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessCredit.Core
 {
-    public class BusinessCreditDbInitializer : DropCreateDatabaseAlways<BusinessCreditContext>
+    public class BusinessCreditDbInitializer : CreateDatabaseIfNotExists<BusinessCreditContext>
     {
         protected override void Seed(BusinessCreditContext db)
         {

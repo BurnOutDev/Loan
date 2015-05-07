@@ -69,6 +69,16 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessCredit.Core\BusinessCredit.Core.csproj">
+      <Project>{10e1b965-9262-4ce5-b727-8c0f5e4d4ac4}</Project>
+      <Name>BusinessCredit.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinssCredit.Domain\BusinssCredit.Domain.csproj">
+      <Project>{63460d01-2be9-45ba-906e-088645bad220}</Project>
+      <Name>BusinssCredit.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
