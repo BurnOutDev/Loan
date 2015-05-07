@@ -84,7 +84,7 @@ namespace BusinessCredit.Domain
             {
                 return Payments.FirstOrDefault(x => x.PaymentDate.Date == DateTime.Now.Date).CurrentDebt.Value;
             }
-        }
+        } // --
 
         public double WholeDebt
         {
@@ -92,7 +92,7 @@ namespace BusinessCredit.Domain
             {
                 return Payments.FirstOrDefault(x => x.PaymentDate.Date == DateTime.Now.Date).WholeDebt.Value;
             }
-        }
+        }  // --
 
         /// გენერალური ხელშეკრულების თარიღი
         public DateTime AgreementDate { get; set; }

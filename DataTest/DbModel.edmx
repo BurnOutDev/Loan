@@ -13,7 +13,48 @@
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="DbModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="DbModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="DbModel.Account" />
+          <EntitySet Name="Loans" EntityType="DbModel.Loan" />
         </EntityContainer>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountId" />
+          </Key>
+          <Property Name="AccountId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+          <Property Name="PrivateNumber" Type="String" Nullable="false" />
+          <Property Name="Gender" Type="String" Nullable="false" />
+          <Property Name="Status" Type="String" Nullable="false" />
+          <Property Name="PhysicalAddress" Type="String" Nullable="false" />
+          <Property Name="NumberMobile" Type="String" Nullable="false" />
+          <Property Name="AccountNumber" Type="String" Nullable="false" />
+          <Property Name="BusinessPhysicalAddress" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Loan">
+          <Key>
+            <PropertyRef Name="LoanId" />
+          </Key>
+          <Property Name="LoanId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="String" Nullable="false" />
+          <Property Name="Purpose" Type="String" Nullable="false" />
+          <Property Name="DailyInterestRate" Type="String" Nullable="false" />
+          <Property Name="TermDays" Type="String" Nullable="false" />
+          <Property Name="NetworkDays" Type="String" Nullable="false" />
+          <Property Name="DaysOfGrace" Type="String" Nullable="false" />
+          <Property Name="PenaltyRate" Type="String" Nullable="false" />
+          <Property Name="EffectiveInterestRate" Type="String" Nullable="false" />
+          <Property Name="AmountToBePaidAll" Type="String" Nullable="false" />
+          <Property Name="AmountToBePaidDaily" Type="String" Nullable="false" />
+          <Property Name="AgreementDate" Type="String" Nullable="false" />
+          <Property Name="StartDate" Type="String" Nullable="false" />
+          <Property Name="EndDate" Type="String" Nullable="false" />
+          <Property Name="GuarantorName" Type="String" Nullable="false" />
+          <Property Name="GuarantorLastName" Type="String" Nullable="false" />
+          <Property Name="GuarantorPrivateNumber" Type="String" Nullable="false" />
+          <Property Name="GuarantorPhysicalAddress" Type="String" Nullable="false" />
+          <Property Name="GuarantorPhoneNumber" Type="String" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
