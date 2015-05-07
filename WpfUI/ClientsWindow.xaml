@@ -1,0 +1,104 @@
+﻿<Window x:Class="WpfUI.ClientsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfUI"
+        xmlns:db="clr-namespace:BusinessCredit.Core;assembly=BusinessCredit.Core"
+        xmlns:domain="clr-namespace:BusinessCredit.Domain;assembly=BusinessCredit.Domain"
+        mc:Ignorable="d"
+        Title="ClientsWindow" Height="462.175" Width="691" Loaded="Window_Loaded" Closing="Window_Closing">
+    <!--<Window.DataContext>
+        <db:BusinessCreditContext>
+        </db:BusinessCreditContext>
+    </Window.DataContext>-->
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="accountsViewSource"  
+                            d:DesignSource="{d:DesignInstance {x:Type domain:Account}, CreateList=True}"/>
+    </Window.Resources>
+
+    <Grid 
+           DataContext="{StaticResource accountsViewSource}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu x:Name="menu" 
+              HorizontalAlignment="Left"
+              Height="30" 
+              VerticalAlignment="Top" 
+              Width="631"
+              Grid.Row="0">
+            <MenuItem x:Name="menuitemFile" VerticalAlignment="Top" Header="File" Width="40" Height="25">
+                <MenuItem VerticalAlignment="Top" Header="Add Client..." Width="40" Height="25" Click="MenuItem_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="menuitemEdit" VerticalAlignment="Top" Header="Edit" Width="40" Height="25"/>
+            <MenuItem x:Name="menuitemHelp" VerticalAlignment="Top" Header="Help" Width="40" Height="25"/>
+            <MenuItem x:Name="menuitemExit" VerticalAlignment="Top" Header="Exit" Width="40" Height="25"/>
+            <TextBox  x:Name="tbxSearch" Height="23" TextWrapping="Wrap" Text="Search..." Width="361" TextChanged="tbxSearch_TextChanged"/>
+        </Menu>
+        <StackPanel Height="25"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Stretch"
+                    Grid.Row="1">
+            <Label Content="სახელი: "/>
+            <TextBox Name="tbxNameFilter"
+                     Height="25"
+                     Width="60"
+                     TextChanged="tbxNameFilter_TextChanged"
+                     VerticalAlignment="Top" />
+
+            <Label Content="გვარი: "/>
+            <TextBox Name="tbxLastNameFilter" 
+                     Height="25"
+                     Width="60"
+                     TextChanged="tbxLastNameFilter_TextChanged"
+                     VerticalAlignment="Top" />
+
+            <Label Content="პ. ნ.: "/>
+            <TextBox Name="tbxPrivateNumberFilter" 
+                     Height="25"
+                     Width="60"
+                     TextChanged="tbxPrivateNumberFilter_TextChanged"
+                     VerticalAlignment="Top" />
+
+            <Label Content="ტელ. ნომერი: "/>
+            <TextBox Name="tbxNumberMobileFilter" 
+                     Height="25"
+                     Width="60"
+                     TextChanged="tbxNumberMobileFilter_TextChanged"
+                     VerticalAlignment="Top" />
+
+        </StackPanel>
+        <DataGrid x:Name="dataGrid"
+                  ItemsSource="{Binding}"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch"
+                  AutoGenerateColumns="False"
+                  EnableRowVirtualization="True"
+                  HorizontalContentAlignment="Stretch"
+                  Grid.Row="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="სახელი" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="გვარი" Binding="{Binding LastName}" />
+                <DataGridTextColumn Header="პირადი ნომერი" Binding="{Binding PrivateNumber}" />
+                <DataGridTextColumn Header="სქესი" Binding="{Binding Gender}" />
+                <DataGridTextColumn Header="სტატუსი" Binding="{Binding Status}" />
+                <DataGridTextColumn Header="ფაქტ. მისამართი" Binding="{Binding PhysicalAddress}" />
+                <DataGridTextColumn Header="მობ. ნომერი" Binding="{Binding NumberMobile}" />
+                <DataGridTextColumn Header="ანგარიშის ნომერი" Binding="{Binding AccountNumber}" />
+                <DataGridTextColumn Header="ბიზნესის ფაქტ. მისამართი" Binding="{Binding BusinessPhysicalAddress}" />
+
+                <DataGridTemplateColumn Header="სესხები">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding Loans.Count, StringFormat='სესხები: {0}'}" BorderThickness="0" Click="LoansClick" CommandParameter="{Binding AccountID}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

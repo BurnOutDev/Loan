@@ -1,0 +1,347 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace BusinssCredit.Domain
+{
+    public class ExcelPayment
+    {
+        public ExcelPayment(List<ExcelPayment> paymentList)
+        {
+            _paymentList = paymentList;
+        }
+        public string A { get; set; }
+        public string B { get; set; }
+        public string C { get; set; }
+        public char D { get; set; }
+        public int E { get; set; }
+        public int F { get; set; }
+        public int G { get; set; }
+        public int H { get; set; }
+        public string I { get; set; }
+        public string J { get; set; }
+        public int K { get; set; }
+        public bool L
+        {
+            get
+            {
+                if (R > 0)
+                {//????????????????????????????????????????????????
+                    //ICollection.Select(x => x) returns bool array ??
+                    var temp = PaymentList.Select(x => x.F == F);
+                    if (temp.FirstOrDefault(x => x == true) == true)
+                        return true;
+                    else return false;
+                }
+                return false;
+            }
+        }
+        public int M { get; set; }
+        public string N { get; set; }
+        public string O { get; set; }
+        public int P { get; set; }
+        public string Q { get; set; }
+        public decimal R { get; set; }
+        public string S { get; set; }
+        public decimal T { get; set; }
+        public int U { get; set; }
+        public int V { get; set; }
+        public int W { get; set; }
+        public decimal X { get; set; }
+        public decimal Y { get; set; }
+        public decimal Z { get; set; }
+        public decimal AA { get; set; }
+        public decimal AB
+        {
+            get
+            {
+                var sum = AL + AM + AQ + AR + AS;
+                if (sum > AC)
+                    return AC;
+                else
+                    return sum;
+            }
+        }
+        public decimal AC
+        {
+            get
+            {
+                return BD + AS + AR + AL - AW - AT - AU;
+            }
+        }
+        public decimal AD { get; set; }
+        public DateTime AE { get; set; }
+        public byte AF { get; set; }
+        public DateTime AG { get; set; }
+        public DateTime AH { get; set; }
+        public decimal AI
+        {
+            get
+            {
+                return AK + AM;
+            }
+        }
+        public decimal AJ
+        {
+            get
+            {
+                return R - PaymentList.Sum(x => x.AV)
+                         - PaymentList.Sum(x => x.AX)
+                         - PaymentList.Sum(x => x.AY);
+            }
+        }
+        public decimal AK { get; set; } // გეგმიური ნაშთი
+        public decimal AL
+        {
+            get
+            {
+                return Math.Round((AJ * T), 2); //??
+            }
+        }
+        public decimal AM
+        {
+            get
+            {
+                //= IF(AJ7 < AA7, AJ7, AA7 - AL7)
+                if (AJ < AA)
+                    return AJ;
+                else
+                    return AA - AL;
+            }
+        }
+        public decimal AN
+        {
+            get
+            {
+                //=$AM8 -$AX8
+                return AM - AX;
+            }
+        }
+        public decimal AO
+        {
+            get
+            {
+                //=ROUND($AL7-$AW7,2)
+                return Math.Round(AL - AW, 2);
+            }
+        }
+        public decimal AP
+        {
+            get
+            {
+                //=ROUND(IF(AF7=7,0,($AN7+$AO7)*$X7),2)
+                if (AF == 7)
+                    return 0;
+                else
+                    return Math.Round((AN + AO) * X, 2);
+            }
+        }
+        public decimal AQ
+        {
+            get
+            {
+                //=IF(SUMIF($F$2:$F5,F6,$AN$2:$AN5)-SUMIF($F$2:$F5,F6,$AV$2:$AV5)>AJ6,AJ6,SUMIF($F$2:$F5,F6,$AN$2:$AN5)-SUMIF($F$2:$F5,F6,$AV$2:$AV5))
+                if (PaymentList.Sum(x => x.AN) -
+                    PaymentList.Sum(x => x.AV) > AJ)
+                    return AJ;
+                else
+                    return PaymentList.Sum(x => x.AN) -
+                           PaymentList.Sum(x => x.AV);
+            }
+        }
+        public decimal AR
+        {
+            get
+            {
+                return Math.Round(
+                    PaymentList.Sum(x => x.AU) +
+                    PaymentList.Sum(x => x.AL) -
+                    PaymentList.Sum(x => x.AW),
+                    2);
+            }
+        }
+        public decimal AS
+        {
+            get
+            {
+                return Math.Round(
+                            ((AQ + AR) * X)
+                            - PaymentList.Where(x => x.AE == AE.AddDays(-1)).FirstOrDefault().AT
+                            + PaymentList.Where(x => x.AE == AE.AddDays(-1)).FirstOrDefault().AT
+                            );
+
+                //=IFERROR(
+                //ROUND(
+                //
+                //((AQ13+AR13)*$X13)-
+                //  INDEX($A$2:$BE12,
+                //    MATCH($F13&($AE13-1),$F$2:$F12&$AE$2:$AE12,0),
+                //    MATCH($AT$2,$A$2:$BE$2,0))
+                // +INDEX($A$2:$BE12,
+                //    MATCH($F13&($AE13-1),$F$2:$F12&$AE$2:$AE12,0),
+                //    MATCH($AS$2,$A$2:$BE$2,0))
+                //  ,2)
+                //,0)
+            }
+        }
+        public decimal AT
+        {
+            get
+            {
+                //=IF($AD6>$AS6,$AS6,$AD6)
+                if (AD > AS)
+                    return AS;
+                else
+                    return AD;
+            }
+        }
+        public decimal AU
+        {
+            get
+            {
+                //=IF(($AD5-$AT5)>$AR5,$AR5,($AD5-$AT5))
+                if ((AD - AT) > AR)
+                    return AR;
+                else
+                    return AD - AT;
+            }
+        }
+        public decimal AV
+        {
+            get
+            {
+                //=IF(($AD5-$AU5-$AT5-AW5)>$AQ5,$AQ5,($AD5-$AU5-$AT5-AW5))
+                if ((AD - AU - AT - AW) > AQ)
+                    return AQ;
+                else
+                    return AD - AU - AT - AW;
+            }
+        }
+        public decimal AW
+        {
+            get
+            {
+                //=IF(SUMIF($F$2:$F4,$F5,$BE$2:$BE4)>0,0,(IF(($AD5-$AU5-$AT5)>$AL5,$AL5,($AD5-$AU5-$AT5))))
+                if (PaymentList.Where(x => x.BE == true).FirstOrDefault().BE)
+                    return 0;
+                else
+                {
+                    if (AD - AU - AT > AL)
+                        return AL;
+                    else
+                        return AD - AU - AT;
+                }
+            }
+        }
+        public decimal AX
+        {
+            get
+            {
+                //=IF(SUMIF($F$2:$F4,$F5,$BE$2:$BE4)>0,0,IF(($AD5-$AU5-$AT5-$AV5-$AW5)>$AM5,$AM5,($AD5-$AU5-$AT5-$AV5-$AW5)))
+                if (PaymentList.Where(x => x.BE == true).FirstOrDefault().BE)
+                    return 0;
+                else
+                {
+                    if ((AD - AU - AT - AV - AW) > AM)
+                        return AM;
+                    else
+                        return AD - AU - AT - AV - AW;
+                }
+            }
+        }
+        public decimal AY
+        {
+            get
+            {
+                if (PaymentList.Where(x => x.BE == true).FirstOrDefault().BE)
+                    return 0;
+                else
+                {
+                    if (((AD - AU - AT - AV - AW - AX) > 0 ?
+                          (AD - AU - AT - AV - AW - AX) : 0) >
+                          (R - AX - PaymentList.Sum(x => x.AY) -
+                          PaymentList.Sum(x => x.AX)
+                       ))
+                        return R - AX -
+                                PaymentList.Sum(x => x.AY) -
+                                PaymentList.Sum(x => x.AX);
+                    else
+                        return AD - AU - AT - AV - AW - AX;
+                }
+
+                //if (PaymentList.Sum(x => x.BE) > 0)
+                //    return 0;
+                //else
+                //{
+                //    if ((AD - AU - AT - AV - AW - AX) > 0 ?
+                //          (AD - AU - AT - AV - AW - AX) : 0 >
+                //          (R - AX - PaymentList.Sum(x => x.AY) -
+                //          PaymentList.Sum(x => x.AX)
+                //       ))
+                //        return R - AX -
+                //                PaymentList.Sum(x => x.AY) -
+                //                PaymentList.Sum(x => x.AX);
+                //    else
+                //        return AD - AU - AT - AV - AW - AX;
+                //}
+            }
+        }
+        public decimal AZ
+        {
+            get
+            {
+                return PaymentList.Sum(x => x.AW) + AU + PaymentList.Sum(x => x.AU) + AW;
+            }
+        }
+        public decimal BA
+        {
+            get
+            {
+                return PaymentList.Sum(x => x.AT);
+            }
+        }
+        public decimal BB
+        {
+            get
+            {   //??????????????????????????? DATETIME - DECIMAL ????
+                return  PaymentList.Sum(x => x.AX) +
+                        PaymentList.Sum(x => x.AV) +
+                        PaymentList.Sum(x => x.AY);
+            }
+        }
+        public decimal BC
+        {
+            //=SUMIF($F$3:$F1741,$F1741,$AY$3:$AY1741)
+            get
+            {
+                return PaymentList.Sum(x => x.F);
+            }
+        }
+        public decimal BD
+        {
+            get
+            {
+                return R - BB;
+            }
+        }
+        public bool BE
+        {
+            get
+            {
+                return BD > 0 ? false : true;
+            }
+        }
+
+        public List<ExcelPayment> PaymentList
+        {
+            get
+            {
+                return (from x in _paymentList
+                        where x.F == F && x.AE < AE
+                        select x).ToList();
+            }
+        }
+
+        private List<ExcelPayment> _paymentList;
+    }
+}

@@ -1,0 +1,83 @@
+﻿<Window x:Class="WpfUI.LoansWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfUI"
+        xmlns:domain="clr-namespace:BusinessCredit.Domain;assembly=BusinessCredit.Domain"
+        mc:Ignorable="d"
+        Title="LoansWindow" Height="372" Width="713" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="loansViewSource"  
+                            d:DesignSource="{d:DesignInstance {x:Type domain:Loan}, CreateList=True}"/>
+    </Window.Resources>
+
+    <Grid 
+           DataContext="{StaticResource loansViewSource}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu x:Name="menu" 
+              HorizontalAlignment="Left"
+              Height="30" 
+              VerticalAlignment="Top" 
+              Width="631"
+              Grid.Row="0">
+            <MenuItem x:Name="menuitemFile" VerticalAlignment="Top" Header="File" Width="40" Height="25"/>
+            <MenuItem x:Name="menuitemEdit" VerticalAlignment="Top" Header="Edit" Width="40" Height="25"/>
+            <MenuItem x:Name="menuitemHelp" VerticalAlignment="Top" Header="Help" Width="40" Height="25"/>
+            <MenuItem x:Name="menuitemExit" VerticalAlignment="Top" Header="Exit" Width="40" Height="25"/>
+            <TextBox  x:Name="tbxSearch" Height="23" TextWrapping="Wrap" Text="Search..." Width="361" TextChanged="tbxSearch_TextChanged"/>
+        </Menu>
+        <StackPanel Height="25"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Stretch"
+                    Grid.Row="1">
+            <Label Content="სახელი: "/>
+            <TextBox Name="tbxNameFilter"
+                     Height="25"
+                     Width="60"
+                     TextChanged="tbxNameFilter_TextChanged"
+                     VerticalAlignment="Top" />
+
+            <Label Content="გვარი: "/>
+            <TextBox Name="tbxLastNameFilter" 
+                     Height="25"
+                     Width="60"
+                     TextChanged="tbxLastNameFilter_TextChanged"
+                     VerticalAlignment="Top" />
+
+            <Label Content="პ. ნ.: "/>
+            <TextBox Name="tbxPrivateNumberFilter" 
+                     Height="25"
+                     Width="60"
+                     TextChanged="tbxPrivateNumberFilter_TextChanged"
+                     VerticalAlignment="Top" />
+
+            <Label Content="ტელ. ნომერი: "/>
+            <TextBox Name="tbxNumberMobileFilter" 
+                     Height="25"
+                     Width="60"
+                     TextChanged="tbxNumberMobileFilter_TextChanged"
+                     VerticalAlignment="Top" />
+
+        </StackPanel>
+        <DataGrid x:Name="dataGrid"
+                  ItemsSource="{Binding}"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch"
+                  AutoGenerateColumns="False"
+                  EnableRowVirtualization="True"
+                  HorizontalContentAlignment="Stretch"
+                  Grid.Row="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="თანხა" Binding="{Binding LoanAmount}" />
+                <DataGridTextColumn Header="მიზანი" Binding="{Binding LoanPurpose}" />
+                <DataGridTextColumn Header="დღიური პროცენტი" Binding="{Binding LoanDailyInterestRate}" />
+                <DataGridTextColumn Header="ვადა (დღეები)" Binding="{Binding LoanTermDays}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
