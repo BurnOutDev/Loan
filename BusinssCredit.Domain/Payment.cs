@@ -7,10 +7,6 @@ namespace BusinessCredit.Domain
 {
     public class Payment
     {
-        public Payment()
-        {
-        }
-
         [Key]
         public int PaymentID { get; set; }
 
@@ -58,7 +54,7 @@ namespace BusinessCredit.Domain
             return LoanBalance + AccruingOverduePenalty + AccruingOverdueInterest + PayableInterest - CurrentInterestPayment - AccruingPenaltyPayment - AccruingInterestPayment;
         }
         #endregion
-
+        
         #region StartingPlannedBalance
         private double? _startingPlannedBalance;
         public double? StartingPlannedBalance
@@ -378,8 +374,6 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentInterestPayment()
         {
-            //=IF(SUMIF($F$2:$F4,$F5,$BE$2:$BE4)>0,0,(IF(($AD5-$AU5-$AT5)>$AL5,$AL5,($AD5-$AU5-$AT5))))
-
             bool be;
             try
             {
@@ -619,6 +613,5 @@ namespace BusinessCredit.Domain
         public virtual CreditExpert CreditExpert { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual CashCollectionAgent CashCollectionAgent { get; set; }
-
     }
 }

@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCredit.Core", "Busi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinssCredit.Domain", "BusinssCredit.Domain\BusinssCredit.Domain.csproj", "{63460D01-2BE9-45BA-906E-088645BAD220}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTest", "DataTest\DataTest.csproj", "{6DFE84F4-5F0B-4328-830F-0391FFE583D8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfUI", "WpfUI\WpfUI.csproj", "{9672DC6D-D312-415D-A39B-8AB01BB50C01}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{63460D01-2BE9-45BA-906E-088645BAD220}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63460D01-2BE9-45BA-906E-088645BAD220}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63460D01-2BE9-45BA-906E-088645BAD220}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DFE84F4-5F0B-4328-830F-0391FFE583D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DFE84F4-5F0B-4328-830F-0391FFE583D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DFE84F4-5F0B-4328-830F-0391FFE583D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DFE84F4-5F0B-4328-830F-0391FFE583D8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9672DC6D-D312-415D-A39B-8AB01BB50C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9672DC6D-D312-415D-A39B-8AB01BB50C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9672DC6D-D312-415D-A39B-8AB01BB50C01}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -21,6 +21,8 @@ namespace WpfUI
     {
         private BusinessCreditContext _context = new BusinessCreditContext();
 
+        public List<Payment> Pmt { get; set; }
+
         public DailyView()
         {
             InitDb();
@@ -90,9 +92,7 @@ namespace WpfUI
                 foreach (var pmt in db.Payments.ToList())
                 {
                     foreach (var prop in typeof(Payment).GetProperties())
-                    {
                         prop.GetValue(pmt);
-                    }
                 }
 
                 db.Accounts.Add(acc);
@@ -101,7 +101,7 @@ namespace WpfUI
 
                 db.SaveChanges();
 
-
+                ;
 
                 var loan2 = new Loan
                 {
@@ -138,10 +138,6 @@ namespace WpfUI
             }
         }
 
-        private void tbxSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             CollectionViewSource pmtsViewSource =
@@ -149,7 +145,19 @@ namespace WpfUI
 
             _context.Payments.Load();
 
-            pmtsViewSource.Source = _context.Payments.Local;
+            pmtsViewSource.Source = from x in _context.Payments.Local
+                                    where x.PaymentDate == DateTime.Today.AddDays(-1)
+                                    select new { AccountID = x.Loan.Account.AccountID,
+                                                 LoanID = x.Loan.LoanID,
+                                                 Name = x.Loan.Account.Name,
+                                                 LastName = x.Loan.Account.LastName,
+                                                 PrivateNumber = x.Loan.Account.PrivateNumber,
+                                                 Account = x.Loan.Account,
+                                                 AmountToBePaidDaily = x.Loan.AmountToBePaidDaily,
+                                                 CurrentDebt = x.CurrentDebt,
+                                                 WholeDebt = x.WholeDebt,
+                                                 CurrentPayment = x.CurrentPayment
+                                    };
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

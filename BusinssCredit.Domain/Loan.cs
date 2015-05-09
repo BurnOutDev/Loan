@@ -9,14 +9,10 @@ namespace BusinessCredit.Domain
 {
     public class Loan
     {
-        public Loan()
-        {
-
-        }
-
         public void PlanLoan()
         {
             PlannedPaymentEntities = new List<PaymentEntity>();
+
             for (int i = 0; i < LoanTermDays; i++)
             {
                 PlannedPaymentEntities.Add(
@@ -41,7 +37,7 @@ namespace BusinessCredit.Domain
                     {
                         PaymentID = i + 1,
                         Loan = this,
-                        CurrentPayment = 60
+                        CurrentPayment = 0
                     });
             }
         }

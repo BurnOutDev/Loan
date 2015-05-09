@@ -38,7 +38,6 @@
             <MenuItem x:Name="menuitemEdit" VerticalAlignment="Top" Header="Edit" Width="40" Height="25"/>
             <MenuItem x:Name="menuitemHelp" VerticalAlignment="Top" Header="Help" Width="40" Height="25"/>
             <MenuItem x:Name="menuitemExit" VerticalAlignment="Top" Header="Exit" Width="40" Height="25"/>
-            <TextBox  x:Name="tbxSearch" Height="23" TextWrapping="Wrap" Text="Search..." Width="361"/>
         </Menu>
 
         <DataGrid x:Name="dataGrid"
@@ -58,8 +57,8 @@
                 <DataGridTextColumn Header="ბიზნესის ფიზ. მისამართი" Binding="{Binding Loan.Account.BusinessPhysicalAddress, Mode=OneWay}" />
                 <DataGridTextColumn Header="მობ. ნომერი" Binding="{Binding Loan.Account.NumberMobile, Mode=OneWay}" />
                 <DataGridTextColumn Header="PMT" Binding="{Binding Loan.AmountToBePaidDaily, Mode=OneTime}" />
-                <!--<DataGridTextColumn Header="მიმდინარე დავალიანება" Binding="{Binding CurrentDebt}" />-->
-                <!--<DataGridTextColumn Header="სულ განულება" Binding="{Binding WholeDebt}" />-->
+                <DataGridTextColumn Header="მიმდინარე დავალიანება" Binding="{Binding CurrentDebt}" />
+                <DataGridTextColumn Header="სულ განულება" Binding="{Binding WholeDebt}" />
                 <DataGridTextColumn Header="გადახდა" Binding="{Binding CurrentPayment, Mode=TwoWay}" />
             </DataGrid.Columns>
         </DataGrid>
