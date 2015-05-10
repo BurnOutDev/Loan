@@ -1,0 +1,141 @@
+﻿@model IEnumerable<BusinessCredit.Domain.Loan>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanPurpose)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanDailyInterestRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanTermDays)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NetworkDays)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DaysOfGrace)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanPenaltyRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EffectiveInterestRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AmountToBePaidAll)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AmountToBePaidDaily)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AgreementDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanEndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuarantorName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuarantorLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuarantorPrivateNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuarantorPhysicalAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuarantorPhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanStatus)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanPurpose)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanDailyInterestRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanTermDays)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NetworkDays)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DaysOfGrace)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanPenaltyRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EffectiveInterestRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AmountToBePaidAll)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AmountToBePaidDaily)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AgreementDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanEndDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuarantorName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuarantorLastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuarantorPrivateNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuarantorPhysicalAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuarantorPhoneNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanStatus)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.LoanID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.LoanID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.LoanID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,170 @@
+﻿@model BusinessCredit.Domain.Loan
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Loan</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanPurpose)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanPurpose)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanDailyInterestRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanDailyInterestRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanTermDays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanTermDays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NetworkDays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NetworkDays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DaysOfGrace)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DaysOfGrace)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanPenaltyRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanPenaltyRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EffectiveInterestRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EffectiveInterestRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AmountToBePaidAll)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AmountToBePaidAll)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AmountToBePaidDaily)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AmountToBePaidDaily)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AgreementDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AgreementDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanStartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanEndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanEndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GuarantorName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GuarantorName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GuarantorLastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GuarantorLastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GuarantorPrivateNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GuarantorPrivateNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GuarantorPhysicalAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GuarantorPhysicalAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GuarantorPhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GuarantorPhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanStatus)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.LoanID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
