@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinssCredit.Domain", "Bus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfUI", "WpfUI\WpfUI.csproj", "{9672DC6D-D312-415D-A39B-8AB01BB50C01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCredit.LoanManagementSystem.Web", "BusinessCredit.LoanManagementSystem.Web\BusinessCredit.LoanManagementSystem.Web.csproj", "{BA2CE063-4938-4E4F-A6FE-A5F6D660AFF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9672DC6D-D312-415D-A39B-8AB01BB50C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9672DC6D-D312-415D-A39B-8AB01BB50C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9672DC6D-D312-415D-A39B-8AB01BB50C01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA2CE063-4938-4E4F-A6FE-A5F6D660AFF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA2CE063-4938-4E4F-A6FE-A5F6D660AFF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA2CE063-4938-4E4F-A6FE-A5F6D660AFF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA2CE063-4938-4E4F-A6FE-A5F6D660AFF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
