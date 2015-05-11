@@ -16,6 +16,7 @@ namespace BusinessCredit.Domain
         public DateTime PaymentDate { get; set; }
 
         #region CurrentDebt
+        [Display(Name = "მიმდ. დავალ.")]
         private double? _currentDebt;
         public double? CurrentDebt
         {

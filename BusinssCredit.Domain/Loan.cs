@@ -148,6 +148,5 @@ namespace BusinessCredit.Domain
         public virtual CreditExpert CreditExpert { get; set; }
 
         public virtual Account Account { get; set; }
-
     }
 }
