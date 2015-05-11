@@ -11,6 +11,7 @@ using BusinessCredit.Domain;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
+    [Authorize]
     public class PaymentsController : Controller
     {
         private BusinessCreditContext db = new BusinessCreditContext();
@@ -40,9 +41,18 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
 
         // GET: Payments/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            return View();
+            if (id.HasValue)
+            {
+                var pmt = new Payment()
+                {
+                   Loan = db.Loans.Find(id)
+                };
+
+                return View(pmt);
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // POST: Payments/Create

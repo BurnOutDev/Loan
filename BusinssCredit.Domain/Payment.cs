@@ -10,14 +10,17 @@ namespace BusinessCredit.Domain
         [Key]
         public int PaymentID { get; set; }
 
+        [Display(Name = "სშო #")]
         public int TaxOrderID { get; set; }
 
+        [Display(Name = "შენატანი")]
         public double CurrentPayment { get; set; }
+        [Display(Name = "შენატანის თარიღი")]
         public DateTime PaymentDate { get; set; }
 
         #region CurrentDebt
-        [Display(Name = "მიმდ. დავალ.")]
         private double? _currentDebt;
+        [Display(Name = "მიმდ. დავალიანება")]
         public double? CurrentDebt
         {
             get
@@ -40,6 +43,7 @@ namespace BusinessCredit.Domain
 
         #region WholeDebt
         private double? _wholeDebt;
+        [Display(Name = "სულ მოსატანი")]
         public double? WholeDebt
         {
             get
@@ -58,6 +62,7 @@ namespace BusinessCredit.Domain
         
         #region StartingPlannedBalance
         private double? _startingPlannedBalance;
+        [Display(Name = "საწყისი დაგეგმილი ნაშთი")]
         public double? StartingPlannedBalance
         {
             get
@@ -78,6 +83,7 @@ namespace BusinessCredit.Domain
 
         #region StartingBalance
         private double? _startingBalance;
+        [Display(Name = "საწყისი ნაშთი")]
         public double? StartingBalance
         {
             get
@@ -97,6 +103,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region PlannedBalance
+        [Display(Name = "დაგეგმილი ნაშთი")]
         public double PlannedBalance
         {
             get
@@ -108,6 +115,7 @@ namespace BusinessCredit.Domain
 
         #region PayableInterest
         public double? _payableInterest;
+        [Display(Name = "გადასახადი ძირი")]
         public double? PayableInterest
         {
             get
@@ -127,6 +135,7 @@ namespace BusinessCredit.Domain
 
         #region PayablePrincipal
         private double? _payablePrincipal;
+        [Display(Name = "გადასახადი ძირი")]
         public double? PayablePrincipal
         {
             get
@@ -149,6 +158,7 @@ namespace BusinessCredit.Domain
 
         #region CurrentOverduePrincipal
         private double? _currentOverduePrincipal;
+        [Display(Name = "მიმდინარე ვადაგად. ძირი")]
         public double? CurrentOverduePrincipal
         {
             get
@@ -168,6 +178,7 @@ namespace BusinessCredit.Domain
 
         #region CurrentOverdueInterest
         private double? _currentOverdueInterest;
+        [Display(Name = "მიმდინარე ვადაგად. პროცენტი")]
         public double? CurrentOverdueInterest
         {
             get
@@ -187,6 +198,7 @@ namespace BusinessCredit.Domain
 
         #region CurrentPenalty
         public double? _CurrentPenalty;
+        [Display(Name = "მიმდინარე ჯარიმა")]
         public double? CurrentPenalty
         {
             get
@@ -208,6 +220,7 @@ namespace BusinessCredit.Domain
 
         #region AccruingOverduePrincipal
         private double? _accruingOverduePrincipal;
+        [Display(Name = "დაგროვილი ვადაგად. ძირი")]
         public double? AccruingOverduePrincipal
         {
             get
@@ -232,6 +245,7 @@ namespace BusinessCredit.Domain
 
         #region AccruingOverdueInterest
         public double? _accruingOverdueInterest;
+        [Display(Name = "დაგროვილი ვადაგად. პროცენტი")]
         public double? AccruingOverdueInterest
         {
             get
@@ -254,6 +268,7 @@ namespace BusinessCredit.Domain
 
         #region AccruingOverduePenalty
         public double? _accruingOverduePenalty;
+        [Display(Name = "დაგროვილი ვადაგად. ჯარიმა")]
         public double? AccruingOverduePenalty
         {
             get
@@ -296,6 +311,7 @@ namespace BusinessCredit.Domain
 
         #region AccruingPenaltyPayment
         public double? _accruingPenaltyPayment;
+        [Display(Name = "დაგროვილი ჯარიმის გადახდა")]
         public double? AccruingPenaltyPayment
         {
             get
@@ -319,6 +335,7 @@ namespace BusinessCredit.Domain
 
         #region AccruingInterestPayment
         private double? _accruingInterestPayment;
+        [Display(Name = "დაგროვილი პროცენტის გადახდა")]
         public double? AccruingInterestPayment
         {
             get
@@ -341,6 +358,7 @@ namespace BusinessCredit.Domain
 
         #region AccruingPrincipalPayment
         private double? _accruingPrincipalPayment;
+        [Display(Name = "დაგროვილი ძირის გადახდა")]
         public double? AccruingPrincipalPayment
         {
             get
@@ -363,6 +381,7 @@ namespace BusinessCredit.Domain
 
         #region CurrentInterestPayment
         private double? _currentInterestPayment;
+        [Display(Name = "მიმდინარე პროცენტის გადახდა")]
         public double? CurrentInterestPayment
         {
             get
@@ -399,6 +418,7 @@ namespace BusinessCredit.Domain
 
         #region CurrentPrincipalPayment
         private double? _currentPrincipalPayment;
+        [Display(Name = "მიმდინარე ძირის გადახდა")]
         public double? CurrentPrincipalPayment
         {
             get
@@ -435,6 +455,7 @@ namespace BusinessCredit.Domain
 
         #region PrincipalPrepaymant
         private double? _principalPrepaymant;
+        [Display(Name = "ძირის წინსწრ. გადახდა")]
         public double? PrincipalPrepaymant
         {
             get
@@ -493,6 +514,7 @@ namespace BusinessCredit.Domain
 
         #region PaidInterest
         private double? _paidInterest;
+        [Display(Name = "გადახდილი პროცენტი")]
         public double? PaidInterest
         {
             get
@@ -514,6 +536,7 @@ namespace BusinessCredit.Domain
 
         #region PaidPenalty
         private double? _paidPenalty;
+        [Display(Name = "გადახდილი ჯარიმა")]
         public double? PaidPenalty
         {
             get
@@ -532,6 +555,7 @@ namespace BusinessCredit.Domain
 
         #region PaidPrincipal
         private double? _paidPrincipal;
+        [Display(Name = "გადახდილი ძირი")]
         public double? PaidPrincipal
         {
             get
@@ -544,14 +568,15 @@ namespace BusinessCredit.Domain
 
         private double? InitPaidPrincipal()
         {
-            return Loan.Payments.Where(x => x.PaymentID <= PaymentID).Sum(x => x.CurrentPrincipalPayment) +
-                   Loan.Payments.Where(x => x.PaymentID <= PaymentID).Sum(x => x.AccruingPrincipalPayment) +
-                   Loan.Payments.Where(x => x.PaymentID <= PaymentID).Sum(x => x.PrincipalPrepaymant);
+            return Loan.Payments.Where(x => x.PaymentDate <= PaymentDate).Sum(x => x.CurrentPrincipalPayment) +
+                   Loan.Payments.Where(x => x.PaymentDate <= PaymentDate).Sum(x => x.AccruingPrincipalPayment) +
+                   Loan.Payments.Where(x => x.PaymentDate <= PaymentDate).Sum(x => x.PrincipalPrepaymant);
         }
         #endregion
 
         #region PrincipalPrepaid
         private double? _principalPrepaid;
+        [Display(Name = "წინსწრ. გადახდილი ძირი")]
         public double? PrincipalPrepaid
         {
             get
@@ -570,6 +595,7 @@ namespace BusinessCredit.Domain
 
         #region LoanBalance
         private double? _loanBalance;
+        [Display(Name = "სესხის ნაშთი")]
         public double? LoanBalance
         {
             get
@@ -588,6 +614,7 @@ namespace BusinessCredit.Domain
 
         #region LoanStatus
         private bool? _loanStatus;
+        [Display(Name = "სესხის სტატუსი")]
         public bool? LoanStatus
         {
             get

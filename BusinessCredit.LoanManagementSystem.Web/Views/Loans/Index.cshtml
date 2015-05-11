@@ -133,7 +133,8 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.LoanID }) |
             @Html.ActionLink("Details", "Details", new { id=item.LoanID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.LoanID })
+            @Html.ActionLink("Delete", "Delete", new { id = item.LoanID })
+            @Html.ActionLink("Pay", "Create", "Payments", new { id=item.LoanID }, null)
         </td>
     </tr>
 }

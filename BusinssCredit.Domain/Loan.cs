@@ -26,19 +26,26 @@ namespace BusinessCredit.Domain
             }
         }
 
+        public void AddPayment(Payment pmt)
+        {
+            pmt.Loan = this;
+            pmt.Branch = this.Branch;
+            Payments.Add(pmt);
+        }
+
         public void Initialize()
         {
             if (Payments == null || Payments.Count == 0)
             {
                 Payments = new List<Payment>();
 
-                for (int i = 0; i < LoanTermDays; i++)
-                    Payments.Add(new Payment()
-                    {
-                        PaymentID = i + 1,
-                        Loan = this,
-                        CurrentPayment = 0
-                    });
+                //for (int i = 0; i < LoanTermDays; i++)
+                //    Payments.Add(new Payment()
+                //    {
+                //        PaymentID = i + 1,
+                //        Loan = this,
+                //        CurrentPayment = 0
+                //    });
             }
         }
 
