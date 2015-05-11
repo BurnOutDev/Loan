@@ -1,0 +1,64 @@
+﻿@model BusinessCredit.Domain.PaymentEntity
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>PaymentEntity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Deposit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Deposit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentInterest)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentInterest)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentPrincipal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentPrincipal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndingPrincipal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndingPrincipal)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

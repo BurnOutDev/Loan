@@ -1,0 +1,58 @@
+﻿@model BusinessCredit.Domain.PaymentEntity
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PaymentEntity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Deposit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Deposit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentInterest)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentInterest)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentPrincipal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentPrincipal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndingPrincipal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndingPrincipal)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PaymentEntityID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

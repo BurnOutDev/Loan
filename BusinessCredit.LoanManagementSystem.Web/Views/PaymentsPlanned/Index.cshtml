@@ -1,0 +1,57 @@
+﻿@model IEnumerable<BusinessCredit.Domain.PaymentEntity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Deposit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentInterest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentPrincipal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndingPrincipal)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Deposit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentInterest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentPrincipal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndingPrincipal)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PaymentEntityID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PaymentEntityID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PaymentEntityID })
+        </td>
+    </tr>
+}
+
+</table>

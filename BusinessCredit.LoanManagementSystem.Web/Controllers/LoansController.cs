@@ -51,6 +51,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                loan.PlanLoan();
+                loan.Initialize();
+
                 db.Loans.Add(loan);
                 db.SaveChanges();
                 return RedirectToAction("Index");

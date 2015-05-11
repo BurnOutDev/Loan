@@ -11,110 +11,107 @@ using BusinessCredit.Domain;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
-    public class PaymentsController : Controller
+    public class PaymentsPlannedController : Controller
     {
         private BusinessCreditContext db = new BusinessCreditContext();
 
-        // GET: Payments
-        public ActionResult Index(int? loanId)
+        // GET: PaymentsPlanned
+        public ActionResult Index()
         {
-            if (loanId != null)
-                return View(db.Loans.Find(loanId).Payments.ToList());
-
-            return View(db.Payments.ToList());
+            return View(db.PaymentEntities.ToList());
         }
 
-        // GET: Payments/Details/5
+        // GET: PaymentsPlanned/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
+            PaymentEntity paymentEntity = db.PaymentEntities.Find(id);
+            if (paymentEntity == null)
             {
                 return HttpNotFound();
             }
-            return View(payment);
+            return View(paymentEntity);
         }
 
-        // GET: Payments/Create
+        // GET: PaymentsPlanned/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Payments/Create
+        // POST: PaymentsPlanned/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PaymentID,TaxOrderID,CurrentPayment,PaymentDate")] Payment payment)
+        public ActionResult Create([Bind(Include = "PaymentEntityID,PaymentDate,Deposit,PaymentInterest,PaymentPrincipal,EndingPrincipal")] PaymentEntity paymentEntity)
         {
             if (ModelState.IsValid)
             {
-                db.Payments.Add(payment);
+                db.PaymentEntities.Add(paymentEntity);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(payment);
+            return View(paymentEntity);
         }
 
-        // GET: Payments/Edit/5
+        // GET: PaymentsPlanned/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
+            PaymentEntity paymentEntity = db.PaymentEntities.Find(id);
+            if (paymentEntity == null)
             {
                 return HttpNotFound();
             }
-            return View(payment);
+            return View(paymentEntity);
         }
 
-        // POST: Payments/Edit/5
+        // POST: PaymentsPlanned/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PaymentID,TaxOrderID,CurrentPayment,PaymentDate")] Payment payment)
+        public ActionResult Edit([Bind(Include = "PaymentEntityID,PaymentDate,Deposit,PaymentInterest,PaymentPrincipal,EndingPrincipal")] PaymentEntity paymentEntity)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(payment).State = EntityState.Modified;
+                db.Entry(paymentEntity).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(payment);
+            return View(paymentEntity);
         }
 
-        // GET: Payments/Delete/5
+        // GET: PaymentsPlanned/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
+            PaymentEntity paymentEntity = db.PaymentEntities.Find(id);
+            if (paymentEntity == null)
             {
                 return HttpNotFound();
             }
-            return View(payment);
+            return View(paymentEntity);
         }
 
-        // POST: Payments/Delete/5
+        // POST: PaymentsPlanned/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Payment payment = db.Payments.Find(id);
-            db.Payments.Remove(payment);
+            PaymentEntity paymentEntity = db.PaymentEntities.Find(id);
+            db.PaymentEntities.Remove(paymentEntity);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
