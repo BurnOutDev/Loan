@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BusinessCredit.Core;
 using BusinessCredit.Domain;
+using BusinessCredit.LoanManagementSystem.Web.Models;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -45,10 +46,14 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         {
             if (id.HasValue)
             {
-                var pmt = db.Payments.Create();
-                db.Loans.Load();
-                pmt.Loan = db.Loans.Find(id);
-                pmt.CurrentPayment = 700;
+                var pmt = new PMTViewModel()
+                {
+                    LoanId = id.Value,
+                    CurrentPayment = 600
+                };
+                //db.Loans.Load();
+                //pmt.Loan = db.Loans.Find(id);
+                //pmt.CurrentPayment = 700;
 
                 return View(pmt);
             }
@@ -60,17 +65,32 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PaymentID,TaxOrderID,CurrentPayment,PaymentDate,Loan")] Payment payment, int? id)
+        public ActionResult Create(PMTViewModel payment, int? id)
         {
             if (ModelState.IsValid)
             {
-                payment.Loan = db.Loans.Find(id);
-                db.Payments.Add(payment);
+                var pmtToAdd = db.Payments.Create();
+
+                pmtToAdd.Loan = db.Loans.Find(payment.LoanId);
+                pmtToAdd.CurrentPayment = payment.CurrentPayment;
+                pmtToAdd.PaymentDate = payment.PaymentDate;
+                pmtToAdd.TaxOrderID = payment.TaxOrderId;
+
+                db.Loans.Include(x => x.Payments);
+                db.Payments.Include(x => x.Loan);
+
+                db.Payments.Add(pmtToAdd);
+
+                db.Loans.Include(x => x.Payments);
+                db.Payments.Include(x => x.Loan);
+                //payment.Loan = db.Loans.Find(id);
+                //db.Payments.Add(payment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(payment);
+            return RedirectToAction("Index");
+            //return View();
         }
 
         // GET: Payments/Edit/5
@@ -132,10 +152,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            //if (disposing)
-            //{
-            //    db.Dispose();
-            //}
+            if (disposing)
+            {
+                db.Dispose();
+            }
             base.Dispose(disposing);
         }
     }

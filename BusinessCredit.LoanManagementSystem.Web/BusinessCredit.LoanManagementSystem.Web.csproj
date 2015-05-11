@@ -248,7 +248,7 @@
     <Content Include="Views\Loans\Details.cshtml" />
     <Content Include="Views\Loans\Edit.cshtml" />
     <Content Include="Views\Loans\Index.cshtml" />
-    <Content Include="Views\Payments\Create.cshtml" />
+    <Content Include="Views\Payments\Create.old.cshtml" />
     <Content Include="Views\Payments\Delete.cshtml" />
     <Content Include="Views\Payments\Details.cshtml" />
     <Content Include="Views\Payments\Edit.cshtml" />
@@ -258,6 +258,7 @@
     <Content Include="Views\PaymentsPlanned\Details.cshtml" />
     <Content Include="Views\PaymentsPlanned\Edit.cshtml" />
     <Content Include="Views\PaymentsPlanned\Index.cshtml" />
+    <Content Include="Views\Payments\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

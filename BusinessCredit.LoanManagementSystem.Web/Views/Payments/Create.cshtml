@@ -1,4 +1,4 @@
-﻿@model BusinessCredit.Domain.Payment
+﻿@model BusinessCredit.LoanManagementSystem.Web.Models.PMTViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -7,51 +7,29 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
-        <h4>Payment</h4>
+        <h4>PMTViewModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.TaxOrderID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.LoanId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TaxOrderID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TaxOrderID, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.LoanId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LoanId, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        @Html.HiddenFor(m => m.Loan.Account)
-        @Html.HiddenFor(m => m.Loan.Agreement)
-        @Html.HiddenFor(m => m.Loan.AgreementDate)
-        @Html.HiddenFor(m => m.Loan.AmountToBePaidAll)
-        @Html.HiddenFor(m => m.Loan.AmountToBePaidDaily)
-        @Html.HiddenFor(m => m.Loan.Branch)
-        @Html.HiddenFor(m => m.Loan.CreditExpert)
-        @Html.HiddenFor(m => m.Loan.CurrentDebt)
-        @Html.HiddenFor(m => m.Loan.DaysOfGrace)
-        @Html.HiddenFor(m => m.Loan.EffectiveInterestRate)
-        @Html.HiddenFor(m => m.Loan.GuarantorLastName)
-        @Html.HiddenFor(m => m.Loan.GuarantorName)
-        @Html.HiddenFor(m => m.Loan.GuarantorPhoneNumber)
-        @Html.HiddenFor(m => m.Loan.GuarantorPhysicalAddress)
-        @Html.HiddenFor(m => m.Loan.GuarantorPrivateNumber)
-        @Html.HiddenFor(m => m.Loan.LoanAmount)
-        @Html.HiddenFor(m => m.Loan.LoanDailyInterestRate)
-        @Html.HiddenFor(m => m.Loan.LoanEndDate)
-        @Html.HiddenFor(m => m.Loan.LoanID)
-        @Html.HiddenFor(m => m.Loan.LoanPenaltyRate)
-        @Html.HiddenFor(m => m.Loan.LoanPurpose)
-        @Html.HiddenFor(m => m.Loan.LoanStartDate)
-        @Html.HiddenFor(m => m.Loan.LoanStatus)
-        @Html.HiddenFor(m => m.Loan.LoanTermDays)
-        @Html.HiddenFor(m => m.Loan.NetworkDays)
-        @Html.HiddenFor(m => m.Loan.Payments)
-        @Html.HiddenFor(m => m.Loan.PlannedPaymentEntities)
-        @Html.HiddenFor(m => m.Loan.WholeDebt)
-        <!-- -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.TaxOrderId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TaxOrderId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TaxOrderId, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.CurrentPayment, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -66,8 +44,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.PaymentDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PaymentDate, "", new { @class = "text-danger" })
-
-                @Model.Loan.LoanID
             </div>
         </div>
 
