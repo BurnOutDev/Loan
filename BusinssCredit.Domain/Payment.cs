@@ -7,6 +7,11 @@ namespace BusinessCredit.Domain
 {
     public class Payment
     {
+        public Payment()
+        {
+            ;
+        }
+
         [Key]
         public int PaymentID { get; set; }
 
@@ -26,7 +31,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_currentDebt.HasValue)
-                    _currentDebt = InitCurrentDebt();
+                    _currentDebt = Math.Round(InitCurrentDebt().Value, 2);
                 return _currentDebt;
             }
         }
@@ -49,7 +54,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_wholeDebt.HasValue)
-                    _wholeDebt = InitWholeDebt();
+                    _wholeDebt = Math.Round(InitWholeDebt().Value, 2);
                 return _wholeDebt;
             }
         }
@@ -69,7 +74,7 @@ namespace BusinessCredit.Domain
             {
                 if (!_startingPlannedBalance.HasValue)
                 {
-                    _startingPlannedBalance = InitStartingPlannedBalance();
+                    _startingPlannedBalance = Math.Round(InitStartingPlannedBalance().Value, 2);
                 }
                 return _startingPlannedBalance;
             }
@@ -89,7 +94,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_startingBalance.HasValue)
-                    _startingBalance = InitStartingBalance();
+                    _startingBalance = Math.Round(InitStartingBalance().Value, 2);
                 return _startingBalance;
             }
         }
@@ -103,12 +108,12 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region PlannedBalance
-        [Display(Name = "დაგეგმილი ნაშთი")]
+        [Display(Name = "გეგმიური ნაშთი")]
         public double PlannedBalance
         {
             get
             {
-                return Loan.PlannedPaymentEntities.FirstOrDefault(x => x.PaymentEntityID == PaymentID).EndingPrincipal.Value;
+                return Math.Round(Loan.PlannedPaymentEntities.FirstOrDefault(x => x.PaymentEntityID == PaymentID).EndingPrincipal.Value, 2);
             }
         } // გეგმიური ნაშთი 
         #endregion
@@ -121,7 +126,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_payableInterest.HasValue)
-                    _payableInterest = InitPayableInterest();
+                    _payableInterest = Math.Round(InitPayableInterest().Value, 2);
                 return _payableInterest;
             }
         }
@@ -141,7 +146,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_payablePrincipal.HasValue)
-                    _payablePrincipal = InitPayablePrincipal();
+                    _payablePrincipal = Math.Round(InitPayablePrincipal().Value, 2);
                 return _payablePrincipal;
             }
         }
@@ -164,7 +169,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_currentOverduePrincipal.HasValue)
-                    _currentOverduePrincipal = InitCurrentOverduePrincipal();
+                    _currentOverduePrincipal = Math.Round(InitCurrentOverduePrincipal().Value, 2);
                 return _currentOverduePrincipal;
             }
         }
@@ -184,7 +189,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_currentOverdueInterest.HasValue)
-                    _currentOverdueInterest = InitCurrentOverdueInterest();
+                    _currentOverdueInterest = Math.Round(InitCurrentOverdueInterest().Value, 2);
                 return _currentOverdueInterest;
             }
         }
@@ -204,7 +209,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_CurrentPenalty.HasValue)
-                    _CurrentPenalty = InitCurrentPenalty();
+                    _CurrentPenalty = Math.Round(InitCurrentPenalty().Value, 2);
                 return _CurrentPenalty;
             }
         }
@@ -226,7 +231,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_accruingOverduePrincipal.HasValue)
-                    _accruingOverduePrincipal = InitAccruingOverduePrincipal();
+                    _accruingOverduePrincipal = Math.Round(InitAccruingOverduePrincipal().Value, 2);
                 return _accruingOverduePrincipal;
             }
         }
@@ -251,7 +256,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_accruingOverdueInterest.HasValue)
-                    _accruingOverdueInterest = InitAccruingOverdueInterest();
+                    _accruingOverdueInterest = Math.Round(InitAccruingOverdueInterest().Value, 2);
                 return _accruingOverdueInterest;
             }
         }
@@ -274,7 +279,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_accruingOverduePenalty.HasValue)
-                    _accruingOverduePenalty = InitAccruingOverduePenalty();
+                    _accruingOverduePenalty = Math.Round(InitAccruingOverduePenalty().Value, 2);
                 return InitAccruingOverduePenalty();
             }
         }
@@ -317,7 +322,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_accruingPenaltyPayment.HasValue)
-                    _accruingPenaltyPayment = InitAccruingPenaltyPayment();
+                    _accruingPenaltyPayment = Math.Round(InitAccruingPenaltyPayment().Value, 2);
                 return _accruingPenaltyPayment;
             }
         }
@@ -341,7 +346,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_accruingInterestPayment.HasValue)
-                    _accruingInterestPayment = InitAccruingInterestPayment();
+                    _accruingInterestPayment = Math.Round(InitAccruingInterestPayment().Value, 2);
                 return _accruingInterestPayment;
             }
         }
@@ -364,7 +369,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_accruingPrincipalPayment.HasValue)
-                    _accruingPrincipalPayment = InitAccruingPrincipalPayment();
+                    _accruingPrincipalPayment = Math.Round(InitAccruingPrincipalPayment().Value, 2);
                 return _accruingPrincipalPayment;
             }
         }
@@ -387,7 +392,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_currentInterestPayment.HasValue)
-                    _currentInterestPayment = InitCurrentInterestPayment();
+                    _currentInterestPayment = Math.Round(InitCurrentInterestPayment().Value, 2);
                 return _currentInterestPayment;
             }
         }
@@ -424,7 +429,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_currentPrincipalPayment.HasValue)
-                    _currentPrincipalPayment = InitCurrentPrincipalPayment();
+                    _currentPrincipalPayment = Math.Round(InitCurrentPrincipalPayment().Value, 2);
                 return _currentPrincipalPayment;
             }
         }
@@ -461,7 +466,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_principalPrepaymant.HasValue)
-                    _principalPrepaymant = InitPrincipalPrepaymant();
+                    _principalPrepaymant = Math.Round(InitPrincipalPrepaymant().Value, 2);
                 return _principalPrepaymant;
             }
         }
@@ -520,7 +525,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_paidInterest.HasValue)
-                    _paidInterest = InitPaidInterest();
+                    _paidInterest = Math.Round(InitPaidInterest().Value, 2);
                 return _paidInterest;
             }
         }
@@ -542,7 +547,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_paidPenalty.HasValue)
-                    _paidPenalty = InitPaidPenalty();
+                    _paidPenalty = Math.Round(InitPaidPenalty().Value, 2);
                 return _paidPenalty;
             }
         }
@@ -561,7 +566,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_paidPrincipal.HasValue)
-                    _paidPrincipal = InitPaidPrincipal();
+                    _paidPrincipal = Math.Round(InitPaidPrincipal().Value, 2);
                 return _paidPrincipal;
             }
         }
@@ -582,7 +587,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_principalPrepaid.HasValue)
-                    _principalPrepaid = InitPrincipalPrepaid();
+                    _principalPrepaid = Math.Round(InitPrincipalPrepaid().Value, 2);
                 return _principalPrepaid;
             }
         }
@@ -601,7 +606,7 @@ namespace BusinessCredit.Domain
             get
             {
                 if (!_loanBalance.HasValue)
-                    _loanBalance = InitLoanBalance();
+                    _loanBalance = Math.Round(InitLoanBalance().Value, 2);
                 return _loanBalance;
             }
         }
@@ -637,7 +642,7 @@ namespace BusinessCredit.Domain
                     select x).ToList();
         }
 
-        public virtual Loan Loan { get; set; }
+        public Loan Loan { get; set; }
         public virtual CreditExpert CreditExpert { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual CashCollectionAgent CashCollectionAgent { get; set; }

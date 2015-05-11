@@ -45,10 +45,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         {
             if (id.HasValue)
             {
-                var pmt = new Payment()
-                {
-                   Loan = db.Loans.Find(id)
-                };
+                var pmt = db.Payments.Create();
+                db.Loans.Load();
+                pmt.Loan = db.Loans.Find(id);
+                pmt.CurrentPayment = 700;
 
                 return View(pmt);
             }
@@ -60,10 +60,11 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PaymentID,TaxOrderID,CurrentPayment,PaymentDate")] Payment payment)
+        public ActionResult Create([Bind(Include = "PaymentID,TaxOrderID,CurrentPayment,PaymentDate,Loan")] Payment payment, int? id)
         {
             if (ModelState.IsValid)
             {
+                payment.Loan = db.Loans.Find(id);
                 db.Payments.Add(payment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -131,10 +132,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            //if (disposing)
+            //{
+            //    db.Dispose();
+            //}
             base.Dispose(disposing);
         }
     }

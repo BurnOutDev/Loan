@@ -178,6 +178,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PaymentPlannedViewModel.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
+    <Compile Include="Models\PMTViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
