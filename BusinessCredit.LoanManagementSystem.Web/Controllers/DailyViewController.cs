@@ -51,7 +51,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(DailyViewModel dailyViewModel)
+        public ActionResult Index(IList<DailyViewModel> dailyViewModel)
         {
             return RedirectToAction("Index");
         }
