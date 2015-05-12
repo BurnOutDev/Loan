@@ -160,6 +160,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
+    <Compile Include="Controllers\DailyViewController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoansController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Models\BranchViewModel.cs" />
     <Compile Include="Models\ClientViewModel.cs" />
     <Compile Include="Models\CreditExpertViewModel.cs" />
+    <Compile Include="Models\DailyViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LoanViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -259,6 +261,7 @@
     <Content Include="Views\PaymentsPlanned\Edit.cshtml" />
     <Content Include="Views\PaymentsPlanned\Index.cshtml" />
     <Content Include="Views\Payments\Create.cshtml" />
+    <Content Include="Views\DailyView\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
