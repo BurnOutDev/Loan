@@ -7,11 +7,6 @@ namespace BusinessCredit.Domain
 {
     public class Payment
     {
-        public Payment()
-        {
-            ;
-        }
-
         [Key]
         public int PaymentID { get; set; }
 
@@ -20,6 +15,7 @@ namespace BusinessCredit.Domain
 
         [Display(Name = "შენატანი")]
         public double CurrentPayment { get; set; }
+
         [Display(Name = "შენატანის თარიღი")]
         public DateTime PaymentDate { get; set; }
 

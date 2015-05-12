@@ -1,9 +1,12 @@
-﻿namespace BusinessCredit.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BusinessCredit.Domain
 {
     public enum Gender
     {
+        [Display(Name = "მამრ.")]
         Male = 1,
-        Female = 2,
-        Unknown = -1
+        [Display(Name = "მდედრ.")]
+        Female = 2
     }
 }
