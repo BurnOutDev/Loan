@@ -1,4 +1,4 @@
-﻿@model IList<BusinessCredit.LoanManagementSystem.Web.Models.DailyViewModel>
+﻿@model BusinessCredit.LoanManagementSystem.Web.Models.LstViewModel
 
 @{
     ViewBag.Title = "DailyView";
@@ -10,111 +10,107 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DisplayDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PrivateNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BusinessAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PlannedPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentDebt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WholeDebt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Payment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AgreementNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OverdueAmount)
-        </th>
-        <th></th>
-    </tr>
 
-    <form action="Index" method="post">
+<form action="Index" method="post">
 
-        @for (int i = 0; i < Model.Count(); i++)
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().DisplayDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().AccountNumber)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().LoanNumber)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().Name)
+            </th>                                  
+            <th>                                  
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().LastName)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().PrivateNumber)
+            </th>                                 
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().BusinessAddress)
+            </th>                                 
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().PhoneNumber)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().PlannedPayment)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().CurrentDebt)
+            </th>                                 
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().WholeDebt)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().Payment)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().PaymentDate)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().AgreementNumber)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().OverdueAmount)
+            </th>
+            <th></th>
+        </tr>
+
+
+        @for (int i = 0; i < Model.DailyList.Count(); i++)
             {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).LoanId)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).DisplayDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).DisplayDate)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).AccountNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).AccountNumber)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).LoanNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).LoanNumber)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).LastName)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).PrivateNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).PrivateNumber)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).BusinessAddress)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).BusinessAddress)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).PhoneNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).PhoneNumber)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).PlannedPayment)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).PlannedPayment)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).CurrentDebt)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).CurrentDebt)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).WholeDebt)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).WholeDebt)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).Payment)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.ElementAt(i).Payment)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).PaymentDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).PaymentDate)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).AgreementNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).AgreementNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).OverdueAmount)
+                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).OverdueAmount)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
@@ -124,7 +120,7 @@
             </tr>
         }
 
-</table>
+    </table>
 
-<input type="submit" />
+    <input type="submit" />
 </form>

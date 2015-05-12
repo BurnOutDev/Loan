@@ -18,6 +18,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
         public ActionResult Index()
         {
+            var dailyList = new LstViewModel();
             var viewList = new List<DailyViewModel>();
             var pmtList = new List<Payment>();
 
@@ -47,11 +48,13 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 viewList.Add(view);
             }
 
-            return View(viewList);
+            dailyList.DailyList = viewList;
+
+            return View(dailyList);
         }
 
         [HttpPost]
-        public ActionResult Index(IList<DailyViewModel> dailyViewModel)
+        public ActionResult Index(LstViewModel view_Model)
         {
             return RedirectToAction("Index");
         }
