@@ -1,4 +1,4 @@
-﻿@model BusinessCredit.LoanManagementSystem.Web.Models.LstViewModel
+﻿@model IList<BusinessCredit.LoanManagementSystem.Web.Models.DailyViewModel>
 
 @{
     ViewBag.Title = "DailyView";
@@ -16,101 +16,116 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().DisplayDate)
+                @Html.DisplayNameFor(model => model[0].DisplayDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().AccountNumber)
-            </th>                                  
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().LoanNumber)
-            </th>                                  
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().Name)
-            </th>                                  
-            <th>                                  
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().LastName)
-            </th>                                  
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().PrivateNumber)
-            </th>                                 
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().BusinessAddress)
-            </th>                                 
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().PhoneNumber)
-            </th>                                  
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().PlannedPayment)
-            </th>                                  
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().CurrentDebt)
-            </th>                                 
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().WholeDebt)
-            </th>                                  
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().Payment)
-            </th>                                  
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().PaymentDate)
-            </th>                                  
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().AgreementNumber)
-            </th>                                  
-            <th>                                   
-                @Html.DisplayNameFor(model => model.DailyList.FirstOrDefault().OverdueAmount)
+                @Html.DisplayNameFor(model => model[0].AccountNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].LoanNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].PrivateNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].BusinessAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].PlannedPayment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].CurrentDebt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].WholeDebt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Payment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].PaymentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].AgreementNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].OverdueAmount)
             </th>
             <th></th>
         </tr>
 
 
-        @for (int i = 0; i < Model.DailyList.Count(); i++)
+        @for (int i = 0; i < Model.Count; i++)
             {
             <tr>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).DisplayDate)
+                    @Html.DisplayFor(modelItem => Model[0].DisplayDate)
+                    @Html.HiddenFor(modelItem => Model[i].DisplayDate)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).AccountNumber)
+                    @Html.DisplayFor(modelItem => Model[i].AccountNumber)
+                    @Html.HiddenFor(modelItem => Model[i].AccountNumber)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).LoanNumber)
+                    @Html.DisplayFor(modelItem => Model[i].LoanNumber)
+                    @Html.HiddenFor(modelItem => Model[i].LoanNumber)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).Name)
+                    @Html.DisplayFor(modelItem => Model[i].Name)
+                    @Html.HiddenFor(modelItem => Model[i].Name)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).LastName)
+                    @Html.DisplayFor(modelItem => Model[i].LastName)
+                    @Html.HiddenFor(modelItem => Model[i].LastName)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).PrivateNumber)
+                    @Html.DisplayFor(modelItem => Model[i].PrivateNumber)
+                    @Html.HiddenFor(modelItem => Model[i].PrivateNumber)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).BusinessAddress)
+                    @Html.DisplayFor(modelItem => Model[i].BusinessAddress)
+                    @Html.HiddenFor(modelItem => Model[i].BusinessAddress)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).PhoneNumber)
+                    @Html.DisplayFor(modelItem => Model[i].PhoneNumber)
+                    @Html.HiddenFor(modelItem => Model[i].PhoneNumber)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).PlannedPayment)
+                    @Html.DisplayFor(modelItem => Model[i].PlannedPayment)
+                    @Html.HiddenFor(model => model[i].PlannedPayment)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).CurrentDebt)
+                    @Html.DisplayFor(modelItem => Model[i].CurrentDebt)
+                    @Html.HiddenFor(model => model[i].CurrentDebt)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).WholeDebt)
+                    @Html.DisplayFor(modelItem => Model[i].WholeDebt)
+                    @Html.HiddenFor(model => model[i].WholeDebt)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).Payment)
+                    @Html.TextBoxFor(model => model[i].Payment)
+                    @Html.HiddenFor(model => model[i].Payment)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).PaymentDate)
+                    @Html.DisplayFor(modelItem => Model[i].PaymentDate)
+                    @Html.HiddenFor(model => model[i].PaymentDate)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).AgreementNumber)
+                    @Html.DisplayFor(modelItem => Model[i].AgreementNumber)
+                    @Html.HiddenFor(model => model[i].AgreementNumber)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => Model.DailyList.ElementAt(i).OverdueAmount)
+                    @Html.DisplayFor(modelItem => Model[i].OverdueAmount)
+                    @Html.HiddenFor(model => model[i].OverdueAmount)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
@@ -118,8 +133,8 @@
                     @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                 </td>
             </tr>
-        }
-
+            @Html.HiddenFor(model => model[i].LoanId)
+}
     </table>
 
     <input type="submit" />

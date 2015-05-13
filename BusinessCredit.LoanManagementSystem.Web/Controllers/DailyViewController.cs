@@ -50,13 +50,26 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             dailyList.DailyList = viewList;
 
-            return View(dailyList);
+            return View(viewList);
         }
 
         [HttpPost]
-        public ActionResult Index(LstViewModel view_Model)
+        public ActionResult Index(IList<DailyViewModel> view_Model)
         {
+            foreach (var model in view_Model)
+            {
+                db.Loans.Find(model.LoanId).Payments.Add(
+                    new Payment()
+                    {
+                         CurrentPayment = model.Payment,
+                         PaymentDate = model.PaymentDate
+                    });
+            }
+
+            db.SaveChanges();
+
             return RedirectToAction("Index");
+
         }
     }
 }
