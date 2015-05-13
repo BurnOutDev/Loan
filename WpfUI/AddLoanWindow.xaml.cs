@@ -60,8 +60,7 @@ namespace WpfUI
                     GuarantorLastName = tbxGuarantorLastName.Text,
                     GuarantorPrivateNumber = tbxGuarantorPrivateNumber.Text,
                     GuarantorPhysicalAddress = tbxGuarantorPhysicalAddress.Text,
-                    GuarantorPhoneNumber = tbxGuarantorPhoneNumber.Text,
-                    LoanStatus = LoanStatus.Active
+                    GuarantorPhoneNumber = tbxGuarantorPhoneNumber.Text
                 };
                 //loan.PlannedPaymentEntities = new PlannedPayments(loan);
 

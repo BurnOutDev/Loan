@@ -28,8 +28,13 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var date = loans.FirstOrDefault().LoanStartDate;
 
             foreach (var loan in loans)
-                //pmtList.Add(loan.Payments.FirstOrDefault(x => x.PaymentDate.Date == DateTime.Today.AddDays(-1)));
-                pmtList.Add(loan.Payments.FirstOrDefault());
+            {
+                var pmt = loan.Payments.FirstOrDefault(x => x.PaymentDate.Date == DateTime.Today.AddDays(-1));
+                if (pmt != null)
+                    pmtList.Add(pmt);
+
+                //pmtList.Add(loan.Payments.FirstOrDefault());
+            }
 
             foreach (var pmt in pmtList)
             {
@@ -61,15 +66,14 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 db.Loans.Find(model.LoanId).Payments.Add(
                     new Payment()
                     {
-                         CurrentPayment = model.Payment,
-                         PaymentDate = model.PaymentDate
+                        CurrentPayment = model.Payment,
+                        PaymentDate = model.PaymentDate
                     });
             }
 
             db.SaveChanges();
 
             return RedirectToAction("Index");
-
         }
     }
 }

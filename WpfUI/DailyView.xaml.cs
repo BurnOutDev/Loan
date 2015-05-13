@@ -81,7 +81,6 @@ namespace WpfUI
                     GuarantorPrivateNumber = "1005148465654",
                     GuarantorPhysicalAddress = "Paris",
                     GuarantorPhoneNumber = "591445588",
-                    LoanStatus = LoanStatus.Active,
                     Account = acc
                 };
 
@@ -122,8 +121,7 @@ namespace WpfUI
                     GuarantorLastName = "Gegenava",
                     GuarantorPrivateNumber = "1005148465654",
                     GuarantorPhysicalAddress = "Paris",
-                    GuarantorPhoneNumber = "591445588",
-                    LoanStatus = LoanStatus.Active
+                    GuarantorPhoneNumber = "591445588"
                 };
 
                 loan2.PlanLoan();

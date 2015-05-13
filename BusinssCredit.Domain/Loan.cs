@@ -141,9 +141,20 @@ namespace BusinessCredit.Domain
 
         /// სესხის სტატუსი (მიმდინარე, დახურული)
         [Display(Name = "სტატუსი")]
-        public virtual LoanStatus LoanStatus { get; set; }
-
-
+        public virtual LoanStatus LoanStatus
+        {
+            get; set;
+            //{
+            //    try
+            //    {
+            //        return Payments.OrderByDescending(x => x.PaymentDate).FirstOrDefault().WholeDebt > 0 ? LoanStatus.Active : LoanStatus.Closed;
+            //    }
+            //    catch 
+            //    {
+            //        return LoanStatus.Active;
+            //    }
+            //}
+        }
 
         /// გადახდები
         public virtual ICollection<Payment> Payments { get; set; }
