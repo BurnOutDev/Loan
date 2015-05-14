@@ -9,13 +9,14 @@
 <link rel="stylesheet" type="text/css" href="~/Content/bootstrap-filterable.css" />
 <link rel="stylesheet" type="text/css" href="~/Content/styles.css" />
 
+<script src="http://code.jquery.com/jquery-1.11.3.min.js" type="text/javascript"></script>
 <script src="~/Scripts/scripts.js" type="text/javascript"></script>
 
 <style>
-    #cbxcontainer {
+    .cbxcontainer {
         border: 2px solid #ccc;
-        width: 180px;
-        height: 50px;
+        width: auto;
+        height: 70px;
         overflow-y: scroll;
     }
 </style>
@@ -45,7 +46,7 @@
 
         var nodesList = [];
 
-        for (var i = 1; i <= values ; i++) {
+        for (var i = 1; i <= values; i++) {
             var node = document.createElement('input');
             node.type = 'checkbox';
             node.className = 'cbx' + colIndex;
@@ -64,25 +65,400 @@
         }
         return count;
     }
+
+    function genFilters() {
+        var cCols = countColumns();
+        for (var i = 1; i <= cCols; i++) {
+            var h = document.createElement('th');
+            var div = document.createElement('div');
+            div.id = 'cbxcontainer' + i;
+            div.className = 'cbxcontainer';
+
+            var cValues = $.unique(ColValues(i));
+            for (var n = 1; n < cValues; n++) {
+                var lbl = document.createElement('label');
+                var cbx = document.createElement('input');
+                cbx.type = 'checkbox';
+                lbl.textContent = cValues[n];
+                lbl.appendChild(cbx);
+                div.appendChild(lbl);
+            }
+            h.appendChild(div);
+            document.getElementById('cbxFilters').appendChild(h);
+        }
+
+        //<input type="checkbox" /> This is checkbox
+    }
+
+    function FilterCBX(colIndex, obj) {
+        if (obj.checked) {
+            $(".col" + colIndex).filter(function () {
+                return this.textContent.indexOf(obj.parentElement.innerText) != -1;
+            }).parent().show();
+        } else {
+            $(".col" + colIndex).filter(function () {
+                return this.textContent.indexOf(obj.parentElement.innerText) != -1;
+            }).parent().hide();
+        }
+    }
+
+    function checkboxesChecked() {
+        var cbxs = $(':checkbox');
+        for (var i = 0; i < cbxs.length; i++) {
+            cbxs[i].checked = true;
+            cbxs[i].onchange();
+        }
+    }
+
+    function checkboxesUnhecked() {
+        var cbxs = $(':checkbox');
+        for (var i = 0; i < cbxs.length; i++) {
+            cbxs[i].checked = false;
+            cbxs[i].onchange();
+        }
+    }
+
 </script>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<table id="tbl" class="table table-condensed table-hover table-striped">
-    <tr>
+<button onclick="checkboxesChecked()">Check All</button>
+<button onclick="checkboxesUnhecked()">Uncheck All</button>
+
+<table id="tbl" class="table table-condensed table-hover table-striped" onended="checkboxesChecked()">
+    <tr id="cbxFilters">
+
         <th>
-            <div id="cbxcontainer" style="width: auto">
-                <input type="checkbox" /> This is checkbox
-                <br />
+            <div id="cbxcontainer-1" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).Account.Name == Model.ElementAt(i).Account.Name)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(-1, this)" />@Model.ElementAt(i).Account.Name</label>
+                }
+            </div>
+        </th>
+
+        <th>
+            <div id="cbxcontainer0" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).Account.LastName == Model.ElementAt(i).Account.LastName)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(0, this)" />@Model.ElementAt(i).Account.LastName</label>
+                }
+            </div>
+        </th>
+
+
+        <th>
+            <div id="cbxcontainer1" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).LoanAmount == Model.ElementAt(i).LoanAmount)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(1, this)" />@Model.ElementAt(i).LoanAmount</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer2" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).LoanPurpose == Model.ElementAt(i).LoanPurpose)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(2, this)" />@Model.ElementAt(i).LoanPurpose</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer3" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).LoanDailyInterestRate == Model.ElementAt(i).LoanDailyInterestRate)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(3, this)" />@Model.ElementAt(i).LoanDailyInterestRate</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer4" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).LoanTermDays == Model.ElementAt(i).LoanTermDays)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(4, this)" />@Model.ElementAt(i).LoanTermDays</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer5" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).NetworkDays == Model.ElementAt(i).NetworkDays)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(5, this)" />@Model.ElementAt(i).NetworkDays</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer6" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).DaysOfGrace == Model.ElementAt(i).DaysOfGrace)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(6, this)" />@Model.ElementAt(i).DaysOfGrace</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer7" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).LoanPenaltyRate == Model.ElementAt(i).LoanPenaltyRate)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(7, this)" />@Model.ElementAt(i).LoanPenaltyRate</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer8" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).EffectiveInterestRate == Model.ElementAt(i).EffectiveInterestRate)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input onchange="FilterCBX(8, this)" type="checkbox" />@Model.ElementAt(i).EffectiveInterestRate</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer9" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).AmountToBePaidAll == Model.ElementAt(i).AmountToBePaidAll)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(9, this)" />@Model.ElementAt(i).AmountToBePaidAll</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer10" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).AmountToBePaidDaily == Model.ElementAt(i).AmountToBePaidDaily)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(10, this)" />@Model.ElementAt(i).AmountToBePaidDaily</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer11" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).AgreementDate == Model.ElementAt(i).AgreementDate)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(11, this)" />@Model.ElementAt(i).AgreementDate</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer12" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).LoanStartDate == Model.ElementAt(i).LoanStartDate)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(12, this)" />@Model.ElementAt(i).LoanStartDate</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer13" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).LoanEndDate == Model.ElementAt(i).LoanEndDate)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(13, this)" />@Model.ElementAt(i).LoanEndDate</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer14" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).GuarantorName == Model.ElementAt(i).GuarantorName)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(14, this)" />@Model.ElementAt(i).GuarantorName</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer15" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).GuarantorLastName == Model.ElementAt(i).GuarantorLastName)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(15, this)" />@Model.ElementAt(i).GuarantorLastName</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer16" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).GuarantorPrivateNumber == Model.ElementAt(i).GuarantorPrivateNumber)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(16, this)" />@Model.ElementAt(i).GuarantorPrivateNumber</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer17" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).GuarantorPhysicalAddress == Model.ElementAt(i).GuarantorPhysicalAddress)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(17, this)" />@Model.ElementAt(i).GuarantorPhysicalAddress</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer18" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).GuarantorPhoneNumber == Model.ElementAt(i).GuarantorPhoneNumber)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(19, this)" />@Model.ElementAt(i).GuarantorPhoneNumber</label>
+                }
+            </div>
+        </th>
+        <th>
+            <div id="cbxcontainer19" class="cbxcontainer">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    if (i != 0)
+                    {
+                        if (Model.ElementAt(i - 1).LoanStatus == Model.ElementAt(i).LoanStatus)
+                        {
+                            continue;
+                        }
+                    }
+                    <label><input type="checkbox" onchange="FilterCBX(19, this)" />@Model.ElementAt(i).LoanStatus</label>
+                }
             </div>
         </th>
     </tr>
 
     <tr>
         <th>
-            <input type="text" style="width:inherit" value=" " onchange="Filter(1, this)" />
+            <input type="text" value=" " onchange="Filter(-1, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(0, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(1, this)" />
         </th>
         <th>
             <input type="text" value=" " onchange="Filter(2, this)" />
@@ -143,6 +519,12 @@
 
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Account.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Account.LastName)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.LoanAmount)
         </th>
         <th>
@@ -199,12 +581,20 @@
         <th>
             @Html.DisplayNameFor(model => model.LoanStatus)
         </th>
-        <th></th>
+        <th>
+            <label style="width: 150px"><b>მოქმედებები</b></label>
+        </th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
+            <td class="col-1">
+                @Html.DisplayFor(modelItem => item.Account.Name)
+            </td>
+            <td class="col0">
+                @Html.DisplayFor(modelItem => item.Account.LastName)
+            </td>
             <td class="col1">
                 @Html.DisplayFor(modelItem => item.LoanAmount)
             </td>
@@ -265,10 +655,15 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.LoanID }) |
                 @Html.ActionLink("Details", "Details", new { id = item.LoanID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.LoanID })
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.LoanID })*@
                 @Html.ActionLink("Pay", "Create", "Payments", new { id = item.LoanID }, null)
+                <button>Gela</button>
             </td>
         </tr>
     }
 
 </table>
+
+<script>
+    $(document).ready(checkboxesChecked());
+</script>
