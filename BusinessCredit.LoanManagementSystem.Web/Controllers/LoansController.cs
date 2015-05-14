@@ -54,6 +54,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 loan.PlanLoan();
                 loan.Initialize();
+                loan.Account = db.Accounts.FirstOrDefault();
 
                 db.Loans.Add(loan);
                 db.SaveChanges();

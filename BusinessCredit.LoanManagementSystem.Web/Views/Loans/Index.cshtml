@@ -6,10 +6,141 @@
 
 <h2>Index</h2>
 
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-filterable.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/styles.css" />
+
+<script src="~/Scripts/scripts.js" type="text/javascript"></script>
+
+<style>
+    #cbxcontainer {
+        border: 2px solid #ccc;
+        width: 180px;
+        height: 50px;
+        overflow-y: scroll;
+    }
+</style>
+
+<script type="text/javascript">
+    function Filter(index, obj) {
+        $(".col" + index).filter(function () {
+            return this.textContent.indexOf(obj.value) == -1;
+        }).parent().hide();
+
+        $(".col" + index).filter(function () {
+            return this.textContent.indexOf(obj.value) > -1;
+        }).parent().show();
+    }
+
+    function ColValues(colIndex) {
+        var retList = [];
+        var lst = $('.col' + colIndex);
+        for (var i = 0; i < lst.length; i++) {
+            retList[i] = lst[i].innerText;
+        }
+        return retList;
+    }
+
+    function GenerateCbxs(colIndex) {
+        var values = $.unique(ColValues(colIndex));
+
+        var nodesList = [];
+
+        for (var i = 1; i <= values ; i++) {
+            var node = document.createElement('input');
+            node.type = 'checkbox';
+            node.className = 'cbx' + colIndex;
+            nodesList.push(node);
+        }
+
+        return nodesList;
+    }
+
+    function countColumns() {
+        var count = 0;
+        for (var i = 1; i < 100; i++) {
+            if ($('.col' + i).length == 0)
+                break;
+            count++;
+        }
+        return count;
+    }
+</script>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+
+<table id="tbl" class="table table-condensed table-hover table-striped">
+    <tr>
+        <th>
+            <div id="cbxcontainer" style="width: auto">
+                <input type="checkbox" /> This is checkbox
+                <br />
+            </div>
+        </th>
+    </tr>
+
+    <tr>
+        <th>
+            <input type="text" style="width:inherit" value=" " onchange="Filter(1, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(2, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(3, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(4, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(5, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(6, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(7, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(8, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(9, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(10, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(11, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(12, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(13, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(14, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(15, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(16, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(17, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(18, this)" />
+        </th>
+        <th>
+            <input type="text" value=" " onchange="Filter(19, this)" />
+        </th>
+        <th></th>
+    </tr>
+
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.LoanAmount)
@@ -71,72 +202,73 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanPurpose)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanDailyInterestRate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanTermDays)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NetworkDays)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DaysOfGrace)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanPenaltyRate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EffectiveInterestRate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AmountToBePaidAll)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AmountToBePaidDaily)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AgreementDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanStartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanEndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuarantorName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuarantorLastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuarantorPrivateNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuarantorPhysicalAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuarantorPhoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanStatus)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.LoanID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.LoanID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.LoanID })
-            @Html.ActionLink("Pay", "Create", "Payments", new { id=item.LoanID }, null)
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="col1">
+                @Html.DisplayFor(modelItem => item.LoanAmount)
+            </td>
+            <td class="col2">
+                @Html.DisplayFor(modelItem => item.LoanPurpose)
+            </td>
+            <td class="col3">
+                @Html.DisplayFor(modelItem => item.LoanDailyInterestRate)
+            </td>
+            <td class="col4">
+                @Html.DisplayFor(modelItem => item.LoanTermDays)
+            </td>
+            <td class="col5">
+                @Html.DisplayFor(modelItem => item.NetworkDays)
+            </td>
+            <td class="col6">
+                @Html.DisplayFor(modelItem => item.DaysOfGrace)
+            </td>
+            <td class="col7">
+                @Html.DisplayFor(modelItem => item.LoanPenaltyRate)
+            </td>
+            <td class="col8">
+                @Html.DisplayFor(modelItem => item.EffectiveInterestRate)
+            </td>
+            <td class="col9">
+                @Html.DisplayFor(modelItem => item.AmountToBePaidAll)
+            </td>
+            <td class="col10">
+                @Html.DisplayFor(modelItem => item.AmountToBePaidDaily)
+            </td>
+            <td class="col11">
+                @Html.DisplayFor(modelItem => item.AgreementDate)
+            </td>
+            <td class="col12">
+                @Html.DisplayFor(modelItem => item.LoanStartDate)
+            </td>
+            <td class="col13">
+                @Html.DisplayFor(modelItem => item.LoanEndDate)
+            </td>
+            <td class="col14">
+                @Html.DisplayFor(modelItem => item.GuarantorName)
+            </td>
+            <td class="col15">
+                @Html.DisplayFor(modelItem => item.GuarantorLastName)
+            </td>
+            <td class="col16">
+                @Html.DisplayFor(modelItem => item.GuarantorPrivateNumber)
+            </td>
+            <td class="col17">
+                @Html.DisplayFor(modelItem => item.GuarantorPhysicalAddress)
+            </td>
+            <td class="col18">
+                @Html.DisplayFor(modelItem => item.GuarantorPhoneNumber)
+            </td>
+            <td class="col19">
+                @Html.DisplayFor(modelItem => item.LoanStatus)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.LoanID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.LoanID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.LoanID })
+                @Html.ActionLink("Pay", "Create", "Payments", new { id = item.LoanID }, null)
+            </td>
+        </tr>
+    }
 
 </table>

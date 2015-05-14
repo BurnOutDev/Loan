@@ -21,11 +21,16 @@ namespace BusinessCredit.LoanManagementSystem.Web
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/jquery.filterable.js",
+                      "~/Scripts/jquery.filterable.min.js",
+                      "~/Scripts/scripts.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/TableFreeze.css",
+                      "~/Content/styles.css"));
         }
     }
 }
