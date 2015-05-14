@@ -159,6 +159,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\DailyViewController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountLoanViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AgreementViewModel.cs" />
     <Compile Include="Models\BranchViewModel.cs" />
@@ -247,7 +249,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\scripts.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -305,6 +309,12 @@
     <Content Include="Views\Payments\Create.cshtml" />
     <Content Include="Views\DailyView\Index.cshtml" />
     <Content Include="Views\DailyView\Indexer.cshtml" />
+    <Content Include="Views\Loans\Add.cshtml" />
+    <Content Include="Views\Branches\Create.cshtml" />
+    <Content Include="Views\Branches\Delete.cshtml" />
+    <Content Include="Views\Branches\Details.cshtml" />
+    <Content Include="Views\Branches\Edit.cshtml" />
+    <Content Include="Views\Branches\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

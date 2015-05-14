@@ -40,7 +40,6 @@ namespace WpfUI
         {
             using (var db = new BusinessCreditContext())
             {
-
                 var loan = new Loan
                 {
                     LoanAmount = double.Parse(tbxLoanAmount.Text),
@@ -55,12 +54,12 @@ namespace WpfUI
                     AmountToBePaidDaily = double.Parse(tbxAmountToBePaidDaily.Text),
                     AgreementDate = DateTime.Today,
                     LoanStartDate = DateTime.Today,
-                    LoanEndDate = DateTime.Today.AddDays(int.Parse(tbxLoanTermDays.Text)),
-                    GuarantorName = tbxGuarantorName.Text,
-                    GuarantorLastName = tbxGuarantorLastName.Text,
-                    GuarantorPrivateNumber = tbxGuarantorPrivateNumber.Text,
-                    GuarantorPhysicalAddress = tbxGuarantorPhysicalAddress.Text,
-                    GuarantorPhoneNumber = tbxGuarantorPhoneNumber.Text
+                    LoanEndDate = DateTime.Today.AddDays(int.Parse(tbxLoanTermDays.Text))
+                    //GuarantorName = tbxGuarantorName.Text,
+                    //GuarantorLastName = tbxGuarantorLastName.Text,
+                    //GuarantorPrivateNumber = tbxGuarantorPrivateNumber.Text,
+                    //GuarantorPhysicalAddress = tbxGuarantorPhysicalAddress.Text,
+                    //GuarantorPhoneNumber = tbxGuarantorPhoneNumber.Text
                 };
                 //loan.PlannedPaymentEntities = new PlannedPayments(loan);
 

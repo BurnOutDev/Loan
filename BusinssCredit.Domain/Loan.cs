@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCredit.Domain
 {
@@ -50,6 +51,7 @@ namespace BusinessCredit.Domain
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int LoanID { get; set; }
 
         [Display(Name = "თანხა")]
@@ -124,16 +126,7 @@ namespace BusinessCredit.Domain
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
         public DateTime LoanEndDate { get; set; }
 
-        [Display(Name = "თავდების სახელი")]
-        public string GuarantorName { get; set; }
-        [Display(Name = "თავდების გვარი")]
-        public string GuarantorLastName { get; set; }
-        [Display(Name = "თავდების პ. ნ.")]
-        public string GuarantorPrivateNumber { get; set; }
-        [Display(Name = "თავდების მისამართი")]
-        public string GuarantorPhysicalAddress { get; set; }
-        [Display(Name = "თავდების ტელეფონი")]
-        public string GuarantorPhoneNumber { get; set; }
+        public virtual ICollection<Guarantor> Guarantors { get; set; }
 
         /// ხელშეკრულება (ხელშ. #)
         [Display(ResourceType = typeof(Agreement))]

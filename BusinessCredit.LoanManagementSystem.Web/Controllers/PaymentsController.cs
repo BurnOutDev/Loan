@@ -17,7 +17,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     {
         private BusinessCreditContext db = new BusinessCreditContext();
 
-        // GET: Payments
         public ActionResult Index(int? loanId)
         {
             if (loanId != null)

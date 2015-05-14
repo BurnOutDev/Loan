@@ -76,11 +76,6 @@ namespace WpfUI
                     AgreementDate = DateTime.Today,
                     LoanStartDate = DateTime.Today,
                     LoanEndDate = DateTime.Today.AddDays(58),
-                    GuarantorName = "Giorgi",
-                    GuarantorLastName = "Gegenava",
-                    GuarantorPrivateNumber = "1005148465654",
-                    GuarantorPhysicalAddress = "Paris",
-                    GuarantorPhoneNumber = "591445588",
                     Account = acc
                 };
 
@@ -117,11 +112,6 @@ namespace WpfUI
                     AgreementDate = DateTime.Today,
                     LoanStartDate = DateTime.Today,
                     LoanEndDate = DateTime.Today.AddDays(58),
-                    GuarantorName = "Giorgi",
-                    GuarantorLastName = "Gegenava",
-                    GuarantorPrivateNumber = "1005148465654",
-                    GuarantorPhysicalAddress = "Paris",
-                    GuarantorPhoneNumber = "591445588"
                 };
 
                 loan2.PlanLoan();

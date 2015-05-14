@@ -66,6 +66,7 @@
     <Compile Include="CreditExpert.cs" />
     <Compile Include="Enums\EmployeeStatus.cs" />
     <Compile Include="Enums\Gender.cs" />
+    <Compile Include="Guarantor.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="Enums\LoanStatus.cs" />
     <Compile Include="Payment.cs" />

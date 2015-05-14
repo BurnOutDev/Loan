@@ -8,138 +8,110 @@ using System.Web;
 using System.Web.Mvc;
 using BusinessCredit.Core;
 using BusinessCredit.Domain;
-using BusinessCredit.LoanManagementSystem.Web.Models;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
-    [Authorize]
-    public class LoansController : Controller
+    public class BranchesController : Controller
     {
         private BusinessCreditContext db = new BusinessCreditContext();
 
-        // GET: Loans
+        // GET: Branches
         public ActionResult Index()
         {
-            return View(db.Loans.ToList());
+            return View(db.Branches.ToList());
         }
 
-        [HttpGet]
-        public ActionResult Add()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Add(AccountLoanViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                viewModel.Loan.PlanLoan();
-                viewModel.Loan.Initialize();
-                viewModel.Loan.Account = viewModel.Account;
-
-                db.Loans.Add(viewModel.Loan);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
-
-        // GET: Loans/Details/5
+        // GET: Branches/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.Find(id);
-            if (loan == null)
+            Branch branch = db.Branches.Find(id);
+            if (branch == null)
             {
                 return HttpNotFound();
             }
-            return View(loan);
+            return View(branch);
         }
 
-        // GET: Loans/Create
+        // GET: Branches/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Loans/Create
+        // POST: Branches/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "LoanID,LoanAmount,LoanPurpose,LoanDailyInterestRate,LoanTermDays,NetworkDays,DaysOfGrace,LoanPenaltyRate,EffectiveInterestRate,AmountToBePaidAll,AmountToBePaidDaily,AgreementDate,LoanStartDate,LoanEndDate,GuarantorName,GuarantorLastName,GuarantorPrivateNumber,GuarantorPhysicalAddress,GuarantorPhoneNumber,LoanStatus")] Loan loan)
+        public ActionResult Create([Bind(Include = "BranchID,BranchName")] Branch branch)
         {
             if (ModelState.IsValid)
             {
-                loan.PlanLoan();
-                loan.Initialize();
-                loan.Account = db.Accounts.FirstOrDefault();
-
-                db.Loans.Add(loan);
+                db.Branches.Add(branch);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(loan);
+            return View(branch);
         }
 
-        // GET: Loans/Edit/5
+        // GET: Branches/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.Find(id);
-            if (loan == null)
+            Branch branch = db.Branches.Find(id);
+            if (branch == null)
             {
                 return HttpNotFound();
             }
-            return View(loan);
+            return View(branch);
         }
 
-        // POST: Loans/Edit/5
+        // POST: Branches/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "LoanID,LoanAmount,LoanPurpose,LoanDailyInterestRate,LoanTermDays,NetworkDays,DaysOfGrace,LoanPenaltyRate,EffectiveInterestRate,AmountToBePaidAll,AmountToBePaidDaily,AgreementDate,LoanStartDate,LoanEndDate,GuarantorName,GuarantorLastName,GuarantorPrivateNumber,GuarantorPhysicalAddress,GuarantorPhoneNumber,LoanStatus")] Loan loan)
+        public ActionResult Edit([Bind(Include = "BranchID,BranchName")] Branch branch)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(loan).State = EntityState.Modified;
+                db.Entry(branch).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(loan);
+            return View(branch);
         }
 
-        // GET: Loans/Delete/5
+        // GET: Branches/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.Find(id);
-            if (loan == null)
+            Branch branch = db.Branches.Find(id);
+            if (branch == null)
             {
                 return HttpNotFound();
             }
-            return View(loan);
+            return View(branch);
         }
 
-        // POST: Loans/Delete/5
+        // POST: Branches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Loan loan = db.Loans.Find(id);
-            db.Loans.Remove(loan);
+            Branch branch = db.Branches.Find(id);
+            db.Branches.Remove(branch);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
