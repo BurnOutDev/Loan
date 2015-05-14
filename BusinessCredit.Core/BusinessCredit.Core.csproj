@@ -56,6 +56,19 @@
   <ItemGroup>
     <Compile Include="BusinessCreditContext.cs" />
     <Compile Include="BusinessCreditDbInitializer.cs" />
+    <Compile Include="Migrations\201505141000459_InitialCreate.cs" />
+    <Compile Include="Migrations\201505141000459_InitialCreate.Designer.cs">
+      <DependentUpon>201505141000459_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505141218501_AddedCashCollectors.cs" />
+    <Compile Include="Migrations\201505141218501_AddedCashCollectors.Designer.cs">
+      <DependentUpon>201505141218501_AddedCashCollectors.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505141232297_TaxOrderID_ToString.cs" />
+    <Compile Include="Migrations\201505141232297_TaxOrderID_ToString.Designer.cs">
+      <DependentUpon>201505141232297_TaxOrderID_ToString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +80,17 @@
       <Project>{63460d01-2be9-45ba-906e-088645bad220}</Project>
       <Name>BusinssCredit.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201505141000459_InitialCreate.resx">
+      <DependentUpon>201505141000459_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505141218501_AddedCashCollectors.resx">
+      <DependentUpon>201505141218501_AddedCashCollectors.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505141232297_TaxOrderID_ToString.resx">
+      <DependentUpon>201505141232297_TaxOrderID_ToString.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

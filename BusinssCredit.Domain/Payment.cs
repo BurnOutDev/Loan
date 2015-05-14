@@ -11,7 +11,7 @@ namespace BusinessCredit.Domain
         public int PaymentID { get; set; }
 
         [Display(Name = "სშო #")]
-        public int TaxOrderID { get; set; }
+        public string TaxOrderID { get; set; }
 
         [Display(Name = "შენატანი")]
         public double CurrentPayment { get; set; }
@@ -44,7 +44,7 @@ namespace BusinessCredit.Domain
 
         #region WholeDebt
         private double? _wholeDebt;
-        [Display(Name = "სულ მოსატანი")]
+        [Display(Name = "სულ განულება")]
         public double? WholeDebt
         {
             get
