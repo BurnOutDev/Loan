@@ -4,14 +4,18 @@
     ViewBag.Title = "DailyView";
 }
 
+
 <h2>DailyView</h2>
 
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+                <script>
+                    function redirectDaily() {
+                        window.location.href = "?date=" + displayDate.value;
+                    }
+                </script>
 
 <form action="Index" method="post">
+    <input type="date" name="DisplayDate" id="displayDate"/>
+    <button onclick="redirectDaily()" type="button">Go</button>
 
     <table class="table">
         <tr>

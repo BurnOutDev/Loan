@@ -17,12 +17,24 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     {
         private BusinessCreditContext db = new BusinessCreditContext();
 
-        public ActionResult Index(int? loanId)
+        public ActionResult Index(int? loanId, string date)
         {
+            DateTime dailyDate = DateTime.Today;
+            if (!string.IsNullOrEmpty(date))
+            {
+                dailyDate = DateTime.Parse(date);
+            }
+            if (loanId == null)
+            {
+                if (date != null)
+                    return View(db.Payments.Where(p => p.PaymentDate == dailyDate).ToList());
+
+                return View(new List<Payment>());
+            }
             if (loanId != null)
                 return View(db.Loans.Find(loanId).Payments.ToList());
 
-            return View(db.Payments.ToList());
+            return View(new List<Payment>());
         }
 
         // GET: Payments/Details/5

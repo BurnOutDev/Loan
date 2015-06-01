@@ -16,28 +16,48 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     {
         private BusinessCreditContext db = new BusinessCreditContext();
 
-        public ActionResult Index()
+        public ActionResult Index(string date)
         {
+            bool editing = false;
+            DateTime dailyDate;
+            if (string.IsNullOrWhiteSpace(date))
+            {
+                dailyDate = DateTime.Today;
+                editing = true;
+            }
+            else
+                dailyDate = DateTime.Parse(date);
+
             var dailyList = new LstViewModel();
             var viewList = new List<DailyViewModel>();
             var pmtList = new List<Payment>();
 
             var loans = db.Loans.Where(l => l.LoanStatus == LoanStatus.Active).ToList();
 
+            if (!string.IsNullOrWhiteSpace(date))
+                loans = db.Loans.ToList();
+
             if (loans.Count > 0)
             {
-                var date = DateTime.Today;
-
-                foreach (var loan in loans)
+                if (string.IsNullOrWhiteSpace(date))
                 {
-                    var pmt = loan.Payments.FirstOrDefault(x => x.PaymentDate.Date == DateTime.Today.AddDays(-1));
-                    if (pmt != null)
-                        pmtList.Add(pmt);
-                    else if (loan.Payments.Count == 0)
+                    foreach (var loan in loans)
                     {
-                        pmtList.Add(new Payment() { Loan = loan });
+                        var pmt = loan.Payments.FirstOrDefault(x => x.PaymentDate.Date == DateTime.Today.AddDays(-1));
+                        if (pmt != null)
+                            pmtList.Add(pmt);
+                        else if (loan.Payments.Count == 0)
+                            pmtList.Add(new Payment() { Loan = loan });
                     }
-                    //pmtList.Add(loan.Payments.FirstOrDefault());
+                }
+                else
+                {
+                    foreach (var loan in loans)
+                    {
+                        var pmt = loan.Payments.FirstOrDefault(x => x.PaymentDate.Date == dailyDate);
+                        if (pmt != null)
+                            pmtList.Add(pmt);
+                    }
                 }
 
                 db.Loans.Include("Accounts");
@@ -48,9 +68,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                     view.LoanId = pmt.Loan.LoanID;
                     view.Name = pmt.Loan.Account.Name;
                     view.LastName = pmt.Loan.Account.LastName;
-                    view.PaymentDate = date;
+                    view.PaymentDate = dailyDate;
                     view.PhoneNumber = pmt.Loan.Account.NumberMobile;
-                    view.PlannedPayment = pmt.Loan.PlannedPaymentEntities.FirstOrDefault(x => x.PaymentDate == date).Deposit.Value;
+                    view.PlannedPayment = pmt.Loan.PlannedPaymentEntities.FirstOrDefault(x => x.PaymentDate == dailyDate).Deposit.Value;
                     view.PrivateNumber = pmt.Loan.Account.PrivateNumber;
                     view.WholeDebt = pmt.WholeDebt.Value;
                     view.CurrentDebt = pmt.CurrentDebt.Value;
@@ -61,6 +81,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
                 dailyList.DailyList = viewList;
             }
+            
             return View(viewList);
         }
 
