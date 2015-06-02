@@ -19,7 +19,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Clients
         public ActionResult Index()
         {
-            return View(db.Accounts.ToList());
+            var loans = db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name);
+            var accounts = (from l in loans
+                            select l.Account).ToList();
+            return View(accounts);
         }
 
         // GET: Clients/Details/5
@@ -29,6 +32,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Account account = db.Accounts.Find(id);
             if (account == null)
             {

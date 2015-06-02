@@ -2,5 +2,7 @@
 {
     public class BranchViewModel
     {
+        public string BranchName { get; set; }
+        public string UserIdentity { get; set; }
     }
 }

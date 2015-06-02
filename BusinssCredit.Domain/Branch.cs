@@ -6,6 +6,7 @@ namespace BusinessCredit.Domain
     {
         public int BranchID { get; set; }
         public string BranchName { get; set; }
+        public string UserIdentity { get; set; }
 
         public virtual ICollection<Loan> Loans { get; set; }
         public virtual ICollection<CreditExpert> Employees { get; set; }

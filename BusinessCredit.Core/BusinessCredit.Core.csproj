@@ -68,6 +68,10 @@
     <Compile Include="Migrations\201505141232297_TaxOrderID_ToString.Designer.cs">
       <DependentUpon>201505141232297_TaxOrderID_ToString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506021426292_BranchAddedUserIdentityInt32.cs" />
+    <Compile Include="Migrations\201506021426292_BranchAddedUserIdentityInt32.Designer.cs">
+      <DependentUpon>201506021426292_BranchAddedUserIdentityInt32.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -90,6 +94,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505141232297_TaxOrderID_ToString.resx">
       <DependentUpon>201505141232297_TaxOrderID_ToString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506021426292_BranchAddedUserIdentityInt32.resx">
+      <DependentUpon>201506021426292_BranchAddedUserIdentityInt32.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

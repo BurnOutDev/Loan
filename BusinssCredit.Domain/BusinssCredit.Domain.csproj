@@ -69,7 +69,7 @@
     <Compile Include="Guarantor.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="Enums\LoanStatus.cs" />
-    <Compile Include="Payment.cs" />
+    <Compile Include="PaymentViewModel.cs" />
     <Compile Include="PaymentEntity.cs" />
     <Compile Include="PlannedPayments.cs" />
     <Compile Include="Enums\PersonType.cs" />
