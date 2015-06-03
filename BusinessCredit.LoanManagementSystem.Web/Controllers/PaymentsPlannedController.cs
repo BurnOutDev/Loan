@@ -43,9 +43,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             return View();
         }
 
-        // POST: PaymentsPlanned/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "PaymentEntityID,PaymentDate,Deposit,PaymentInterest,PaymentPrincipal,EndingPrincipal")] PaymentEntity paymentEntity)
@@ -76,8 +73,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
 
         // POST: PaymentsPlanned/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "PaymentEntityID,PaymentDate,Deposit,PaymentInterest,PaymentPrincipal,EndingPrincipal")] PaymentEntity paymentEntity)
