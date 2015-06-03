@@ -20,7 +20,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Loans
         public ActionResult Index()
         {
-            return View(db.Loans.ToList());
+            return View(db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name).ToList());
         }
 
         [HttpGet]
@@ -52,7 +52,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.Find(id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentity == User.Identity.Name && l.LoanID == id);
             if (loan == null)
             {
                 return HttpNotFound();
@@ -78,6 +78,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 loan.PlanLoan();
                 loan.Initialize();
                 loan.Account = db.Accounts.FirstOrDefault();
+                loan.Branch = db.Branches.FirstOrDefault(b => b.UserIdentity == User.Identity.Name);
 
                 db.Loans.Add(loan);
                 db.SaveChanges();
@@ -94,7 +95,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.Find(id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentity == User.Identity.Name && l.LoanID == id);
             if (loan == null)
             {
                 return HttpNotFound();
@@ -125,7 +126,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.Find(id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentity == User.Identity.Name && l.LoanID == id);
             if (loan == null)
             {
                 return HttpNotFound();
@@ -138,7 +139,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Loan loan = db.Loans.Find(id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentity == User.Identity.Name && l.LoanID == id);
             db.Loans.Remove(loan);
             db.SaveChanges();
             return RedirectToAction("Index");

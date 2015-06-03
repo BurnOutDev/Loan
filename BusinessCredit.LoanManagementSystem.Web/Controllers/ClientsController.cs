@@ -33,7 +33,12 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Account account = db.Accounts.Find(id);
+            var loans = db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name);
+            var accounts = (from l in loans
+                            select l.Account).ToList();
+
+            Account account = accounts.FirstOrDefault(a => a.AccountID == id);
+
             if (account == null)
             {
                 return HttpNotFound();
@@ -71,7 +76,11 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Account account = db.Accounts.Find(id);
+            var loans = db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name);
+            var accounts = (from l in loans
+                            select l.Account).ToList();
+
+            Account account = accounts.FirstOrDefault(a => a.AccountID == id);
             if (account == null)
             {
                 return HttpNotFound();
@@ -102,7 +111,12 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Account account = db.Accounts.Find(id);
+
+            var loans = db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name);
+            var accounts = (from l in loans
+                            select l.Account).ToList();
+            Account account = accounts.FirstOrDefault(a => a.AccountID == id);
+
             if (account == null)
             {
                 return HttpNotFound();

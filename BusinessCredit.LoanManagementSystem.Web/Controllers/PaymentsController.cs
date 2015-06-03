@@ -44,7 +44,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.Find(id);
+            Payment payment = db.Payments.FirstOrDefault(p => p.Loan.Branch.UserIdentity == User.Identity.Name && p.PaymentID == id);
             if (payment == null)
             {
                 return HttpNotFound();
@@ -71,9 +71,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
-        // POST: Payments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(PMTViewModel payment, int? id)
@@ -119,9 +116,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             return View(payment);
         }
 
-        // POST: Payments/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "PaymentID,TaxOrderID,CurrentPayment,PaymentDate")] Payment payment)
@@ -135,7 +129,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             return View(payment);
         }
 
-        // GET: Payments/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
