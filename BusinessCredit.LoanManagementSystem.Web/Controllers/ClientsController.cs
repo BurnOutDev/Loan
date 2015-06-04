@@ -19,7 +19,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Clients
         public ActionResult Index()
         {
-            var loans = db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name);
+            var loans = db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name));
             var accounts = (from l in loans
                             select l.Account).ToList();
             return View(accounts);
@@ -33,7 +33,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var loans = db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name);
+            var loans = db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name));
             var accounts = (from l in loans
                             select l.Account).ToList();
 
@@ -76,7 +76,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var loans = db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name);
+            var loans = db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name));
             var accounts = (from l in loans
                             select l.Account).ToList();
 
@@ -112,7 +112,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var loans = db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name);
+            var loans = db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name));
             var accounts = (from l in loans
                             select l.Account).ToList();
             Account account = accounts.FirstOrDefault(a => a.AccountID == id);

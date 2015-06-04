@@ -72,6 +72,10 @@
     <Compile Include="Migrations\201506021426292_BranchAddedUserIdentityInt32.Designer.cs">
       <DependentUpon>201506021426292_BranchAddedUserIdentityInt32.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506040705135_Branches_StringArray_UserIdentity.cs" />
+    <Compile Include="Migrations\201506040705135_Branches_StringArray_UserIdentity.Designer.cs">
+      <DependentUpon>201506040705135_Branches_StringArray_UserIdentity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -97,6 +101,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506021426292_BranchAddedUserIdentityInt32.resx">
       <DependentUpon>201506021426292_BranchAddedUserIdentityInt32.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506040705135_Branches_StringArray_UserIdentity.resx">
+      <DependentUpon>201506040705135_Branches_StringArray_UserIdentity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

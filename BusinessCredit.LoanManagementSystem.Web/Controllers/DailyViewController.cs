@@ -32,10 +32,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var viewList = new List<DailyViewModel>();
             var pmtList = new List<Payment>();
 
-            var loans = db.Loans.Where(l => l.LoanStatus == LoanStatus.Active && l.Branch.UserIdentity == User.Identity.Name).ToList();
+            var loans = db.Loans.Where(l => l.LoanStatus == LoanStatus.Active && l.Branch.UserIdentities.Contains(User.Identity.Name)).ToList();
 
             if (!string.IsNullOrWhiteSpace(date))
-                loans = db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name).ToList();
+                loans = db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name)).ToList();
 
             if (loans.Count > 0)
             {

@@ -44,7 +44,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.FirstOrDefault(p => p.Loan.Branch.UserIdentity == User.Identity.Name && p.PaymentID == id);
+            Payment payment = db.Payments.FirstOrDefault(p => p.Loan.Branch.UserIdentities.Contains(User.Identity.Name) && p.PaymentID == id);
             if (payment == null)
             {
                 return HttpNotFound();

@@ -20,7 +20,13 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Loans
         public ActionResult Index()
         {
-            return View(db.Loans.Where(l => l.Branch.UserIdentity == User.Identity.Name).ToList());
+            var br = db.Branches.First();
+            br.UserIdentities = new List<string>();
+            br.UserIdentities.Add("alsdkasd");
+
+            db.SaveChanges();
+
+            return View(db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name)).ToList());
         }
 
         [HttpGet]
@@ -52,7 +58,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentity == User.Identity.Name && l.LoanID == id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentities.Contains(User.Identity.Name) && l.LoanID == id);
             if (loan == null)
             {
                 return HttpNotFound();
@@ -77,10 +83,12 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 loan.PlanLoan();
                 loan.Initialize();
-                loan.Account = db.Accounts.FirstOrDefault();
-                loan.Branch = db.Branches.FirstOrDefault(b => b.UserIdentity == User.Identity.Name);
+                loan.Account = db.Accounts.FirstOrDefault(a => a.AccountID == loan.LoanID);
+                loan.Branch = db.Branches.FirstOrDefault(b => b.UserIdentities.Contains(User.Identity.Name));
 
+                loan.LoanID = db.Loans.OrderByDescending(x => x.LoanID).FirstOrDefault().LoanID + 1;
                 db.Loans.Add(loan);
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -95,7 +103,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentity == User.Identity.Name && l.LoanID == id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentities.Contains(User.Identity.Name) && l.LoanID == id);
             if (loan == null)
             {
                 return HttpNotFound();
@@ -104,8 +112,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
 
         // POST: Loans/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "LoanID,LoanAmount,LoanPurpose,LoanDailyInterestRate,LoanTermDays,NetworkDays,DaysOfGrace,LoanPenaltyRate,EffectiveInterestRate,AmountToBePaidAll,AmountToBePaidDaily,AgreementDate,LoanStartDate,LoanEndDate,GuarantorName,GuarantorLastName,GuarantorPrivateNumber,GuarantorPhysicalAddress,GuarantorPhoneNumber,LoanStatus")] Loan loan)
@@ -126,7 +132,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentity == User.Identity.Name && l.LoanID == id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentities.Contains(User.Identity.Name) && l.LoanID == id);
             if (loan == null)
             {
                 return HttpNotFound();
@@ -139,7 +145,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentity == User.Identity.Name && l.LoanID == id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentities.Contains(User.Identity.Name) && l.LoanID == id);
             db.Loans.Remove(loan);
             db.SaveChanges();
             return RedirectToAction("Index");

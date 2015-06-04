@@ -228,32 +228,36 @@
             <tr id="cbxFilters">
                 <th>
                     <div id="cbxcontainer-1" class="cbxcontainer">
+                        @{var list = new List<string>();}
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).Account.Name == Model.ElementAt(i).Account.Name)
+                                if (list.Contains(Model.ElementAt(i).Account.Name))
                                 {
                                     continue;
                                 }
                             }
                             <label><input type="checkbox" onchange="FilterCBX(-1, this)" />@Model.ElementAt(i).Account.Name</label>
+                            list.Add(@Model.ElementAt(i).Account.Name);
                         }
                     </div>
                 </th>
 
                 <th>
                     <div id="cbxcontainer0" class="cbxcontainer">
+                        @{list = new List<string>();}
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).Account.LastName == Model.ElementAt(i).Account.LastName)
+                                if (list.Contains(Model.ElementAt(i).Account.LastName))
                                 {
                                     continue;
                                 }
                             }
                             <label><input type="checkbox" onchange="FilterCBX(0, this)" />@Model.ElementAt(i).Account.LastName</label>
+                            list.Add(Model.ElementAt(i).Account.LastName);
                         }
                     </div>
                 </th>
@@ -261,136 +265,164 @@
 
                 <th>
                     <div id="cbxcontainer1" class="cbxcontainer">
+                        @{list = new List<string>();}
+
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).LoanAmount == Model.ElementAt(i).LoanAmount)
+                                if (list.Contains(Model.ElementAt(i).LoanAmount.ToString()))
                                 {
                                     continue;
                                 }
                             }
                             <label><input type="checkbox" onchange="FilterCBX(1, this)" />@Model.ElementAt(i).LoanAmount</label>
+                            list.Add(Model.ElementAt(i).LoanAmount.ToString());
                         }
                     </div>
                 </th>
                 <th>
                     <div id="cbxcontainer2" class="cbxcontainer">
+                        @{list = new List<string>();}
+
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).LoanPurpose == Model.ElementAt(i).LoanPurpose)
+                                if (list.Contains(Model.ElementAt(i).LoanPurpose))
                                 {
                                     continue;
                                 }
                             }
                             <label><input type="checkbox" onchange="FilterCBX(2, this)" />@Model.ElementAt(i).LoanPurpose</label>
+                            list.Add(Model.ElementAt(i).LoanPurpose);
                         }
                     </div>
                 </th>
                 <th>
                     <div id="cbxcontainer3" class="cbxcontainer">
+                        @{list = new List<string>();}
+
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).LoanDailyInterestRate == Model.ElementAt(i).LoanDailyInterestRate)
+                                if (list.Contains(Model.ElementAt(i).LoanDailyInterestRate.ToString()))
                                 {
                                     continue;
                                 }
                             }
                             <label><input type="checkbox" onchange="FilterCBX(3, this)" />@Model.ElementAt(i).LoanDailyInterestRate</label>
+                            list.Add(Model.ElementAt(i).LoanDailyInterestRate.ToString());
                         }
                     </div>
                 </th>
                 <th>
                     <div id="cbxcontainer4" class="cbxcontainer">
+                        @{list = new List<string>();}
+
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).LoanTermDays == Model.ElementAt(i).LoanTermDays)
+                                if (list.Contains(Model.ElementAt(i).LoanTermDays.ToString()))
                                 {
                                     continue;
                                 }
                             }
                             <label><input type="checkbox" onchange="FilterCBX(4, this)" />@Model.ElementAt(i).LoanTermDays</label>
+                            list.Add(Model.ElementAt(i).LoanTermDays.ToString());
                         }
                     </div>
                 </th>
                 <th>
                     <div id="cbxcontainer5" class="cbxcontainer">
+                        @{list = new List<string>();}
+
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).NetworkDays == Model.ElementAt(i).NetworkDays)
+                                if (list.Contains(Model.ElementAt(i).NetworkDays.ToString()))
                                 {
                                     continue;
                                 }
                             }
                             <label><input type="checkbox" onchange="FilterCBX(5, this)" />@Model.ElementAt(i).NetworkDays</label>
+
+                            list.Add(Model.ElementAt(i).NetworkDays.ToString());
                         }
                     </div>
                 </th>
                 <th>
                     <div id="cbxcontainer6" class="cbxcontainer">
+                        @{list = new List<string>();}
+
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).DaysOfGrace == Model.ElementAt(i).DaysOfGrace)
+                                if (list.Contains(Model.ElementAt(i).DaysOfGrace.ToString()))
                                 {
                                     continue;
                                 }
                             }
                             <label><input type="checkbox" onchange="FilterCBX(6, this)" />@Model.ElementAt(i).DaysOfGrace</label>
+                            list.Add(Model.ElementAt(i).DaysOfGrace.ToString());
                         }
                     </div>
                 </th>
                 <th>
                     <div id="cbxcontainer7" class="cbxcontainer">
+                        @{list = new List<string>();}
+
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).LoanPenaltyRate == Model.ElementAt(i).LoanPenaltyRate)
+                                if (list.Contains(Model.ElementAt(i).LoanPenaltyRate.ToString()))
                                 {
                                     continue;
                                 }
                             }
                             <label><input type="checkbox" onchange="FilterCBX(7, this)" />@Model.ElementAt(i).LoanPenaltyRate</label>
+                            list.Add(Model.ElementAt(i).LoanPenaltyRate.ToString());
                         }
                     </div>
                 </th>
                 <th>
                     <div id="cbxcontainer8" class="cbxcontainer">
+                        @{list = new List<string>();}
+
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).EffectiveInterestRate == Model.ElementAt(i).EffectiveInterestRate)
+                                if (list.Contains(System.Math.Round(Model.ElementAt(i).EffectiveInterestRate, 2).ToString()))
                                 {
                                     continue;
                                 }
                             }
-                            <label><input onchange="FilterCBX(8, this)" type="checkbox" />@Model.ElementAt(i).EffectiveInterestRate</label>
+                            <label><input onchange="FilterCBX(8, this)" type="checkbox" />@System.Math.Round(Model.ElementAt(i).EffectiveInterestRate, 2).ToString()</label>
+                            list.Add(Model.ElementAt(i).EffectiveInterestRate.ToString());
                         }
                     </div>
                 </th>
                 <th>
                     <div id="cbxcontainer9" class="cbxcontainer">
+                        @{list = new List<string>();}
+
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             if (i != 0)
                             {
-                                if (Model.ElementAt(i - 1).AmountToBePaidAll == Model.ElementAt(i).AmountToBePaidAll)
+                                if (list.Contains(System.Math.Round(Model.ElementAt(i).AmountToBePaidAll, 2).ToString()))
                                 {
                                     continue;
                                 }
                             }
-                            <label><input type="checkbox" onchange="FilterCBX(9, this)" />@Model.ElementAt(i).AmountToBePaidAll</label>
+                            <label><input type="checkbox" onchange="FilterCBX(9, this)" />@System.Math.Round(Model.ElementAt(i).AmountToBePaidAll, 2).ToString()</label>
+                            list.Add(System.Math.Round(Model.ElementAt(i).AmountToBePaidAll, 2).ToString());
                         }
                     </div>
                 </th>
