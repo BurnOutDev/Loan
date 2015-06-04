@@ -79,9 +79,9 @@ namespace WpfUI
                     Account = acc
                 };
 
-                loan.PlanLoan();
+                //loan.PlanLoan();
 
-                loan.Initialize();
+                //loan.Initialize();
 
                 foreach (var pmt in db.Payments.ToList())
                 {

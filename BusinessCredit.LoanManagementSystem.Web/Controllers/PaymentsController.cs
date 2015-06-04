@@ -19,17 +19,23 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     {
         private BusinessCreditContext db = new BusinessCreditContext();
 
-        public ActionResult Index(int? loanId, string date)
+        public ActionResult Index(int? loanId, string fromDate, string toDate)
         {
-            DateTime dailyDate = DateTime.Today;
-            if (!string.IsNullOrEmpty(date))
+            DateTime dailyFromDate = DateTime.Today;
+            DateTime dailyToDate = DateTime.Today;
+
+            if (!string.IsNullOrEmpty(fromDate) && !string.IsNullOrEmpty(toDate))
             {
-                dailyDate = DateTime.Parse(date);
+                dailyFromDate = DateTime.Parse(fromDate);
+                dailyToDate = DateTime.Parse(toDate);
             }
             if (loanId == null)
             {
-                if (date != null)
-                    return View(db.Payments.Where(p => p.PaymentDate == dailyDate).ToList());
+                //nothing
+                var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList();
+
+                if (fromDate != null)
+                    return View(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList());
 
                 return View(new List<Payment>());
             }

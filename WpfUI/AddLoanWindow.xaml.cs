@@ -63,7 +63,7 @@ namespace WpfUI
                 };
                 //loan.PlannedPaymentEntities = new PlannedPayments(loan);
 
-                loan.PlanLoan();
+                //loan.PlanLoan();
 
                 db.Accounts.Where(x => x.AccountID == AccountID).FirstOrDefault().Loans.Add(loan);
                 db.SaveChanges();

@@ -11,6 +11,7 @@ using BusinessCredit.Domain;
 using BusinessCredit.LoanManagementSystem.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PagedList;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -19,19 +20,23 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     {
         private BusinessCreditContext db = new BusinessCreditContext();
 
+        private int pageSize = 30;
+
         // GET: Loans
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             #region GetUser
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
             // Get the current logged in User and look up the user in ASP.NET Identity
-            var currentUser = manager.FindById(User.Identity.GetUserId()); 
+            var currentUser = manager.FindById(User.Identity.GetUserId());
 
-            #endregion 
+            #endregion
 
-            return View(db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID).ToList());
+            if (page.HasValue)
+                return View(db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID).OrderBy(x => x.LoanID).ToPagedList(page.Value, pageSize));
+            return View(db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID).OrderBy(x => x.LoanID).ToPagedList(1, pageSize));
         }
 
         [HttpGet]
@@ -45,8 +50,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                viewModel.Loan.PlanLoan();
-                viewModel.Loan.Initialize();
+                //viewModel.Loan.PlanLoan();
+                //viewModel.Loan.Initialize();
                 viewModel.Loan.Account = viewModel.Account;
 
                 db.Loans.Add(viewModel.Loan);
@@ -66,7 +71,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             // Get the current logged in User and look up the user in ASP.NET Identity
             var currentUser = manager.FindById(User.Identity.GetUserId());
 
-            #endregion 
+            #endregion
 
             if (id == null)
             {
@@ -96,14 +101,14 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
             // Get the current logged in User and look up the user in ASP.NET Identity
-            var currentUser = manager.FindById(User.Identity.GetUserId()); 
+            var currentUser = manager.FindById(User.Identity.GetUserId());
 
-            #endregion 
+            #endregion
 
             if (ModelState.IsValid)
             {
-                loan.PlanLoan();
-                loan.Initialize();
+                //loan.PlanLoan();
+                //loan.Initialize();
                 loan.Account = db.Accounts.FirstOrDefault(a => a.AccountID == loan.LoanID);
                 loan.Branch = db.Branches.FirstOrDefault(b => b.BranchID == currentUser.BranchID);
 
@@ -127,7 +132,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             // Get the current logged in User and look up the user in ASP.NET Identity
             var currentUser = manager.FindById(User.Identity.GetUserId());
 
-            #endregion 
+            #endregion
 
             if (id == null)
             {
@@ -163,9 +168,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
             // Get the current logged in User and look up the user in ASP.NET Identity
-            var currentUser = manager.FindById(User.Identity.GetUserId()); 
+            var currentUser = manager.FindById(User.Identity.GetUserId());
 
-            #endregion 
+            #endregion
 
             if (id == null)
             {
@@ -191,7 +196,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             // Get the current logged in User and look up the user in ASP.NET Identity
             var currentUser = manager.FindById(User.Identity.GetUserId());
 
-            #endregion 
+            #endregion
 
             Loan loan = db.Loans.FirstOrDefault(l => l.Branch.BranchID == currentUser.BranchID && l.LoanID == id);
             db.Loans.Remove(loan);

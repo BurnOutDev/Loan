@@ -11,6 +11,7 @@ using BusinessCredit.Domain;
 using Microsoft.AspNet.Identity;
 using BusinessCredit.LoanManagementSystem.Web.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PagedList;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -18,9 +19,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     public class ClientsController : Controller
     {
         private BusinessCreditContext db = new BusinessCreditContext();
+        private int pageSize = 30;
 
         // GET: Clients
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             #region GetUser
 
@@ -36,7 +38,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                             select l.Account)
                             .Distinct()
                             .ToList();
-            return View(accounts);
+            if (page.HasValue)
+                return View(accounts.OrderBy(x => x.Name).ToPagedList(page.Value, pageSize));
+            return View(accounts.OrderBy(x => x.Name).ToPagedList(1, pageSize));
         }
 
         // GET: Clients/Details/5

@@ -76,6 +76,10 @@
     <Compile Include="Migrations\201506040705135_Branches_StringArray_UserIdentity.Designer.cs">
       <DependentUpon>201506040705135_Branches_StringArray_UserIdentity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506041400052_RemovedMethodsFromDomainClasses.cs" />
+    <Compile Include="Migrations\201506041400052_RemovedMethodsFromDomainClasses.Designer.cs">
+      <DependentUpon>201506041400052_RemovedMethodsFromDomainClasses.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -104,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506040705135_Branches_StringArray_UserIdentity.resx">
       <DependentUpon>201506040705135_Branches_StringArray_UserIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506041400052_RemovedMethodsFromDomainClasses.resx">
+      <DependentUpon>201506041400052_RemovedMethodsFromDomainClasses.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,8 +7,10 @@
 <h2>Index</h2>
 
                       <script>
+                          //fromDate=2014-09-18&toDate=2016-09-18
+
                           function redirectDaily() {
-                              window.location.href = "?date=" + displayDate.value;
+                              window.location.href = "?fromDate=" + displayFromDate.value + "&" + "toDate=" + displayToDate.value;
                           }
                       </script>
 
@@ -16,8 +18,10 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-                      <input type="date" name="DisplayDate" id="displayDate" />
-                      <button onclick="redirectDaily()" type="button">Go</button>
+<input type="date" id="displayFromDate" />
+<input type="date" id="displayToDate" />
+
+<button onclick="redirectDaily()" type="button">Go</button>
 
 <table class="table">
     <tr>

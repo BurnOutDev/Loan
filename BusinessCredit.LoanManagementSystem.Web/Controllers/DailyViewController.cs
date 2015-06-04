@@ -18,7 +18,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     {
         private BusinessCreditContext db = new BusinessCreditContext();
 
-        public ActionResult Index(string date)
+        public ActionResult Index(string date, int? page)
         {
             #region GetUser
 
@@ -81,10 +81,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                     view.LastName = pmt.Loan.Account.LastName;
                     view.PaymentDate = dailyDate;
                     view.PhoneNumber = pmt.Loan.Account.NumberMobile;
-                    view.PlannedPayment = pmt.Loan.PlannedPaymentEntities.FirstOrDefault(x => x.PaymentDate == dailyDate).Deposit.Value;
+                    view.PlannedPayment = pmt.Loan.PlannedPaymentEntities.FirstOrDefault(x => x.PaymentDate == dailyDate).Deposit;
                     view.PrivateNumber = pmt.Loan.Account.PrivateNumber;
-                    view.WholeDebt = pmt.WholeDebt.Value;
-                    view.CurrentDebt = pmt.CurrentDebt.Value;
+                    view.WholeDebt = pmt.WholeDebt;
+                    view.CurrentDebt = pmt.CurrentDebt;
                     view.OverdueAmount = view.CurrentDebt - view.PlannedPayment;
 
                     viewList.Add(view);
