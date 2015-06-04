@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using BusinessCredit.Core;
 using BusinessCredit.Domain;
 using BusinessCredit.LoanManagementSystem.Web.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -40,11 +42,20 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Payments/Details/5
         public ActionResult Details(int? id)
         {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            #endregion
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.FirstOrDefault(p => p.Loan.Branch.UserIdentities.Contains(User.Identity.Name) && p.PaymentID == id);
+            Payment payment = db.Payments.FirstOrDefault(p => p.Loan.Branch.BranchID == currentUser.BranchID && p.PaymentID == id);
             if (payment == null)
             {
                 return HttpNotFound();

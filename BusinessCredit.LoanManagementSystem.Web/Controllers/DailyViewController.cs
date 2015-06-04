@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using BusinessCredit.Core;
 using BusinessCredit.Domain;
 using BusinessCredit.LoanManagementSystem.Web.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -18,6 +20,15 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
         public ActionResult Index(string date)
         {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            #endregion
+
             bool editing = false;
             DateTime dailyDate;
             if (string.IsNullOrWhiteSpace(date))
@@ -32,10 +43,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var viewList = new List<DailyViewModel>();
             var pmtList = new List<Payment>();
 
-            var loans = db.Loans.Where(l => l.LoanStatus == LoanStatus.Active && l.Branch.UserIdentities.Contains(User.Identity.Name)).ToList();
+            var loans = db.Loans.Where(l => l.LoanStatus == LoanStatus.Active && l.Branch.BranchID == currentUser.BranchID).ToList();
 
             if (!string.IsNullOrWhiteSpace(date))
-                loans = db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name)).ToList();
+                loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID).ToList();
 
             if (loans.Count > 0)
             {

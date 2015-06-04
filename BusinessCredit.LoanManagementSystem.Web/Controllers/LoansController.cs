@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using BusinessCredit.Core;
 using BusinessCredit.Domain;
 using BusinessCredit.LoanManagementSystem.Web.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -20,13 +22,16 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Loans
         public ActionResult Index()
         {
-            var br = db.Branches.First();
-            br.UserIdentities = new List<string>();
-            br.UserIdentities.Add("alsdkasd");
+            #region GetUser
 
-            db.SaveChanges();
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
-            return View(db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name)).ToList());
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId()); 
+
+            #endregion 
+
+            return View(db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID).ToList());
         }
 
         [HttpGet]
@@ -54,11 +59,20 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Loans/Details/5
         public ActionResult Details(int? id)
         {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            #endregion 
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentities.Contains(User.Identity.Name) && l.LoanID == id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.BranchID == currentUser.BranchID && l.LoanID == id);
             if (loan == null)
             {
                 return HttpNotFound();
@@ -73,18 +87,25 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
 
         // POST: Loans/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "LoanID,LoanAmount,LoanPurpose,LoanDailyInterestRate,LoanTermDays,NetworkDays,DaysOfGrace,LoanPenaltyRate,EffectiveInterestRate,AmountToBePaidAll,AmountToBePaidDaily,AgreementDate,LoanStartDate,LoanEndDate,GuarantorName,GuarantorLastName,GuarantorPrivateNumber,GuarantorPhysicalAddress,GuarantorPhoneNumber,LoanStatus")] Loan loan)
         {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId()); 
+
+            #endregion 
+
             if (ModelState.IsValid)
             {
                 loan.PlanLoan();
                 loan.Initialize();
                 loan.Account = db.Accounts.FirstOrDefault(a => a.AccountID == loan.LoanID);
-                loan.Branch = db.Branches.FirstOrDefault(b => b.UserIdentities.Contains(User.Identity.Name));
+                loan.Branch = db.Branches.FirstOrDefault(b => b.BranchID == currentUser.BranchID);
 
                 loan.LoanID = db.Loans.OrderByDescending(x => x.LoanID).FirstOrDefault().LoanID + 1;
                 db.Loans.Add(loan);
@@ -99,11 +120,20 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Loans/Edit/5
         public ActionResult Edit(int? id)
         {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            #endregion 
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentities.Contains(User.Identity.Name) && l.LoanID == id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.BranchID == currentUser.BranchID && l.LoanID == id);
             if (loan == null)
             {
                 return HttpNotFound();
@@ -128,11 +158,20 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Loans/Delete/5
         public ActionResult Delete(int? id)
         {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId()); 
+
+            #endregion 
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentities.Contains(User.Identity.Name) && l.LoanID == id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.BranchID == currentUser.BranchID && l.LoanID == id);
             if (loan == null)
             {
                 return HttpNotFound();
@@ -145,7 +184,16 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.UserIdentities.Contains(User.Identity.Name) && l.LoanID == id);
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            #endregion 
+
+            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.BranchID == currentUser.BranchID && l.LoanID == id);
             db.Loans.Remove(loan);
             db.SaveChanges();
             return RedirectToAction("Index");

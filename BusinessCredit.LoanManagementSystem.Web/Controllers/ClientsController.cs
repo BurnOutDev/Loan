@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using BusinessCredit.Core;
 using BusinessCredit.Domain;
+using Microsoft.AspNet.Identity;
+using BusinessCredit.LoanManagementSystem.Web.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -19,21 +22,41 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Clients
         public ActionResult Index()
         {
-            var loans = db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name));
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            #endregion
+
+            var loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID);
             var accounts = (from l in loans
-                            select l.Account).ToList();
+                            select l.Account)
+                            .Distinct()
+                            .ToList();
             return View(accounts);
         }
 
         // GET: Clients/Details/5
         public ActionResult Details(int? id)
         {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            #endregion
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var loans = db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name));
+            var loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID);
             var accounts = (from l in loans
                             select l.Account).ToList();
 
@@ -53,8 +76,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
 
         // POST: Clients/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AccountID,Name,LastName,PrivateNumber,Gender,Status,PhysicalAddress,NumberMobile,AccountNumber,BusinessPhysicalAddress")] Account account)
@@ -72,11 +93,20 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Clients/Edit/5
         public ActionResult Edit(int? id)
         {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            #endregion 
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var loans = db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name));
+            var loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID);
             var accounts = (from l in loans
                             select l.Account).ToList();
 
@@ -89,8 +119,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
 
         // POST: Clients/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "AccountID,Name,LastName,PrivateNumber,Gender,Status,PhysicalAddress,NumberMobile,AccountNumber,BusinessPhysicalAddress")] Account account)
@@ -107,12 +135,21 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // GET: Clients/Delete/5
         public ActionResult Delete(int? id)
         {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            #endregion 
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var loans = db.Loans.Where(l => l.Branch.UserIdentities.Contains(User.Identity.Name));
+            var loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID);
             var accounts = (from l in loans
                             select l.Account).ToList();
             Account account = accounts.FirstOrDefault(a => a.AccountID == id);

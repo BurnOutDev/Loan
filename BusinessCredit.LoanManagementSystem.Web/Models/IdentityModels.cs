@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Models
 {
@@ -16,6 +17,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public int BranchID { get; set; }
+        public DateTime BirthDate { get; set; }
+        public string PhoneNumber { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -23,7 +28,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
-            Database.SetInitializer<ApplicationDbContext>(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
+            Database.SetInitializer<ApplicationDbContext>(new CreateDatabaseIfNotExists<ApplicationDbContext>());
         }
 
         public static ApplicationDbContext Create()

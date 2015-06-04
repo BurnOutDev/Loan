@@ -170,6 +170,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506021410560_InitialCreate.cs" />
+    <Compile Include="Migrations\201506021410560_InitialCreate.Designer.cs">
+      <DependentUpon>201506021410560_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506040855364_AddedPropertiesOnIdentityUser.cs" />
+    <Compile Include="Migrations\201506040855364_AddedPropertiesOnIdentityUser.Designer.cs">
+      <DependentUpon>201506040855364_AddedPropertiesOnIdentityUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountLoanViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AgreementViewModel.cs" />
@@ -335,6 +344,14 @@
       <Project>{63460d01-2be9-45ba-906e-088645bad220}</Project>
       <Name>BusinssCredit.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201506021410560_InitialCreate.resx">
+      <DependentUpon>201506021410560_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506040855364_AddedPropertiesOnIdentityUser.resx">
+      <DependentUpon>201506040855364_AddedPropertiesOnIdentityUser.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
