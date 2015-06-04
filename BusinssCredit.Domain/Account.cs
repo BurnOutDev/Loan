@@ -12,24 +12,31 @@ namespace BusinessCredit.Domain
 
         [Display(Name = "სახელი")]
         public string Name { get; set; }
+
         [Display(Name = "გვარი")]
         public string LastName { get; set; }
+
         [Display(Name = "პირადი ნომერი")]
         public string PrivateNumber { get; set; }
+
         [Display(Name = "სქესი")]
         public virtual Gender Gender { get; set; }
+
         [Display(Name = "სტატუსი")]
         public virtual PersonType Status { get; set; }
+
         [Display(Name = "მისამართი")]
         public string PhysicalAddress { get; set; }
+
         [Display(Name = "ტელეფონი")]
         public string NumberMobile { get; set; }
+
         [Display(Name = "ანგარიშის ნომერი")]
         public string AccountNumber { get; set; }
 
         [Display(Name = "ბიზნესის ფის. მისამართი")]
         public string BusinessPhysicalAddress { get; set; }
-        /// სესხები
+        
         public virtual ICollection<Loan> Loans { get; set; }
     }
 }
