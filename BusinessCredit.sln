@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22310.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCredit.UI", "BusinessCredit.UI\BusinessCredit.UI.csproj", "{0FEF9A60-F0A1-4260-BCC3-90C82BAEB14F}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfUI", "WpfUI\WpfUI.csproj", "{9672DC6D-D312-415D-A39B-8AB01BB50C01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCredit.LoanManagementSystem.Web", "BusinessCredit.LoanManagementSystem.Web\BusinessCredit.LoanManagementSystem.Web.csproj", "{BA2CE063-4938-4E4F-A6FE-A5F6D660AFF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCredit.LoanManagementSystem.Helpers", "BusinessCredit.LoanManagementSystem.Helpers\BusinessCredit.LoanManagementSystem.Helpers.csproj", "{DC8DA09A-8E27-4A48-8A8A-5CEE9DF8CECC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{BA2CE063-4938-4E4F-A6FE-A5F6D660AFF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA2CE063-4938-4E4F-A6FE-A5F6D660AFF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA2CE063-4938-4E4F-A6FE-A5F6D660AFF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC8DA09A-8E27-4A48-8A8A-5CEE9DF8CECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC8DA09A-8E27-4A48-8A8A-5CEE9DF8CECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC8DA09A-8E27-4A48-8A8A-5CEE9DF8CECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC8DA09A-8E27-4A48-8A8A-5CEE9DF8CECC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
