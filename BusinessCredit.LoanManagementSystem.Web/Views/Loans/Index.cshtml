@@ -204,6 +204,8 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
+<button onclick="$(cbxFilters).toggle()">ფილტრი</button>
+
 <div class="row">
     <div class="col-lg-2" style="z-index:9999">
         <label><input type="checkbox" onchange="toggleColumn(1, this)" /> სახელი </label>
@@ -230,7 +232,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
     </div>
     <div class="col-lg-10">
         <table id="tbl" class="table table-condensed table-hover table-striped" onended="checkboxesChecked()">
-            <tr id="cbxFilters">
+            <tr id="cbxFilters" style="display:none">
                 <th>
                     <div id="cbxcontainer-1" class="cbxcontainer">
                         @{var list = new List<string>();}

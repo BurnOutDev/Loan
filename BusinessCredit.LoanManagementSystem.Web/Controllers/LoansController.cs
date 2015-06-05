@@ -23,7 +23,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         private int pageSize = 30;
 
         // GET: Loans
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, int? accountId)
         {
             #region GetUser
 
@@ -34,9 +34,20 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             #endregion
 
+            IQueryable<Loan> result;
+
+            if (accountId.HasValue)
+                result = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID && l.Account.AccountID == accountId)
+                            .OrderBy(x => x.LoanID);
+            else
+                result = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID)
+                            .OrderBy(x => x.LoanID);
+
             if (page.HasValue)
-                return View(db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID).OrderBy(x => x.LoanID).ToPagedList(page.Value, pageSize));
-            return View(db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID).OrderBy(x => x.LoanID).ToPagedList(1, pageSize));
+                return View(result.ToPagedList(page.Value, pageSize));
+            else
+                return View(result.ToPagedList(1, pageSize));
+
         }
 
         [HttpGet]

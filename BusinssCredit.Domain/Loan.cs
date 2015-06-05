@@ -10,6 +10,45 @@ namespace BusinessCredit.Domain
 {
     public class Loan
     {
+        public void PlanLoan()
+        {
+            PlannedPaymentEntities = new List<PaymentEntity>();
+
+            for (int i = 0; i < LoanTermDays; i++)
+            {
+                PlannedPaymentEntities.Add(
+                    new PaymentEntity()
+                    {
+                        PaymentDate = LoanStartDate.Date.AddDays(i),
+                        Loan = this
+                    }
+                    );
+            }
+        }
+
+        public void AddPayment(Payment pmt)
+        {
+            pmt.Loan = this;
+            pmt.Branch = this.Branch;
+            Payments.Add(pmt);
+        }
+
+        public void Initialize()
+        {
+            if (Payments == null || Payments.Count == 0)
+            {
+                Payments = new List<Payment>();
+
+                //for (int i = 0; i < LoanTermDays; i++)
+                //    Payments.Add(new Payment()
+                //    {
+                //        PaymentID = i + 1,
+                //        Loan = this,
+                //        CurrentPayment = 0
+                //    });
+            }
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int LoanID { get; set; }
@@ -53,9 +92,21 @@ namespace BusinessCredit.Domain
         [Display(Name = "დღეში გადასახადი")]
         public double AmountToBePaidDaily { get; set; }
 
-        public double CurrentDebt { get; set; }
+        public double CurrentDebt
+        {
+            get
+            {
+                return Payments.Where(p => p.Loan.LoanID == this.LoanID).OrderByDescending(x => x.PaymentDate).FirstOrDefault().CurrentDebt.Value;
+            }
+        } // --
 
-        public double WholeDebt { get; set; }
+        public double WholeDebt
+        {
+            get
+            {
+                return Payments.Where(p => p.Loan.LoanID == this.LoanID).OrderByDescending(x => x.PaymentDate).FirstOrDefault().WholeDebt.Value;
+            }
+        }  // --
 
         /// გენერალური ხელშეკრულების თარიღი
         [Display(Name = "ხელშეკრულების თარიღი")]
@@ -80,13 +131,23 @@ namespace BusinessCredit.Domain
 
         /// სესხის სტატუსი (მიმდინარე, დახურული)
         [Display(Name = "სტატუსი")]
-        public virtual LoanStatus LoanStatus { get; set; }
+        public virtual LoanStatus LoanStatus
+        {
+            get
+            {
+                return this.WholeDebt > 0 ? LoanStatus.Active : LoanStatus.Closed;
+            }
+        }
 
-
+        /// გადახდები
         public virtual ICollection<Payment> Payments { get; set; }
         public virtual ICollection<PaymentEntity> PlannedPaymentEntities { get; set; }
+
         public virtual Branch Branch { get; set; }
+
+        /// სესხის გამცემი (საკრედიტო ექსპერტი)
         public virtual CreditExpert CreditExpert { get; set; }
+
         public virtual Account Account { get; set; }
     }
 }

@@ -157,6 +157,7 @@ namespace BusinessCredit.LoanManagementSystem.Helpers
                 }
             }
             public virtual Loan Loan { get; set; }
+            public virtual Payment PaidPayment { get; set; }
         }
     }
 }

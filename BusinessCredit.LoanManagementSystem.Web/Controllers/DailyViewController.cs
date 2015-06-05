@@ -18,8 +18,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     {
         private BusinessCreditContext db = new BusinessCreditContext();
 
-        public ActionResult Index(string date, int? page)
+        public ActionResult Index()
         {
+            //deleted (bool editing)
+
             #region GetUser
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
@@ -29,48 +31,27 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             #endregion
 
-            bool editing = false;
-            DateTime dailyDate;
-            if (string.IsNullOrWhiteSpace(date))
-            {
-                dailyDate = DateTime.Today;
-                editing = true;
-            }
-            else
-                dailyDate = DateTime.Parse(date);
-
+            var dailyDate = DateTime.Today;
+            
             var dailyList = new LstViewModel();
             var viewList = new List<DailyViewModel>();
             var pmtList = new List<Payment>();
 
             var loans = db.Loans.Where(l => l.LoanStatus == LoanStatus.Active && l.Branch.BranchID == currentUser.BranchID).ToList();
 
-            if (!string.IsNullOrWhiteSpace(date))
-                loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID).ToList();
-
             if (loans.Count > 0)
             {
-                if (string.IsNullOrWhiteSpace(date))
-                {
                     foreach (var loan in loans)
                     {
                         var pmt = loan.Payments.FirstOrDefault(x => x.PaymentDate.Date == DateTime.Today.AddDays(-1));
-                        if (pmt != null)
+                        if (loan.Payments.FirstOrDefault(x => x.PaymentDate == DateTime.Today) != null)
+                            pmtList.Add(loan.Payments.FirstOrDefault(x => x.PaymentDate == DateTime.Today));
+                        else if (pmt != null)
                             pmtList.Add(pmt);
                         else if (loan.Payments.Count == 0)
                             pmtList.Add(new Payment() { Loan = loan });
                     }
-                }
-                else
-                {
-                    foreach (var loan in loans)
-                    {
-                        var pmt = loan.Payments.FirstOrDefault(x => x.PaymentDate.Date == dailyDate);
-                        if (pmt != null)
-                            pmtList.Add(pmt);
-                    }
-                }
-
+                
                 db.Loans.Include("Accounts");
 
                 foreach (var pmt in pmtList)
@@ -81,10 +62,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                     view.LastName = pmt.Loan.Account.LastName;
                     view.PaymentDate = dailyDate;
                     view.PhoneNumber = pmt.Loan.Account.NumberMobile;
-                    view.PlannedPayment = pmt.Loan.PlannedPaymentEntities.FirstOrDefault(x => x.PaymentDate == dailyDate).Deposit;
+                    view.PlannedPayment = pmt.Loan.PlannedPaymentEntities.FirstOrDefault(x => x.PaymentDate == dailyDate).Deposit.Value;
                     view.PrivateNumber = pmt.Loan.Account.PrivateNumber;
-                    view.WholeDebt = pmt.WholeDebt;
-                    view.CurrentDebt = pmt.CurrentDebt;
+                    view.WholeDebt = pmt.WholeDebt.Value;
+                    view.CurrentDebt = pmt.CurrentDebt.Value;
                     view.OverdueAmount = view.CurrentDebt - view.PlannedPayment;
 
                     viewList.Add(view);

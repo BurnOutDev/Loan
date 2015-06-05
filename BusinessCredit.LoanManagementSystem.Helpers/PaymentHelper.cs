@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessCredit.LoanManagementSystem.Helpers
 {
-    class PaymentHelper
+    public class PaymentHelper
     {
         public class Payment
         {
