@@ -39,9 +39,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BusinessCredit.LoanCalculator.Core">
-      <HintPath>Lib\BusinessCredit.LoanCalculator.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PagedList">
@@ -352,6 +349,10 @@
     <ProjectReference Include="..\BusinessCredit.Core\BusinessCredit.Core.csproj">
       <Project>{10e1b965-9262-4ce5-b727-8c0f5e4d4ac4}</Project>
       <Name>BusinessCredit.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessCredit.LoanCalculator.Core\BusinessCredit.LoanCalculator.Core.csproj">
+      <Project>{7a0d48e7-5e9e-4b16-a66b-827b6376ae3e}</Project>
+      <Name>BusinessCredit.LoanCalculator.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\BusinssCredit.Domain\BusinssCredit.Domain.csproj">
       <Project>{63460d01-2be9-45ba-906e-088645bad220}</Project>
