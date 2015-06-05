@@ -5,8 +5,8 @@ namespace BusinessCredit.Domain
     public enum LoanStatus
     {
         [Display(Name = "მიმდინარე")]
-        Active,
+        Active = 1,
         [Display(Name = "დახურული")]
-        Closed
+        Closed = 0
     }
 }

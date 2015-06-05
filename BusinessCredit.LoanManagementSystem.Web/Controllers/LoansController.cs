@@ -12,6 +12,8 @@ using BusinessCredit.LoanManagementSystem.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PagedList;
+using Microsoft.VisualBasic;
+using LC = BusinessCredit.LoanCalculator.Core;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -19,7 +21,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     public class LoansController : Controller
     {
         private BusinessCreditContext db = new BusinessCreditContext();
-
         private int pageSize = 30;
 
         // GET: Loans
@@ -222,6 +223,58 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+        public ActionResult CreateLoanView()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateLoanView(CreateLoanViewModel loanModel)
+        {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId()); 
+
+            #endregion 
+
+            var loan = new Loan();
+            loan.Account = db.Accounts.FirstOrDefault(a => a.AccountID == loanModel.AccountID);
+            loan.LoanAmount = loanModel.Amount;
+            loan.LoanDailyInterestRate = loanModel.DailyInterestRate;
+            loan.LoanTermDays = loanModel.TermDays;
+
+            loan.LoanPenaltyRate = 0.005;
+            loan.AmountToBePaidDaily = Financial.Pmt(loanModel.DailyInterestRate, loanModel.TermDays, loanModel.Amount);
+            loan.AmountToBePaidAll = loan.AmountToBePaidDaily * loan.LoanTermDays;
+
+            LC.LoanModel loanCalculated = new LC.LoanModel();
+            loanCalculated.StartingBalance = loan.LoanAmount;
+            loanCalculated.StartingDate = DateTime.Today;
+            loanCalculated.Days = loan.LoanTermDays;
+            loanCalculated.DaysOfGrace = loan.DaysOfGrace;
+            loanCalculated.InterestRate = loan.LoanDailyInterestRate;
+
+            loanCalculated = LC.LoanCalculator.Calculate(loanCalculated);
+
+            loan.AmountToBePaidAll = loanCalculated.Payments.Sum(p => p.PaymentAmount);
+            loan.AmountToBePaidDaily = loanCalculated.Payments.First().PaymentAmount;
+            loan.Branch = db.Branches.FirstOrDefault(b => b.BranchID == currentUser.BranchID);
+            loan.EffectiveInterestRate = (loanCalculated.Payments.Sum(p => p.Interest) / loanCalculated.Days * 30) / loanCalculated.StartingBalance;
+            loan.LoanEndDate = loan.LoanStartDate.AddDays(loan.LoanTermDays);
+            loan.NetworkDays = 30;
+            
+
+            loan.Initialize();
+            loan.PlanLoan();
+
+            return View();
         }
     }
 }

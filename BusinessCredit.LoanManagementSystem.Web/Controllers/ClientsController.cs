@@ -33,11 +33,16 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             #endregion
 
+            if (db.Loans.Count() == 0 && db.Accounts.Count() == 0)
+                return View(new List<Account>().ToPagedList(1, pageSize));
+
             var loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID);
             var accounts = (from l in loans
                             select l.Account)
                             .Distinct()
                             .ToList();
+
+            accounts.AddRange(db.Accounts.Where(a => a.Branch.BranchID == currentUser.BranchID));
             if (page.HasValue)
                 return View(accounts.OrderBy(x => x.Name).ToPagedList(page.Value, pageSize));
             return View(accounts.OrderBy(x => x.Name).ToPagedList(1, pageSize));
@@ -84,8 +89,18 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AccountID,Name,LastName,PrivateNumber,Gender,Status,PhysicalAddress,NumberMobile,AccountNumber,BusinessPhysicalAddress")] Account account)
         {
+            #region GetUser
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            // Get the current logged in User and look up the user in ASP.NET Identity
+            var currentUser = manager.FindById(User.Identity.GetUserId()); 
+
+            #endregion 
+
             if (ModelState.IsValid)
             {
+                account.Branch = db.Branches.FirstOrDefault(b => b.BranchID == currentUser.BranchID);
                 db.Accounts.Add(account);
                 db.SaveChanges();
                 return RedirectToAction("Index");

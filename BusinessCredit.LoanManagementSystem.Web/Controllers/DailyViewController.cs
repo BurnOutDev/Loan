@@ -37,7 +37,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var viewList = new List<DailyViewModel>();
             var pmtList = new List<Payment>();
 
-            var loans = db.Loans.Where(l => l.LoanStatus == LoanStatus.Active && l.Branch.BranchID == currentUser.BranchID).ToList();
+            var loans = db.Loans.Where(l => l.WholeDebt > 0 && l.Branch.BranchID == currentUser.BranchID).ToList();
 
             if (loans.Count > 0)
             {

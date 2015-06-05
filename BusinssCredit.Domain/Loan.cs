@@ -98,6 +98,7 @@ namespace BusinessCredit.Domain
             {
                 return Payments.Where(p => p.Loan.LoanID == this.LoanID).OrderByDescending(x => x.PaymentDate).FirstOrDefault().CurrentDebt.Value;
             }
+            private set { }
         } // --
 
         public double WholeDebt
@@ -106,6 +107,7 @@ namespace BusinessCredit.Domain
             {
                 return Payments.Where(p => p.Loan.LoanID == this.LoanID).OrderByDescending(x => x.PaymentDate).FirstOrDefault().WholeDebt.Value;
             }
+            private set { }
         }  // --
 
         /// გენერალური ხელშეკრულების თარიღი
@@ -137,6 +139,7 @@ namespace BusinessCredit.Domain
             {
                 return this.WholeDebt > 0 ? LoanStatus.Active : LoanStatus.Closed;
             }
+            private set { }
         }
 
         /// გადახდები
