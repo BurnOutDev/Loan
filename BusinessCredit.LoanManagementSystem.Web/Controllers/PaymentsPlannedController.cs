@@ -29,7 +29,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PaymentEntity paymentEntity = db.PaymentEntities.Find(id);
+            PaymentPlanned paymentEntity = db.PaymentEntities.Find(id);
             if (paymentEntity == null)
             {
                 return HttpNotFound();
@@ -45,7 +45,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PaymentEntityID,PaymentDate,Deposit,PaymentInterest,PaymentPrincipal,EndingPrincipal")] PaymentEntity paymentEntity)
+        public ActionResult Create([Bind(Include = "PaymentEntityID,PaymentDate,Deposit,PaymentInterest,PaymentPrincipal,EndingPrincipal")] PaymentPlanned paymentEntity)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +64,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PaymentEntity paymentEntity = db.PaymentEntities.Find(id);
+            PaymentPlanned paymentEntity = db.PaymentEntities.Find(id);
             if (paymentEntity == null)
             {
                 return HttpNotFound();
@@ -75,7 +75,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         // POST: PaymentsPlanned/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PaymentEntityID,PaymentDate,Deposit,PaymentInterest,PaymentPrincipal,EndingPrincipal")] PaymentEntity paymentEntity)
+        public ActionResult Edit([Bind(Include = "PaymentEntityID,PaymentDate,Deposit,PaymentInterest,PaymentPrincipal,EndingPrincipal")] PaymentPlanned paymentEntity)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PaymentEntity paymentEntity = db.PaymentEntities.Find(id);
+            PaymentPlanned paymentEntity = db.PaymentEntities.Find(id);
             if (paymentEntity == null)
             {
                 return HttpNotFound();
@@ -106,7 +106,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PaymentEntity paymentEntity = db.PaymentEntities.Find(id);
+            PaymentPlanned paymentEntity = db.PaymentEntities.Find(id);
             db.PaymentEntities.Remove(paymentEntity);
             db.SaveChanges();
             return RedirectToAction("Index");

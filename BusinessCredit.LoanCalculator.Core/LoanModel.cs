@@ -8,11 +8,11 @@ namespace BusinessCredit.LoanCalculator.Core
 {
     public class LoanModel
     {
-        public double StartingBalance { get; set; }
-        public double InterestRate { get; set; }
-        public int Days { get; set; }
+        public double Amount { get; set; }
+        public double DailyInterestRate { get; set; }
+        public int TermDays { get; set; }
         public int DaysOfGrace { get; set; }
-        public DateTime StartingDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         public ICollection<PaymentModel> Payments { get; set; }
     }

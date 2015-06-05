@@ -8,155 +8,48 @@ using System.Threading.Tasks;
 
 namespace BusinessCredit.Domain
 {
-    public class PaymentEntity
+    public class PaymentPlanned
     {
-        public PaymentEntity()
-        {
-            //foreach (var item in this.GetType().GetProperties())
-            //{
-            //    if (item.CanRead)
-            //        item.GetValue(this);
-            //}
-        }
-
         [Key]
-        public int PaymentEntityID { get; set; }
+        public int PaymentID { get; set; }
         public DateTime PaymentDate { get; set; }
+        public double StartingBalance { get; set; }
+        public double PaymentAmount { get; set; }
+        public double Interest { get; set; }
+        public double Principal { get; set; }
+        public double EndingBalance { get; set; }
 
-        #region StartingPrincipal
-        private double? _startingPrincipal;
-        public double? StartingPrincipal
+        public Loan Loan { get; set; }
+
+        public void Init()
         {
-            get
-            {
-                if (!_startingPrincipal.HasValue)
-                    _startingPrincipal = InitStartingPrincipal();
+            #region StartingBalance
+            var res = Loan.PaymentsPlanned.FirstOrDefault(p => p.PaymentID == PaymentID - 1);
 
-                return InitStartingPrincipal();
-            }
-        }
-
-        private double? InitStartingPrincipal()
-        {
-            if (PrevPayment == null)
-                return Loan.LoanAmount;
-            return PrevPayment.EndingPrincipal;
-        }
-        #endregion
-
-        #region Deposit
-        private double? _deposit;
-
-        public double? Deposit
-        {
-            get
-            {
-                if (!_deposit.HasValue)
-                    _deposit = InitDeposit();
-                return _deposit;
-            }
-            set { _deposit = value; }
-        }
-
-        private double? InitDeposit()
-        {
-            double endingPrincipal;
-
-            if (PrevPayment == null)
-                endingPrincipal = Loan.LoanAmount;
+            if (res != null)
+                StartingBalance = res.EndingBalance;
             else
-                endingPrincipal = PrevPayment.EndingPrincipal.Value;
+                StartingBalance = Loan.LoanAmount;
+            #endregion
 
-            if (PaymentEntityID > Loan.DaysOfGrace
-                && endingPrincipal > 0)
-            {
-                return -Financial.Pmt(Loan.LoanDailyInterestRate,
-                                      Loan.LoanTermDays - Loan.DaysOfGrace,
-                                      Loan.LoanAmount,
-                                      0);
-            }
+            #region Interest
+            Interest = Loan.LoanDailyInterestRate * StartingBalance;
+            #endregion
+
+            #region PaymentAmount
+            if (Loan.Payments.Count >= 1)
+                PaymentAmount = -Financial.Pmt(Loan.LoanDailyInterestRate, Loan.LoanTermDays, Loan.LoanAmount);
             else
-                return PaymentInterest;
-        }
-        #endregion
+                PaymentAmount = Interest;
+            #endregion
 
-        #region PaymentInterest
-        private double? _paymentInterest;
-        public double? PaymentInterest
-        {
-            get
-            {
-                if (!_paymentInterest.HasValue)
-                    _paymentInterest = InitPaymentInterest();
-                return _paymentInterest;
-            }
-            set
-            {
-                _paymentInterest = value;
-            }
-        }
+            #region Principal
+            Principal = PaymentAmount - Interest;
+            #endregion
 
-        private double? InitPaymentInterest()
-        {
-            return Loan.LoanDailyInterestRate * StartingPrincipal;
+            #region EndingBalance
+            EndingBalance = StartingBalance - Principal;
+            #endregion
         }
-        #endregion
-
-        #region PaymentPrincipal
-        private double? _paymentPrincipal;
-        public double? PaymentPrincipal
-        {
-            get
-            {
-                if (!_paymentPrincipal.HasValue)
-                    _paymentPrincipal = InitPaymentPrincipal();
-                return _paymentPrincipal;
-            }
-            set
-            {
-                _paymentPrincipal = value;
-            }
-        }
-        private double? InitPaymentPrincipal()
-        {
-            if (PaymentEntityID > Loan.DaysOfGrace)
-                return Deposit - PaymentInterest;
-            else
-                return 0;
-        }
-        #endregion
-
-        #region EndingPrincipal
-        private double? _endingPrincipal;
-        public double? EndingPrincipal
-        {
-            get
-            {
-                if (!_endingPrincipal.HasValue)
-                    _endingPrincipal = InitEndingPrincipal();
-                return _endingPrincipal;
-            }
-            set
-            {
-                _endingPrincipal = value;
-            }
-        }
-        private double? InitEndingPrincipal()
-        {
-            return StartingPrincipal - PaymentPrincipal;
-        }
-        #endregion
-
-        public PaymentEntity PrevPayment
-        {
-            get
-            {
-                if (PaymentEntityID == 1)
-                    return null;
-                return Loan.PlannedPaymentEntities.FirstOrDefault(x => x.PaymentEntityID == PaymentEntityID - 1);
-            }
-        }
-        public virtual Loan Loan { get; set; }
-        public virtual Payment PaidPayment { get; set; }
     }
 }

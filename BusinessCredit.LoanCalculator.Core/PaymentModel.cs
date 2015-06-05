@@ -27,16 +27,16 @@ namespace BusinessCredit.LoanCalculator.Core
             if (res != null)
                 StartingBalance = res.EndingBalance;
             else
-                StartingBalance = Loan.StartingBalance; 
+                StartingBalance = Loan.Amount; 
             #endregion
 
             #region Interest
-            Interest = Loan.InterestRate * StartingBalance;
+            Interest = Loan.DailyInterestRate * StartingBalance;
 	        #endregion
 
             #region PaymentAmount
 		    if (Loan.Payments.Count >= 1)
-                PaymentAmount = -Financial.Pmt(Loan.InterestRate, Loan.Days, Loan.StartingBalance);
+                PaymentAmount = -Financial.Pmt(Loan.DailyInterestRate, Loan.TermDays, Loan.Amount);
             else
                 PaymentAmount = Interest; 
 	        #endregion

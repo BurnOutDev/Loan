@@ -62,7 +62,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                     view.LastName = pmt.Loan.Account.LastName;
                     view.PaymentDate = dailyDate;
                     view.PhoneNumber = pmt.Loan.Account.NumberMobile;
-                    view.PlannedPayment = pmt.Loan.PlannedPaymentEntities.FirstOrDefault(x => x.PaymentDate == dailyDate).Deposit.Value;
+                    view.PlannedPayment = pmt.Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == dailyDate).PaymentAmount;
                     view.PrivateNumber = pmt.Loan.Account.PrivateNumber;
                     view.WholeDebt = pmt.WholeDebt.Value;
                     view.CurrentDebt = pmt.CurrentDebt.Value;

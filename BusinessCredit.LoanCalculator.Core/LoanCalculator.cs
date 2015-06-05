@@ -12,7 +12,7 @@ namespace BusinessCredit.LoanCalculator.Core
         {
             loan.Payments = new List<PaymentModel>();
 
-            for (int i = 1; i <= loan.Days; i++)
+            for (int i = 1; i <= loan.TermDays; i++)
             {
                 var payment = new PaymentModel() { PaymentID = i, Loan = loan };
                 loan.Payments.Add(payment);

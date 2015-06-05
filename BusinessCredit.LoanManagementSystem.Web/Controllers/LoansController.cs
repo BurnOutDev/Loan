@@ -249,31 +249,53 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             loan.LoanAmount = loanModel.Amount;
             loan.LoanDailyInterestRate = loanModel.DailyInterestRate;
             loan.LoanTermDays = loanModel.TermDays;
+            loan.LoanStartDate = DateTime.Today;
 
             loan.LoanPenaltyRate = 0.005;
             loan.AmountToBePaidDaily = Financial.Pmt(loanModel.DailyInterestRate, loanModel.TermDays, loanModel.Amount);
             loan.AmountToBePaidAll = loan.AmountToBePaidDaily * loan.LoanTermDays;
 
             LC.LoanModel loanCalculated = new LC.LoanModel();
-            loanCalculated.StartingBalance = loan.LoanAmount;
-            loanCalculated.StartingDate = DateTime.Today;
-            loanCalculated.Days = loan.LoanTermDays;
+            loanCalculated.Amount = loan.LoanAmount;
+            loanCalculated.StartDate = DateTime.Today;
+            loanCalculated.TermDays = loan.LoanTermDays;
             loanCalculated.DaysOfGrace = loan.DaysOfGrace;
-            loanCalculated.InterestRate = loan.LoanDailyInterestRate;
+            loanCalculated.DailyInterestRate = loan.LoanDailyInterestRate;
 
             loanCalculated = LC.LoanCalculator.Calculate(loanCalculated);
 
             loan.AmountToBePaidAll = loanCalculated.Payments.Sum(p => p.PaymentAmount);
             loan.AmountToBePaidDaily = loanCalculated.Payments.First().PaymentAmount;
             loan.Branch = db.Branches.FirstOrDefault(b => b.BranchID == currentUser.BranchID);
-            loan.EffectiveInterestRate = (loanCalculated.Payments.Sum(p => p.Interest) / loanCalculated.Days * 30) / loanCalculated.StartingBalance;
+            loan.EffectiveInterestRate = (loanCalculated.Payments.Sum(p => p.Interest) / loanCalculated.TermDays * 30) / loanCalculated.Amount;
             loan.LoanEndDate = loan.LoanStartDate.AddDays(loan.LoanTermDays);
             loan.NetworkDays = 30;
-            
+            loan.AgreementDate = DateTime.Today;
 
             loan.Initialize();
-            loan.PlanLoan();
+            loan.PaymentsPlanned = new List<PaymentPlanned>();
+            for (int i = 0; i < loanCalculated.Payments.Count(); i++)
+            {
+                loan.PaymentsPlanned.Add(new PaymentPlanned()
+                {
+                    EndingBalance = loanCalculated.Payments.ElementAt(i).EndingBalance,
+                    Interest = loanCalculated.Payments.ElementAt(i).Interest,
+                    PaymentAmount = loanCalculated.Payments.ElementAt(i).PaymentAmount,
+                    PaymentDate = DateTime.Today.AddDays(i + 1),
+                    PaymentID = loanCalculated.Payments.ElementAt(i).PaymentID,
+                    Principal = loanCalculated.Payments.ElementAt(i).Principal,
+                    StartingBalance = loanCalculated.Payments.ElementAt(i).StartingBalance
+                });
+            }
 
+            if (db.Loans.Count() > 0)
+                loan.LoanID = db.Loans.OrderByDescending(x => x.LoanID).FirstOrDefault().LoanID + 1;
+            else
+                loan.LoanID = 1;
+
+            db.Loans.Add(loan);
+            db.SaveChanges();
+            
             return View();
         }
     }

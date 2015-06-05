@@ -88,6 +88,10 @@
     <Compile Include="Migrations\201506050909216_AddedSettersToLoanProperties.Designer.cs">
       <DependentUpon>201506050909216_AddedSettersToLoanProperties.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506051439016_ChangedPlannedPaymentsModelStructure.cs" />
+    <Compile Include="Migrations\201506051439016_ChangedPlannedPaymentsModelStructure.Designer.cs">
+      <DependentUpon>201506051439016_ChangedPlannedPaymentsModelStructure.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -125,6 +129,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506050909216_AddedSettersToLoanProperties.resx">
       <DependentUpon>201506050909216_AddedSettersToLoanProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506051439016_ChangedPlannedPaymentsModelStructure.resx">
+      <DependentUpon>201506051439016_ChangedPlannedPaymentsModelStructure.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

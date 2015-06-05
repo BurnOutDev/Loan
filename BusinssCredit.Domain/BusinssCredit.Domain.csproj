@@ -71,7 +71,6 @@
     <Compile Include="Enums\LoanStatus.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="PaymentEntity.cs" />
-    <Compile Include="PlannedPayments.cs" />
     <Compile Include="Enums\PersonType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

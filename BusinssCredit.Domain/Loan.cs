@@ -12,17 +12,13 @@ namespace BusinessCredit.Domain
     {
         public void PlanLoan()
         {
-            PlannedPaymentEntities = new List<PaymentEntity>();
+            PaymentsPlanned = new List<PaymentPlanned>();
 
-            for (int i = 0; i < LoanTermDays; i++)
+            for (int i = 1; i <= LoanTermDays; i++)
             {
-                PlannedPaymentEntities.Add(
-                    new PaymentEntity()
-                    {
-                        PaymentDate = LoanStartDate.Date.AddDays(i),
-                        Loan = this
-                    }
-                    );
+                var payment = new PaymentPlanned() { PaymentID = i, Loan = this };
+                PaymentsPlanned.Add(payment);
+                payment.Init();
             }
         }
 
@@ -96,6 +92,7 @@ namespace BusinessCredit.Domain
         {
             get
             {
+                return -1;
                 return Payments.Where(p => p.Loan.LoanID == this.LoanID).OrderByDescending(x => x.PaymentDate).FirstOrDefault().CurrentDebt.Value;
             }
             private set { }
@@ -105,6 +102,7 @@ namespace BusinessCredit.Domain
         {
             get
             {
+                return -1;
                 return Payments.Where(p => p.Loan.LoanID == this.LoanID).OrderByDescending(x => x.PaymentDate).FirstOrDefault().WholeDebt.Value;
             }
             private set { }
@@ -144,7 +142,7 @@ namespace BusinessCredit.Domain
 
         /// გადახდები
         public virtual ICollection<Payment> Payments { get; set; }
-        public virtual ICollection<PaymentEntity> PlannedPaymentEntities { get; set; }
+        public virtual ICollection<PaymentPlanned> PaymentsPlanned { get; set; }
 
         public virtual Branch Branch { get; set; }
 
