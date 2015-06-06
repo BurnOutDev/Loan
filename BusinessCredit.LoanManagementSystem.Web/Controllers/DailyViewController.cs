@@ -20,8 +20,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
         public ActionResult Index()
         {
-            //deleted (bool editing)
-
             #region GetUser
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
@@ -37,7 +35,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var viewList = new List<DailyViewModel>();
             var pmtList = new List<Payment>();
 
-            var loans = db.Loans.Where(l => l.WholeDebt > 0 && l.Branch.BranchID == currentUser.BranchID).ToList();
+            var loans = db.Loans.Where(l => l.WholeDebt > 0 && l.Branch.BranchID == currentUser.BranchID && l.Payments.FirstOrDefault(p => p.PaymentDate == dailyDate) == null).ToList();
 
             if (loans.Count > 0)
             {
@@ -88,6 +86,16 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                         CurrentPayment = model.Payment,
                         PaymentDate = model.PaymentDate
                     });
+            }
+
+            db.Loans.FirstOrDefault().Payments.FirstOrDefault();
+
+            foreach (var prop in typeof(Payment).GetProperties())
+            {
+                if (prop.CanRead)
+                {
+                    prop.GetValue(db.Loans.FirstOrDefault().Payments.FirstOrDefault());
+                }
             }
 
             db.SaveChanges();

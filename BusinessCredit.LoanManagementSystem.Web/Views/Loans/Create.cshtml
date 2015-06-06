@@ -51,39 +51,6 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            <table class="table table-striped">
-                <tr>
-                    <th>
-                        <input type="text" id="col-1-text" onchange="Filter(1, this)" />
-                    </th>
-                    <th>
-                        <input type="text" id="col-2-text" onchange="Filter(2, this)" />
-                    </th>
-                    <th>
-                        <input type="text" id="col-3-text" onchange="Filter(3, this)" />
-                    </th>
-                </tr>
-                <tr>
-                    <th>ID</th>
-                    <th>სახელი</th>
-                    <th>გვარი</th>
-                </tr>
-                    @{ var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-                       var currentUser = manager.FindById(User.Identity.GetUserId()); }
-                    @*Need to get Users by Loan BranchID*@
-                    @foreach (var client in new BusinessCreditContext().Accounts.Where(a => a.Branch.BranchID == currentUser.BranchID))
-                    {
-                        <tr>
-                            <td class="col-1">@client.AccountID</td>
-                            <td class="col-2">@client.Name</td>
-                            <td class="col-3">@client.LastName</td>
-                        </tr>
-                    }
-               
-            </table>
-        </div>
-
-        <div class="form-group">
             <label class="control-label col-md-2">მსესხებლის ID</label>
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.LoanID, new { htmlAttributes = new { @class = "form-control" } })
@@ -209,6 +176,39 @@
             </div>
         </div>
     </div>
+
+        <div class="form-group">
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        <input type="text" id="col-1-text" onchange="Filter(1, this)" />
+                    </th>
+                    <th>
+                        <input type="text" id="col-2-text" onchange="Filter(2, this)" />
+                    </th>
+                    <th>
+                        <input type="text" id="col-3-text" onchange="Filter(3, this)" />
+                    </th>
+                </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>სახელი</th>
+                    <th>გვარი</th>
+                </tr>
+                    @{ var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                       var currentUser = manager.FindById(User.Identity.GetUserId()); }
+                    @*Need to get Users by Loan BranchID*@
+                    @foreach (var client in new BusinessCreditContext().Accounts.Where(a => a.Branch.BranchID == currentUser.BranchID))
+                    {
+                        <tr>
+                            <td class="col-1">@client.AccountID</td>
+                            <td class="col-2">@client.Name</td>
+                            <td class="col-3">@client.LastName</td>
+                        </tr>
+                    }
+               
+            </table>
+        </div>
 }
 
 <div>
@@ -220,7 +220,5 @@
 }
 
 <script>
-    
-
     $(".col-1 .col-2 .col-3").hide();
 </script>
