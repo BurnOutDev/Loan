@@ -311,17 +311,10 @@
     <Content Include="Views\Loans\Details.cshtml" />
     <Content Include="Views\Loans\Edit.cshtml" />
     <Content Include="Views\Loans\Index.cshtml" />
-    <Content Include="Views\Payments\Create.old.cshtml" />
-    <Content Include="Views\Payments\Delete.cshtml" />
     <Content Include="Views\Payments\Details.cshtml" />
-    <Content Include="Views\Payments\Edit.cshtml" />
     <Content Include="Views\Payments\Index.cshtml" />
-    <Content Include="Views\PaymentsPlanned\Create.cshtml" />
-    <Content Include="Views\PaymentsPlanned\Delete.cshtml" />
     <Content Include="Views\PaymentsPlanned\Details.cshtml" />
-    <Content Include="Views\PaymentsPlanned\Edit.cshtml" />
     <Content Include="Views\PaymentsPlanned\Index.cshtml" />
-    <Content Include="Views\Payments\Create.cshtml" />
     <Content Include="Views\DailyView\Index.cshtml" />
     <Content Include="Views\DailyView\Indexer.cshtml" />
     <Content Include="Views\Loans\Add.cshtml" />
@@ -335,7 +328,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Lib\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -348,10 +340,6 @@
     <ProjectReference Include="..\BusinessCredit.Core\BusinessCredit.Core.csproj">
       <Project>{10e1b965-9262-4ce5-b727-8c0f5e4d4ac4}</Project>
       <Name>BusinessCredit.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BusinessCredit.LoanCalculator.Core\BusinessCredit.LoanCalculator.Core.csproj">
-      <Project>{7a0d48e7-5e9e-4b16-a66b-827b6376ae3e}</Project>
-      <Name>BusinessCredit.LoanCalculator.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\BusinssCredit.Domain\BusinssCredit.Domain.csproj">
       <Project>{63460d01-2be9-45ba-906e-088645bad220}</Project>

@@ -13,7 +13,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PagedList;
 using Microsoft.VisualBasic;
-using LC = BusinessCredit.LoanCalculator.Core;
+using LC = BusinessCredit.Core.LoanCalculator;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -293,9 +293,16 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             else
                 loan.LoanID = 1;
 
+            loan.LoanDailyInterestRate /= 100;
+
             db.Loans.Add(loan);
             db.SaveChanges();
             
+            return View();
+        }
+
+        public ActionResult CreateViaViewModel()
+        {
             return View();
         }
     }

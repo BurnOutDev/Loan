@@ -11,6 +11,7 @@ using BusinessCredit.Domain;
 using BusinessCredit.LoanManagementSystem.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.IO;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -37,7 +38,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 if (fromDate != null)
                     return View(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList());
 
-                return View(new List<Payment>());
+                return View(db.Payments.Where(p => p.PaymentDate == DateTime.Today).ToList());
             }
             if (loanId != null)
                 return View(db.Loans.Find(loanId).Payments.ToList());
@@ -70,106 +71,106 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
 
         // GET: Payments/Create
-        public ActionResult Create(int? id)
-        {
-            if (id.HasValue)
-            {
-                var pmt = new PMTViewModel()
-                {
-                    LoanId = id.Value,
-                    CurrentPayment = 600
-                };
-                //db.Loans.Load();
-                //pmt.Loan = db.Loans.Find(id);
-                //pmt.CurrentPayment = 700;
+        //public ActionResult Create(int? id)
+        //{
+        //    if (id.HasValue)
+        //    {
+        //        var pmt = new PMTViewModel()
+        //        {
+        //            LoanId = id.Value,
+        //            CurrentPayment = 600
+        //        };
+        //        //db.Loans.Load();
+        //        //pmt.Loan = db.Loans.Find(id);
+        //        //pmt.CurrentPayment = 700;
 
-                return View(pmt);
-            }
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        }
+        //        return View(pmt);
+        //    }
+        //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(PMTViewModel payment, int? id)
-        {
-            if (ModelState.IsValid)
-            {
-                var pmtToAdd = db.Payments.Create();
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create(PMTViewModel payment, int? id)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var pmtToAdd = db.Payments.Create();
 
-                pmtToAdd.Loan = db.Loans.Find(payment.LoanId);
-                pmtToAdd.CurrentPayment = payment.CurrentPayment;
-                pmtToAdd.PaymentDate = payment.PaymentDate;
-                pmtToAdd.TaxOrderID = payment.TaxOrderId;
+        //        pmtToAdd.Loan = db.Loans.Find(payment.LoanId);
+        //        pmtToAdd.CurrentPayment = payment.CurrentPayment;
+        //        pmtToAdd.PaymentDate = payment.PaymentDate;
+        //        pmtToAdd.TaxOrderID = payment.TaxOrderId;
 
-                db.Loans.Include(x => x.Payments);
-                db.Payments.Include(x => x.Loan);
+        //        db.Loans.Include(x => x.Payments);
+        //        db.Payments.Include(x => x.Loan);
 
-                db.Payments.Add(pmtToAdd);
+        //        db.Payments.Add(pmtToAdd);
 
-                db.Loans.Include(x => x.Payments);
-                db.Payments.Include(x => x.Loan);
-                //payment.Loan = db.Loans.Find(id);
-                //db.Payments.Add(payment);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+        //        db.Loans.Include(x => x.Payments);
+        //        db.Payments.Include(x => x.Loan);
+        //        //payment.Loan = db.Loans.Find(id);
+        //        //db.Payments.Add(payment);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
 
-            return RedirectToAction("Index");
-            //return View();
-        }
+        //    return RedirectToAction("Index");
+        //    //return View();
+        //}
 
         // GET: Payments/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(payment);
-        }
+        //public ActionResult Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Payment payment = db.Payments.Find(id);
+        //    if (payment == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(payment);
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PaymentID,TaxOrderID,CurrentPayment,PaymentDate")] Payment payment)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(payment).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(payment);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "PaymentID,TaxOrderID,CurrentPayment,PaymentDate")] Payment payment)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(payment).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(payment);
+        //}
 
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(payment);
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Payment payment = db.Payments.Find(id);
+        //    if (payment == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(payment);
+        //}
 
         // POST: Payments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Payment payment = db.Payments.Find(id);
-            db.Payments.Remove(payment);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Payment payment = db.Payments.Find(id);
+        //    db.Payments.Remove(payment);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {
@@ -178,6 +179,11 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public FileResult DownloadTaxOrders(Stream file)
+        {
+            return File(file, "application/ms-excel");
         }
     }
 }

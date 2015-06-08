@@ -11,9 +11,11 @@ using BusinessCredit.Domain;
 using BusinessCredit.LoanManagementSystem.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.IO;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
+    [Authorize]
     public class DailyViewController : Controller
     {
         private BusinessCreditContext db = new BusinessCreditContext();

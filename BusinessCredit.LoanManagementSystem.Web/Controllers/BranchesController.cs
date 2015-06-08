@@ -11,6 +11,7 @@ using BusinessCredit.Domain;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
+    [Authorize]
     public class BranchesController : Controller
     {
         private BusinessCreditContext db = new BusinessCreditContext();

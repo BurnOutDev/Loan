@@ -38,12 +38,13 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.Helper">
-      <HintPath>..\BusinssCredit.Domain\bin\Debug\EntityFramework.Helper.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\BusinessCredit.Data\Lib\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -56,6 +57,9 @@
   <ItemGroup>
     <Compile Include="BusinessCreditContext.cs" />
     <Compile Include="BusinessCreditDbInitializer.cs" />
+    <Compile Include="LoanCalculator\LoanCalculator.cs" />
+    <Compile Include="LoanCalculator\LoanModel.cs" />
+    <Compile Include="LoanCalculator\PaymentModel.cs" />
     <Compile Include="Migrations\201505141000459_InitialCreate.cs" />
     <Compile Include="Migrations\201505141000459_InitialCreate.Designer.cs">
       <DependentUpon>201505141000459_InitialCreate.cs</DependentUpon>
@@ -94,6 +98,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaxOrders\TaxOrderGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -133,6 +138,10 @@
     <EmbeddedResource Include="Migrations\201506051439016_ChangedPlannedPaymentsModelStructure.resx">
       <DependentUpon>201506051439016_ChangedPlannedPaymentsModelStructure.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Lib\EPPlus.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BusinessCredit.Domain
@@ -34,6 +35,7 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentDebt()
         {
+            Debug.WriteLine("CurrentDebt");
             var sum = PayableInterest + PayablePrincipal + AccruingOverduePrincipal + AccruingOverdueInterest + AccruingOverduePenalty;
             if (sum > WholeDebt)
                 return WholeDebt;
@@ -57,6 +59,7 @@ namespace BusinessCredit.Domain
 
         private double? InitWholeDebt()
         {
+            Debug.WriteLine("WholeDebt");
             return LoanBalance + AccruingOverduePenalty + AccruingOverdueInterest + PayableInterest - CurrentInterestPayment - AccruingPenaltyPayment - AccruingInterestPayment;
         }
         #endregion
@@ -78,6 +81,7 @@ namespace BusinessCredit.Domain
 
         private double? InitStartingPlannedBalance()
         {
+            Debug.WriteLine("StartingPlannedBalance");
             return PlannedBalance + PayablePrincipal;
         }
         #endregion
@@ -97,6 +101,7 @@ namespace BusinessCredit.Domain
 
         private double? InitStartingBalance()
         {
+            Debug.WriteLine("StartingBalance");
             return Loan.LoanAmount - GetPaymentList().Sum(x => x.AccruingPrincipalPayment)
                      - GetPaymentList().Sum(x => x.CurrentPrincipalPayment)
                      - GetPaymentList().Sum(x => x.PrincipalPrepaymant);
@@ -109,6 +114,7 @@ namespace BusinessCredit.Domain
         {
             get
             {
+                Debug.WriteLine("PlannedBalance");
                 return Math.Round(Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == PaymentDate).EndingBalance, 2);
             }
         } // გეგმიური ნაშთი 
@@ -129,6 +135,7 @@ namespace BusinessCredit.Domain
 
         private double? InitPayableInterest()
         {
+            Debug.WriteLine("PayableInterest");
             var t = Math.Round((StartingBalance.Value * Loan.LoanDailyInterestRate), 2);
             return Math.Round((StartingBalance.Value * Loan.LoanDailyInterestRate), 2); //??
         }
@@ -149,6 +156,8 @@ namespace BusinessCredit.Domain
 
         private double? InitPayablePrincipal()
         {
+            Debug.WriteLine("PayablePrincipal");
+
             //= IF(AJ7 < AA7, AJ7, AA7 - AL7)
             if (StartingBalance < Loan.AmountToBePaidDaily)
                 return StartingBalance;
@@ -172,6 +181,7 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentOverduePrincipal()
         {
+            Debug.WriteLine("PayablePrincipal");
             //=$AM8 -$AX8
             return PayablePrincipal - CurrentPrincipalPayment;
         }
@@ -192,6 +202,7 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentOverdueInterest()
         {
+            Debug.WriteLine("CurrentOverdueInterest");
             //=ROUND($AL7-$AW7,2)
             return Math.Round(PayableInterest.Value - CurrentInterestPayment.Value, 2);
         }
@@ -212,6 +223,8 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentPenalty()
         {
+            Debug.WriteLine("CurrentPenalty");
+
             if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
                 return 0;
             else
@@ -234,6 +247,8 @@ namespace BusinessCredit.Domain
 
         private double? InitAccruingOverduePrincipal()
         {
+            Debug.WriteLine("AccruingOverduePrincipal");
+
             //=IF(SUMIF($F$2:$F5,F6,$AN$2:$AN5)-SUMIF($F$2:$F5,F6,$AV$2:$AV5)>AJ6,AJ6,SUMIF($F$2:$F5,F6,$AN$2:$AN5)-SUMIF($F$2:$F5,F6,$AV$2:$AV5))
             if (GetPaymentList().Sum(x => x.CurrentOverduePrincipal) -
                 GetPaymentList().Sum(x => x.AccruingPrincipalPayment) > StartingBalance)
@@ -259,6 +274,8 @@ namespace BusinessCredit.Domain
 
         private double? InitAccruingOverdueInterest()
         {
+            Debug.WriteLine("AccruingOverdueInterest");
+
             return Math.Round(
                 GetPaymentList().Sum(x => x.AccruingInterestPayment).Value +
                 GetPaymentList().Sum(x => x.PayableInterest).Value -
@@ -282,6 +299,7 @@ namespace BusinessCredit.Domain
 
         private double? InitAccruingOverduePenalty()
         {
+            Debug.WriteLine("AccruingOverduePenalty");
             try
             {
                 return Math.Round(
@@ -325,7 +343,7 @@ namespace BusinessCredit.Domain
 
         private double? InitAccruingPenaltyPayment()
         {
-
+            Debug.WriteLine("AccruingPenaltyPayment");
             //=IF($AD6>$AS6,$AS6,$AD6)
             if (CurrentPayment > AccruingOverduePenalty)
                 return AccruingOverduePenalty;
@@ -341,6 +359,7 @@ namespace BusinessCredit.Domain
         {
             get
             {
+
                 if (!_accruingInterestPayment.HasValue)
                     _accruingInterestPayment = Math.Round(InitAccruingInterestPayment().Value, 2);
                 return _accruingInterestPayment;
@@ -349,6 +368,8 @@ namespace BusinessCredit.Domain
 
         private double? InitAccruingInterestPayment()
         {
+            Debug.WriteLine("AccruingInterestPayment");
+
             //=IF(($AD5-$AT5)>$AR5,$AR5,($AD5-$AT5))
             if ((CurrentPayment - AccruingPenaltyPayment) > AccruingOverdueInterest)
                 return AccruingOverdueInterest;
@@ -372,6 +393,8 @@ namespace BusinessCredit.Domain
 
         private double? InitAccruingPrincipalPayment()
         {
+            Debug.WriteLine("AccruingPrincipalPayment");
+
             //=IF(($AD5-$AU5-$AT5-AW5)>$AQ5,$AQ5,($AD5-$AU5-$AT5-AW5))
             if ((CurrentPayment - AccruingInterestPayment - AccruingPenaltyPayment - CurrentInterestPayment) > AccruingOverduePrincipal)
                 return AccruingOverduePrincipal;
@@ -395,6 +418,8 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentInterestPayment()
         {
+            Debug.WriteLine("CurrentInterestPayment");
+
             bool be;
             try
             {
@@ -432,6 +457,8 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentPrincipalPayment()
         {
+            Debug.WriteLine("CurrentPrincipalPayment");
+
             //=IF(SUMIF($F$2:$F4,$F5,$BE$2:$BE4)>0,0,IF(($AD5-$AU5-$AT5-$AV5-$AW5)>$AM5,$AM5,($AD5-$AU5-$AT5-$AV5-$AW5)))
             bool be;
             try
@@ -469,6 +496,8 @@ namespace BusinessCredit.Domain
 
         private double? InitPrincipalPrepaymant()
         {
+            Debug.WriteLine("PrincipalPrepaymant");
+
             bool be;
             try
             {
@@ -528,6 +557,8 @@ namespace BusinessCredit.Domain
 
         private double? InitPaidInterest()
         {
+            Debug.WriteLine("PaidInterest");
+
             return GetPaymentList().Sum(x => x.CurrentInterestPayment) +
                    AccruingInterestPayment +
                    GetPaymentList().Sum(x => x.AccruingInterestPayment) +
@@ -550,6 +581,8 @@ namespace BusinessCredit.Domain
 
         private double? InitPaidPenalty()
         {
+            Debug.WriteLine("PaidPenalty");
+
             return GetPaymentList().Sum(x => x.AccruingPenaltyPayment);
         }
         #endregion
@@ -569,6 +602,8 @@ namespace BusinessCredit.Domain
 
         private double? InitPaidPrincipal()
         {
+            Debug.WriteLine("PaidPrincipal");
+
             return Loan.Payments.Where(x => x.PaymentDate <= PaymentDate).Sum(x => x.CurrentPrincipalPayment) +
                    Loan.Payments.Where(x => x.PaymentDate <= PaymentDate).Sum(x => x.AccruingPrincipalPayment) +
                    Loan.Payments.Where(x => x.PaymentDate <= PaymentDate).Sum(x => x.PrincipalPrepaymant);
@@ -590,6 +625,8 @@ namespace BusinessCredit.Domain
 
         private double? InitPrincipalPrepaid()
         {
+            Debug.WriteLine("PrincipalPrepaid");
+
             return GetPaymentList().Sum(x => x.PaymentID);
         }
         #endregion
@@ -609,6 +646,8 @@ namespace BusinessCredit.Domain
 
         private double? InitLoanBalance()
         {
+            Debug.WriteLine("LoanBalance");
+
             return Loan.LoanAmount - PaidPrincipal;
         }
         #endregion
@@ -627,6 +666,8 @@ namespace BusinessCredit.Domain
         }
         private bool InitLoanStatus()
         {
+            Debug.WriteLine("LoanStatus");
+
             return LoanBalance > 0 ? false : true;
         }
         #endregion
