@@ -11,9 +11,10 @@ namespace BusinessCredit.Core.TaxOrders
 {
     public static class TaxOrderGenerator
     {
-        public static IEnumerable<Stream> Generate(string templatePath, params TaxOrder[] data)
+        public static Stream Generate(string templatePath, params TaxOrder[] data)
         {
-            var result = new List<Stream>();
+            var result = new MemoryStream();
+            ExcelPackage ePack = new ExcelPackage();
 
             #region Split Data
             var splitedData = new List<ICollection<TaxOrder>>();
@@ -155,13 +156,13 @@ namespace BusinessCredit.Core.TaxOrders
                         //CollectorPrivateNumber                       
                         worksheet.Cells["K43"].Value = array.ElementAt(3).CollectorPrivateNumber;
                     }
-                    package.SaveAs(mStream);
 
-                    result.Add(mStream);
+                    ePack.Workbook.Worksheets.Add(new Random().Next().ToString(), worksheet);
 
                     //package.SaveAs(new FileInfo(Path.Combine(saveFolderPath + (new Random().Next()).ToString() + "file.xlsx")));
                 }
             }
+            ePack.SaveAs(result);
             return result;
         }
     }
