@@ -96,6 +96,10 @@
     <Compile Include="Migrations\201506051439016_ChangedPlannedPaymentsModelStructure.Designer.cs">
       <DependentUpon>201506051439016_ChangedPlannedPaymentsModelStructure.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506081307046_AddedTaxOrders_Table.cs" />
+    <Compile Include="Migrations\201506081307046_AddedTaxOrders_Table.Designer.cs">
+      <DependentUpon>201506081307046_AddedTaxOrders_Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxOrders\TaxOrderGenerator.cs" />
@@ -137,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506051439016_ChangedPlannedPaymentsModelStructure.resx">
       <DependentUpon>201506051439016_ChangedPlannedPaymentsModelStructure.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506081307046_AddedTaxOrders_Table.resx">
+      <DependentUpon>201506081307046_AddedTaxOrders_Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

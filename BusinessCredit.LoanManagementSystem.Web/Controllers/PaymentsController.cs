@@ -12,6 +12,11 @@ using BusinessCredit.LoanManagementSystem.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.IO;
+using Ionic.Zlib;
+using Ionic.Zip;
+using BusinessCredit.Core.TaxOrders;
+
+using System.IO.Compression;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -22,6 +27,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
         public ActionResult Index(int? loanId, string fromDate, string toDate)
         {
+            int[] vals = { 2, 4 };
+            return RedirectToAction("GenerateTaxOrders", new { taxOrderIds = new int[] { 2, 4 } });
+
             DateTime dailyFromDate = DateTime.Today;
             DateTime dailyToDate = DateTime.Today;
 
@@ -181,9 +189,36 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             base.Dispose(disposing);
         }
 
-        public FileResult DownloadTaxOrders(Stream file)
-        {
-            return File(file, "application/ms-excel");
+        public FileResult GenerateTaxOrders(int[] taxOrderIds)
+            {
+            var zipMemoryStream = new MemoryStream();
+
+            var folder = Server.MapPath(Url.Content("~/Resources/"));
+            var filePath = Server.MapPath(Url.Content("~/Resources/TaxOrderTemplate.xlsx"));
+
+            TaxOrder[] tos = new TaxOrder[taxOrderIds.Length];
+
+            for (int i = 0; i < tos.Length; i++)
+            {
+                var item = taxOrderIds[i];
+                tos[i] = db.TaxOrders.FirstOrDefault(x => x.TaxOrderID == item);
+            }
+            var streamList = TaxOrderGenerator.Generate(filePath, tos);
+
+            using (ZipFile zip = new ZipFile())
+            {
+                for (int i = 0; i < streamList.Count(); i++)
+                {
+                    streamList.ElementAt(i).Seek(0, SeekOrigin.Begin);
+                    zip.AddEntry("TaxOrder_" + (i + 1).ToString() + ".xlsx", streamList.ElementAt(i));
+                }
+
+                zip.Save(zipMemoryStream);
+            }
+
+            zipMemoryStream.Seek(0, SeekOrigin.Begin);
+
+            return File(zipMemoryStream, "application/zip");
         }
     }
 }
