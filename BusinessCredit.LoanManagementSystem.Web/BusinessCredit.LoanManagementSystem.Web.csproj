@@ -197,16 +197,11 @@
     <Compile Include="Models\AccountLoanViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AgreementViewModel.cs" />
-    <Compile Include="Models\BranchViewModel.cs" />
     <Compile Include="Models\CreateLoanViewModel.cs" />
     <Compile Include="Models\DailyViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LstViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\PaymentPlannedViewModel.cs" />
-    <Compile Include="Models\PaymentViewModel.cs" />
-    <Compile Include="Models\PaymentViewModels.cs" />
-    <Compile Include="Models\PMTViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
