@@ -182,6 +182,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\PaymentsPlannedController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -331,6 +332,9 @@
     <Content Include="Views\Branches\Index.cshtml" />
     <Content Include="Views\Loans\CreateViaViewModel.cshtml" />
     <Content Include="Views\Loans\CreateLoanView.cshtml" />
+    <Content Include="Views\Reports\PortfolioAnalize.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
+    <Content Include="Views\Reports\IncomeAnalize.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
