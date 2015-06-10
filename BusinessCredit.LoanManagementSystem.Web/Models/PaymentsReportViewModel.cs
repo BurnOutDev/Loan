@@ -29,7 +29,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
         [Display(Name = "გეგმიური ნაშთი")]
         public double PlannedBalance { get; set; }
 
-        [Display(Name = "გადასახადი ძირი")]
+        [Display(Name = "გადასახადი პროცენტი")]
         public double? PayableInterest { get; set; }
 
         [Display(Name = "გადასახადი ძირი")]
