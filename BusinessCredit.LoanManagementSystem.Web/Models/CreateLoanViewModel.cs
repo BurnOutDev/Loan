@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using BusinessCredit.Domain;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Models
 {
@@ -19,5 +20,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
 
         [Display(Name="დღიური პროცენტი")]
         public double DailyInterestRate { get; set; }
+
+        public GuarantorViewModel Guarantor { get; set; }
     }
 }

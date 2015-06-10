@@ -198,6 +198,7 @@
     <Compile Include="Models\AccountLoanViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AgreementViewModel.cs" />
+    <Compile Include="Models\GuarantorViewModel.cs" />
     <Compile Include="Models\LoanIssueReportModel.cs" />
     <Compile Include="Models\CreateLoanViewModel.cs" />
     <Compile Include="Models\DailyViewModel.cs" />

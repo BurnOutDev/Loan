@@ -40,7 +40,7 @@ namespace BusinessCredit.Data
             public string Status { get; set; }
             public string PhysicalAddress { get; set; }
             public int BranchID { get; set; }
-            public string Branch { get; set; }
+            public string BranchName { get; set; }
             public string BusinessPhysicalAddress { get; set; }
             public string NumberMobile { get; set; }
             public string AccountNumber { get; set; }

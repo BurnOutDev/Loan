@@ -22,7 +22,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     {
         private BusinessCreditContext db = new BusinessCreditContext();
         private int pageSize = 30;
-        
+
         public ActionResult Index(int? page, int? accountId)
         {
             #region GetUser
@@ -146,6 +146,19 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 loan.LoanID = 1;
 
             loan.LoanDailyInterestRate /= 100;
+
+            var guarantor = new Guarantor()
+            {
+                GuarantorName = loanModel.Guarantor.GuarantorName,
+                GuarantorLastName = loanModel.Guarantor.GuarantorLastName,
+                GuarantorPhoneNumber = loanModel.Guarantor.GuarantorPhoneNumber,
+                GuarantorPhysicalAddress = loanModel.Guarantor.GuarantorPhysicalAddress,
+                GuarantorPrivateNumber = loanModel.Guarantor.GuarantorPrivateNumber
+            };
+
+            loan.Guarantors = new List<Guarantor>();
+
+            loan.Guarantors.Add(guarantor);
 
             db.Loans.Add(loan);
             db.SaveChanges();
