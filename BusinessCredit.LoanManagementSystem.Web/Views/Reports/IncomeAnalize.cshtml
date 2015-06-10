@@ -1,16 +1,10 @@
-﻿@model IEnumerable<dynamic>
+﻿@model IEnumerable<BusinessCredit.LoanManagementSystem.Web.Models.PaymentsReportViewModel>
 
 @{
     ViewBag.Title = "შემოსავლის ანალიზი";
 }
 
 <h2>IncomeAnalize</h2>
-
-<style>
-    tr .spaceUnder {
-        padding-bottom: 100em;
-    }
-</style>
 
 <h2>Index</h2>
 
@@ -27,13 +21,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.TaxOrderID)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.CurrentPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.LoanBalance)
@@ -57,9 +45,6 @@
             @Html.DisplayNameFor(model => model.AccruingPrincipalPayment)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Branch)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.CurrentDebt)
         </th>
         <th>
@@ -76,9 +61,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CurrentPrincipalPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanStatus)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PaidInterest)
@@ -119,13 +101,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TaxOrderID)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.CurrentPayment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LoanBalance)
@@ -149,9 +125,6 @@
                 @Html.DisplayFor(modelItem => item.AccruingPrincipalPayment)
             </th>
             <th>
-                @Html.DisplayFor(modelItem => item.Branch.BranchName)
-            </th>
-            <th>
                 @Html.DisplayFor(modelItem => item.CurrentDebt)
             </th>
             <th>
@@ -168,9 +141,6 @@
             </th>
             <th>
                 @Html.DisplayFor(modelItem => item.CurrentPrincipalPayment)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.LoanStatus)
             </th>
             <th>
                 @Html.DisplayFor(modelItem => item.PaidInterest)
@@ -213,13 +183,7 @@
 
     <tr>
         <th>
-            ----
-        </th>
-        <th>
             @Model.Sum(model => model.CurrentPayment)
-        </th>
-        <th>
-            ----
         </th>
         <th>
             @Model.Sum(model => model.LoanBalance)
@@ -243,9 +207,6 @@
             @Model.Sum(model => model.AccruingPrincipalPayment)
         </th>
         <th>
-            ----
-        </th>
-        <th>
             @Model.Sum(model => model.CurrentDebt)
         </th>
         <th>
@@ -262,9 +223,6 @@
         </th>
         <th>
             @Model.Sum(model => model.CurrentPrincipalPayment)
-        </th>
-        <th>
-            ----
         </th>
         <th>
             @Model.Sum(model => model.PaidInterest)
