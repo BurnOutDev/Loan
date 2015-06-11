@@ -19,7 +19,7 @@ namespace BusinessCredit.Domain
 
         [Display(Name = "შენატანის თარიღი")]
         public DateTime PaymentDate { get; set; }
-
+        
         #region CurrentDebt
         private double? _currentDebt;
         [Display(Name = "მიმდ. დავალიანება")]
@@ -31,6 +31,7 @@ namespace BusinessCredit.Domain
                     _currentDebt = Math.Round(InitCurrentDebt().Value, 2);
                 return _currentDebt;
             }
+            set { _currentDebt = value; }
         }
 
         private double? InitCurrentDebt()
@@ -55,6 +56,7 @@ namespace BusinessCredit.Domain
                     _wholeDebt = Math.Round(InitWholeDebt().Value, 2);
                 return _wholeDebt;
             }
+            set { _wholeDebt = value; }
         }
 
         private double? InitWholeDebt()
@@ -77,6 +79,7 @@ namespace BusinessCredit.Domain
                 }
                 return _startingPlannedBalance;
             }
+            set { _startingPlannedBalance = value; }
         }
 
         private double? InitStartingPlannedBalance()
@@ -97,6 +100,7 @@ namespace BusinessCredit.Domain
                     _startingBalance = Math.Round(InitStartingBalance().Value, 2);
                 return _startingBalance;
             }
+            set { _startingBalance = value; }
         }
 
         private double? InitStartingBalance()
@@ -131,6 +135,7 @@ namespace BusinessCredit.Domain
                     _payableInterest = Math.Round(InitPayableInterest().Value, 2);
                 return _payableInterest;
             }
+            set { _payableInterest = value; }
         }
 
         private double? InitPayableInterest()
@@ -152,6 +157,7 @@ namespace BusinessCredit.Domain
                     _payablePrincipal = Math.Round(InitPayablePrincipal().Value, 2);
                 return _payablePrincipal;
             }
+            set { _payablePrincipal = value; }
         }
 
         private double? InitPayablePrincipal()
@@ -177,6 +183,7 @@ namespace BusinessCredit.Domain
                     _currentOverduePrincipal = Math.Round(InitCurrentOverduePrincipal().Value, 2);
                 return _currentOverduePrincipal;
             }
+            set { _currentOverduePrincipal = value; }
         }
 
         private double? InitCurrentOverduePrincipal()
@@ -198,6 +205,7 @@ namespace BusinessCredit.Domain
                     _currentOverdueInterest = Math.Round(InitCurrentOverdueInterest().Value, 2);
                 return _currentOverdueInterest;
             }
+            set { _currentOverdueInterest = value; }
         }
 
         private double? InitCurrentOverdueInterest()
@@ -219,6 +227,8 @@ namespace BusinessCredit.Domain
                     _CurrentPenalty = Math.Round(InitCurrentPenalty().Value, 2);
                 return _CurrentPenalty;
             }
+
+            set { _CurrentPenalty = value; }
         }
 
         private double? InitCurrentPenalty()
@@ -243,6 +253,8 @@ namespace BusinessCredit.Domain
                     _accruingOverduePrincipal = Math.Round(InitAccruingOverduePrincipal().Value, 2);
                 return _accruingOverduePrincipal;
             }
+
+            set { _accruingOverduePrincipal = value; }
         }
 
         private double? InitAccruingOverduePrincipal()
@@ -270,6 +282,8 @@ namespace BusinessCredit.Domain
                     _accruingOverdueInterest = Math.Round(InitAccruingOverdueInterest().Value, 2);
                 return _accruingOverdueInterest;
             }
+
+            set { _accruingOverdueInterest = value; }
         }
 
         private double? InitAccruingOverdueInterest()
@@ -293,8 +307,10 @@ namespace BusinessCredit.Domain
             {
                 if (!_accruingOverduePenalty.HasValue)
                     _accruingOverduePenalty = Math.Round(InitAccruingOverduePenalty().Value, 2);
-                return InitAccruingOverduePenalty();
+                return _accruingOverduePenalty;
             }
+
+            set { _accruingOverduePenalty = value; }
         }
 
         private double? InitAccruingOverduePenalty()
@@ -339,6 +355,8 @@ namespace BusinessCredit.Domain
                     _accruingPenaltyPayment = Math.Round(InitAccruingPenaltyPayment().Value, 2);
                 return _accruingPenaltyPayment;
             }
+
+            set { _accruingPenaltyPayment = value; }
         }
 
         private double? InitAccruingPenaltyPayment()
@@ -364,6 +382,8 @@ namespace BusinessCredit.Domain
                     _accruingInterestPayment = Math.Round(InitAccruingInterestPayment().Value, 2);
                 return _accruingInterestPayment;
             }
+
+            set { _accruingInterestPayment = value; }
         }
 
         private double? InitAccruingInterestPayment()
@@ -389,6 +409,8 @@ namespace BusinessCredit.Domain
                     _accruingPrincipalPayment = Math.Round(InitAccruingPrincipalPayment().Value, 2);
                 return _accruingPrincipalPayment;
             }
+
+            set { _accruingPrincipalPayment = value; }
         }
 
         private double? InitAccruingPrincipalPayment()
@@ -414,6 +436,7 @@ namespace BusinessCredit.Domain
                     _currentInterestPayment = Math.Round(InitCurrentInterestPayment().Value, 2);
                 return _currentInterestPayment;
             }
+            set { _currentInterestPayment = value; }
         }
 
         private double? InitCurrentInterestPayment()
@@ -453,6 +476,7 @@ namespace BusinessCredit.Domain
                     _currentPrincipalPayment = Math.Round(InitCurrentPrincipalPayment().Value, 2);
                 return _currentPrincipalPayment;
             }
+            set { _currentPrincipalPayment = value; }
         }
 
         private double? InitCurrentPrincipalPayment()
@@ -492,6 +516,7 @@ namespace BusinessCredit.Domain
                     _principalPrepaymant = Math.Round(InitPrincipalPrepaymant().Value, 2);
                 return _principalPrepaymant;
             }
+            set { _principalPrepaymant = value; }
         }
 
         private double? InitPrincipalPrepaymant()
@@ -553,6 +578,7 @@ namespace BusinessCredit.Domain
                     _paidInterest = Math.Round(InitPaidInterest().Value, 2);
                 return _paidInterest;
             }
+            set { _paidInterest = value; }
         }
 
         private double? InitPaidInterest()
@@ -577,6 +603,7 @@ namespace BusinessCredit.Domain
                     _paidPenalty = Math.Round(InitPaidPenalty().Value, 2);
                 return _paidPenalty;
             }
+            set { _paidPenalty = value; }
         }
 
         private double? InitPaidPenalty()
@@ -598,6 +625,7 @@ namespace BusinessCredit.Domain
                     _paidPrincipal = Math.Round(InitPaidPrincipal().Value, 2);
                 return _paidPrincipal;
             }
+            set { _paidPrincipal = value; }
         }
 
         private double? InitPaidPrincipal()
@@ -621,6 +649,7 @@ namespace BusinessCredit.Domain
                     _principalPrepaid = Math.Round(InitPrincipalPrepaid().Value, 2);
                 return _principalPrepaid;
             }
+            set { _principalPrepaid = value; }
         }
 
         private double? InitPrincipalPrepaid()
@@ -642,6 +671,7 @@ namespace BusinessCredit.Domain
                     _loanBalance = Math.Round(InitLoanBalance().Value, 2);
                 return _loanBalance;
             }
+            set { _loanBalance = value; }
         }
 
         private double? InitLoanBalance()
@@ -663,6 +693,7 @@ namespace BusinessCredit.Domain
                     _loanStatus = InitLoanStatus();
                 return _loanStatus;
             }
+            set { _loanStatus = value; }
         }
         private bool InitLoanStatus()
         {
