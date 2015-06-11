@@ -7,8 +7,6 @@
 <h2>გადახდები</h2>
 
                       <script>
-                          //fromDate=2014-09-18&toDate=2016-09-18
-
                           function redirectDaily() {
                               window.location.href = "?fromDate=" + displayFromDate.value + "&" + "toDate=" + displayToDate.value;
                           }
@@ -21,6 +19,18 @@
 
 <table class="table">
     <tr>
+        <th>
+            სახელი
+        </th>
+        <th>
+            გვარი
+        </th>
+        <th>
+            პირადი ნომერი
+         </th>
+        <th>
+            ხელშეკრულების ნომერი
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.TaxOrderID)
         </th>
@@ -114,6 +124,18 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loan.Account.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loan.Account.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loan.Account.PrivateNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loan.Agreement)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TaxOrderID)
             </td>

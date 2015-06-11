@@ -205,9 +205,10 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
 <button onclick="$(cbxFilters).toggle()">ფილტრი</button>
+<button onclick="$(columnFilters).toggle()">სვეტები</button>
 
 <div class="row">
-    <div class="col-lg-2" style="z-index:9999">
+    <div class="col-lg-2" style="z-index:9999" id="columnFilters">
         <label><input type="checkbox" onchange="toggleColumn(1, this)" /> სახელი </label>
         <label><input type="checkbox" onchange="toggleColumn(2, this)" /> გვარი </label>
         <label><input type="checkbox" onchange="toggleColumn(3, this)" /> თანხა </label>

@@ -124,7 +124,13 @@ namespace BusinessCredit.Data
                         db.SaveChanges();
                 }
                 Console.WriteLine("Updating Database...");
+
                 db.SaveChanges();
+
+                PlanAllLoansViaLoanCalculator();
+
+                db.SaveChanges();
+
                 Console.WriteLine("All Done!!!");
             }
         }
@@ -175,7 +181,7 @@ namespace BusinessCredit.Data
             return acc;
         }
 
-        public void PlanAllLoansViaLoanCalculator()
+        public static void PlanAllLoansViaLoanCalculator()
         {
             using (var db = new BusinessCreditContext())
             {
@@ -183,7 +189,7 @@ namespace BusinessCredit.Data
                 {
                     LoanModel loanCalculated = new LoanModel();
                     loanCalculated.Amount = loan.LoanAmount;
-                    loanCalculated.StartDate = DateTime.Today;
+                    loanCalculated.StartDate = loan.LoanStartDate;
                     loanCalculated.TermDays = loan.LoanTermDays;
                     loanCalculated.DaysOfGrace = loan.DaysOfGrace;
                     loanCalculated.DailyInterestRate = loan.LoanDailyInterestRate;
@@ -201,7 +207,7 @@ namespace BusinessCredit.Data
                             EndingBalance = loanCalculated.Payments.ElementAt(i).EndingBalance,
                             Interest = loanCalculated.Payments.ElementAt(i).Interest,
                             PaymentAmount = loanCalculated.Payments.ElementAt(i).PaymentAmount,
-                            PaymentDate = DateTime.Today.AddDays(i + 1),
+                            PaymentDate = loan.LoanStartDate.AddDays(i + 1),
                             PaymentID = loanCalculated.Payments.ElementAt(i).PaymentID,
                             Principal = loanCalculated.Payments.ElementAt(i).Principal,
                             StartingBalance = loanCalculated.Payments.ElementAt(i).StartingBalance
