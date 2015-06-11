@@ -119,7 +119,8 @@ namespace BusinessCredit.Domain
             get
             {
                 Debug.WriteLine("PlannedBalance");
-                return Math.Round(Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == PaymentDate).EndingBalance, 2);
+                //return Math.Round(Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == PaymentDate).EndingBalance, 2);
+                return -1;
             }
         } // გეგმიური ნაშთი 
         #endregion

@@ -7,6 +7,7 @@ using BusinessCredit.Domain;
 using BusinessCredit.Core;
 using LinqToExcel;
 using Remotion.Data.Linq;
+using BusinessCredit.Core.LoanCalculator;
 
 namespace BusinessCredit.Data
 {
@@ -172,6 +173,44 @@ namespace BusinessCredit.Data
                 acc.Loans.Add(loan);
             }
             return acc;
+        }
+
+        public void PlanAllLoansViaLoanCalculator()
+        {
+            using (var db = new BusinessCreditContext())
+            {
+                foreach (var loan in db.Loans.ToList())
+                {
+                    LoanModel loanCalculated = new LoanModel();
+                    loanCalculated.Amount = loan.LoanAmount;
+                    loanCalculated.StartDate = DateTime.Today;
+                    loanCalculated.TermDays = loan.LoanTermDays;
+                    loanCalculated.DaysOfGrace = loan.DaysOfGrace;
+                    loanCalculated.DailyInterestRate = loan.LoanDailyInterestRate;
+
+                    loanCalculated = LoanCalculator.Calculate(loanCalculated);
+
+                    loan.AmountToBePaidAll = loanCalculated.Payments.Sum(p => p.PaymentAmount);
+                    loan.AmountToBePaidDaily = loanCalculated.Payments.First().PaymentAmount;
+
+                    loan.PaymentsPlanned = new List<PaymentPlanned>();
+                    for (int i = 0; i < loanCalculated.Payments.Count(); i++)
+                    {
+                        loan.PaymentsPlanned.Add(new PaymentPlanned()
+                        {
+                            EndingBalance = loanCalculated.Payments.ElementAt(i).EndingBalance,
+                            Interest = loanCalculated.Payments.ElementAt(i).Interest,
+                            PaymentAmount = loanCalculated.Payments.ElementAt(i).PaymentAmount,
+                            PaymentDate = DateTime.Today.AddDays(i + 1),
+                            PaymentID = loanCalculated.Payments.ElementAt(i).PaymentID,
+                            Principal = loanCalculated.Payments.ElementAt(i).Principal,
+                            StartingBalance = loanCalculated.Payments.ElementAt(i).StartingBalance
+                        });
+                    }
+                }
+
+                db.SaveChanges();
+            }
         }
 
         public class Entity
