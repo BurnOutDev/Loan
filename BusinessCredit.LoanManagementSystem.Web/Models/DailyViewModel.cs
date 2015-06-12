@@ -49,7 +49,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
         public DateTime PaymentDate { get; set; }
 
         [Display(Name = "ხელშ. ნომერი")]
-        public int AgreementNumber { get; set; }
+        public string AgreementNumber { get; set; }
 
         [Display(Name = "ვადაგად. თანხა")]
         public double OverdueAmount { get; set; } // CurrentDebt - PlannedPayment

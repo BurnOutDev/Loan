@@ -104,6 +104,26 @@
     <Compile Include="Migrations\201506111156052_Temporary_DbModel_Change__Payments_Added_Setters.Designer.cs">
       <DependentUpon>201506111156052_Temporary_DbModel_Change__Payments_Added_Setters.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506120737069_Agreement_Object_To_String_Object.cs" />
+    <Compile Include="Migrations\201506120737069_Agreement_Object_To_String_Object.Designer.cs">
+      <DependentUpon>201506120737069_Agreement_Object_To_String_Object.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506120740369_Removed_Agreement_DbSet.cs" />
+    <Compile Include="Migrations\201506120740369_Removed_Agreement_DbSet.Designer.cs">
+      <DependentUpon>201506120740369_Removed_Agreement_DbSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506120756114_Changed_Nullable_Type.cs" />
+    <Compile Include="Migrations\201506120756114_Changed_Nullable_Type.Designer.cs">
+      <DependentUpon>201506120756114_Changed_Nullable_Type.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506120811411_Fucking_Simple_Change.cs" />
+    <Compile Include="Migrations\201506120811411_Fucking_Simple_Change.Designer.cs">
+      <DependentUpon>201506120811411_Fucking_Simple_Change.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506120816501_LoanCurrentDebt_and_LoanWholeDebt_Changed_to_methods.cs" />
+    <Compile Include="Migrations\201506120816501_LoanCurrentDebt_and_LoanWholeDebt_Changed_to_methods.Designer.cs">
+      <DependentUpon>201506120816501_LoanCurrentDebt_and_LoanWholeDebt_Changed_to_methods.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxOrders\TaxOrderGenerator.cs" />
@@ -151,6 +171,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506111156052_Temporary_DbModel_Change__Payments_Added_Setters.resx">
       <DependentUpon>201506111156052_Temporary_DbModel_Change__Payments_Added_Setters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506120737069_Agreement_Object_To_String_Object.resx">
+      <DependentUpon>201506120737069_Agreement_Object_To_String_Object.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506120740369_Removed_Agreement_DbSet.resx">
+      <DependentUpon>201506120740369_Removed_Agreement_DbSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506120756114_Changed_Nullable_Type.resx">
+      <DependentUpon>201506120756114_Changed_Nullable_Type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506120811411_Fucking_Simple_Change.resx">
+      <DependentUpon>201506120811411_Fucking_Simple_Change.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506120816501_LoanCurrentDebt_and_LoanWholeDebt_Changed_to_methods.resx">
+      <DependentUpon>201506120816501_LoanCurrentDebt_and_LoanWholeDebt_Changed_to_methods.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

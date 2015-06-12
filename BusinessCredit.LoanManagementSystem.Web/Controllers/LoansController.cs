@@ -124,8 +124,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             loan.NetworkDays = 30;
             loan.AgreementDate = DateTime.Today;
 
-            loan.Initialize();
-            loan.PaymentsPlanned = new List<PaymentPlanned>();
             for (int i = 0; i < loanCalculated.Payments.Count(); i++)
             {
                 loan.PaymentsPlanned.Add(new PaymentPlanned()

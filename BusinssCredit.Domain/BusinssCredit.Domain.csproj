@@ -60,7 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
-    <Compile Include="Agreement.cs" />
     <Compile Include="Branch.cs" />
     <Compile Include="CashCollectionAgent.cs" />
     <Compile Include="CreditExpert.cs" />

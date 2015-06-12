@@ -20,6 +20,9 @@
 <table class="table">
     <tr>
         <th>
+            სესხის #
+        </th>
+        <th>
             სახელი
         </th>
         <th>
@@ -124,6 +127,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loan.LoanID)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Loan.Account.Name)
             </td>

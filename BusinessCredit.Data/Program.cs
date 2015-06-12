@@ -8,6 +8,27 @@ using BusinessCredit.Core;
 using LinqToExcel;
 using Remotion.Data.Linq;
 using BusinessCredit.Core.LoanCalculator;
+using BusinessCredit.Domain;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 namespace BusinessCredit.Data
 {
@@ -30,6 +51,16 @@ namespace BusinessCredit.Data
             var loans = (from x in excel.Worksheet<Entity>("AccountsLoans")
                          select x).ToList();
 
+            using (var db = new BusinessCreditContext())
+            {
+                foreach (var item in loans)
+                {
+                    db.Loans.FirstOrDefault(l => l.LoanID == item.LoanID).Agreement = item.AgreementID;
+                }
+                db.SaveChanges();
+
+
+            }
             var accounts = loans.GroupBy(acc => acc.AccountID).Select(Grouping);
 
             var dbAccounts = new List<Account>();

@@ -24,10 +24,6 @@ namespace BusinessCredit.Core
                .Property(f => f.LoanEndDate)
                .HasColumnType("datetime2");
 
-            modelBuilder.Entity<Agreement>()
-               .Property(f => f.AgreementDate)
-               .HasColumnType("datetime2");
-
             modelBuilder.Entity<CreditExpert>()
                .Property(f => f.HireDate)
                .HasColumnType("datetime2");
@@ -48,7 +44,6 @@ namespace BusinessCredit.Core
         }
 
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<Agreement> Agreements { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<CreditExpert> CreditExperts { get; set; }
         public DbSet<Loan> Loans { get; set; }

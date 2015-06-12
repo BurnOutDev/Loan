@@ -37,7 +37,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var viewList = new List<DailyViewModel>();
             var pmtList = new List<Payment>();
 
-            var loans = db.Loans.Where(l => l.WholeDebt > 0 && l.Branch.BranchID == currentUser.BranchID && l.Payments.FirstOrDefault(p => p.PaymentDate == dailyDate) == null).ToList();
+            var pmts = db.Loans.Select(l => l.Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault());
+
+            var loans = db.Loans.Where(l => l.Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault().WholeDebt > 0 && l.Branch.BranchID == currentUser.BranchID && l.Payments.FirstOrDefault(p => p.PaymentDate == dailyDate) == null).ToList();
 
             if (loans.Count > 0)
             {
@@ -67,6 +69,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                     view.WholeDebt = pmt.WholeDebt.Value;
                     view.CurrentDebt = pmt.CurrentDebt.Value;
                     view.OverdueAmount = view.CurrentDebt - view.PlannedPayment;
+                    view.AgreementNumber = pmt.Loan.Agreement;
+                    view.BusinessAddress = pmt.Loan.Account.BusinessPhysicalAddress;
 
                     viewList.Add(view);
                 }
@@ -102,7 +106,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             db.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "DailyView");
         }
     }
 }

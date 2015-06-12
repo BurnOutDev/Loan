@@ -10,39 +10,12 @@ namespace BusinessCredit.Domain
 {
     public class Loan
     {
-        public void PlanLoan()
+        public Loan()
         {
-            PaymentsPlanned = new List<PaymentPlanned>();
-
-            for (int i = 1; i <= LoanTermDays; i++)
-            {
-                var payment = new PaymentPlanned() { PaymentID = i, Loan = this };
-                PaymentsPlanned.Add(payment);
-                payment.Init();
-            }
-        }
-
-        public void AddPayment(Payment pmt)
-        {
-            pmt.Loan = this;
-            pmt.Branch = this.Branch;
-            Payments.Add(pmt);
-        }
-
-        public void Initialize()
-        {
-            if (Payments == null || Payments.Count == 0)
-            {
+            if (Payments == null)
                 Payments = new List<Payment>();
-
-                //for (int i = 0; i < LoanTermDays; i++)
-                //    Payments.Add(new Payment()
-                //    {
-                //        PaymentID = i + 1,
-                //        Loan = this,
-                //        CurrentPayment = 0
-                //    });
-            }
+            if (PaymentsPlanned == null)
+                PaymentsPlanned = new List<PaymentPlanned>();
         }
 
         [Key]
@@ -88,26 +61,6 @@ namespace BusinessCredit.Domain
         [Display(Name = "დღეში გადასახადი")]
         public double AmountToBePaidDaily { get; set; }
 
-        public double CurrentDebt
-        {
-            get
-            {
-                return -1;
-                return Payments.Where(p => p.Loan.LoanID == this.LoanID).OrderByDescending(x => x.PaymentDate).FirstOrDefault().CurrentDebt.Value;
-            }
-            private set { }
-        } // --
-
-        public double WholeDebt
-        {
-            get
-            {
-                return -1;
-                return Payments.Where(p => p.Loan.LoanID == this.LoanID).OrderByDescending(x => x.PaymentDate).FirstOrDefault().WholeDebt.Value;
-            }
-            private set { }
-        }  // --
-
         /// გენერალური ხელშეკრულების თარიღი
         [Display(Name = "ხელშეკრულების თარიღი")]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
@@ -126,8 +79,8 @@ namespace BusinessCredit.Domain
         public virtual ICollection<Guarantor> Guarantors { get; set; }
 
         /// ხელშეკრულება (ხელშ. #)
-        [Display(ResourceType = typeof(Agreement))]
-        public virtual Agreement Agreement { get; set; }
+        [Display(Name = "ხელშეკრულების ნომერი")]
+        public virtual string Agreement { get; set; }
 
         /// სესხის სტატუსი (მიმდინარე, დახურული)
         [Display(Name = "სტატუსი")]
@@ -135,7 +88,7 @@ namespace BusinessCredit.Domain
         {
             get
             {
-                return this.WholeDebt > 0 ? LoanStatus.Active : LoanStatus.Closed;
+                return LoanStatus.Active;
             }
             private set { }
         }

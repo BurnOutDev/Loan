@@ -55,7 +55,6 @@
             <th>
                 @Html.DisplayNameFor(model => model[0].OverdueAmount)
             </th>
-            <th></th>
         </tr>
 
 
@@ -121,11 +120,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => Model[i].OverdueAmount)
                     @Html.HiddenFor(model => model[i].OverdueAmount)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                 </td>
             </tr>
             @Html.HiddenFor(model => model[i].LoanId)
