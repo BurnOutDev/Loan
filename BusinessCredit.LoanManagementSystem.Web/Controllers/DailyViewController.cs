@@ -18,7 +18,26 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     [Authorize]
     public class DailyViewController : Controller
     {
-        private BusinessCreditContext db = new BusinessCreditContext();
+        private BusinessCreditContext _db;
+
+        public BusinessCreditContext db
+        {
+            get
+            {
+                if (_db == null)
+                    _db = new BusinessCreditContext(CurrentUser.ConnectionString);
+                return _db;
+            }
+        }
+
+        public ApplicationUser CurrentUser
+        {
+            get
+            {
+                var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                return manager.FindById(User.Identity.GetUserId());
+            }
+        }
 
         public ActionResult Index()
         {
@@ -39,7 +58,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             var pmts = db.Loans.Select(l => l.Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault());
 
-            var loans = db.Loans.Where(l => l.Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault().WholeDebt > 0 && l.Branch.BranchID == currentUser.BranchID && l.Payments.FirstOrDefault(p => p.PaymentDate == dailyDate) == null).ToList();
+            var loans = db.Loans.Where(l => l.Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault().WholeDebt > 0 && l.Payments.FirstOrDefault(p => p.PaymentDate == dailyDate) == null).ToList();
 
             if (loans.Count > 0)
             {

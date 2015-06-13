@@ -36,22 +36,13 @@ namespace BusinessCredit.Data
     {
         static void Main()
         {
-            using (var db = new BusinessCreditContext())
-            {
-                foreach (var loan in db.Loans.ToList())
-                {
-                    loan.Branch = db.Branches.Find(1);
-                }
-                db.SaveChanges();
-            }
-
             var excel = new ExcelQueryFactory();
             excel.FileName = @"C:\Users\BurnOut\Desktop\INSERT.xlsx";
 
             var loans = (from x in excel.Worksheet<Entity>("AccountsLoans")
                          select x).ToList();
 
-            using (var db = new BusinessCreditContext())
+            using (var db = new BusinessCreditContext(""))
             {
                 foreach (var item in loans)
                 {
@@ -65,7 +56,7 @@ namespace BusinessCredit.Data
 
             var dbAccounts = new List<Account>();
 
-            using (var db = new BusinessCreditContext())
+            using (var db = new BusinessCreditContext(""))
             {
                 #region Comments
                 //foreach (var row in result)
@@ -119,14 +110,13 @@ namespace BusinessCredit.Data
             Console.WriteLine("Getting Data Finished (OK)");
             Console.WriteLine("Adding Payments...");
             int count = 0;
-            using (var db = new BusinessCreditContext())
+            using (var db = new BusinessCreditContext(""))
             {
                 foreach (var pmt in payments)
                 {
                     var payment = new Payment()
                     {
                         Loan = db.Loans.FirstOrDefault(l => l.LoanID == pmt.LoanID),
-                        Branch = db.Branches.FirstOrDefault(b => b.BranchID == pmt.BranchID),
                         CashCollectionAgent = db.CashCollectionAgents.FirstOrDefault(c => c.CashCollectionAgentID == pmt.CollectorID), //droebit
                         CreditExpert = db.CreditExperts.FirstOrDefault(ce => ce.EmployeeID == pmt.CreditExpertID),
                         CurrentPayment = pmt.CurrentPMT,
@@ -214,7 +204,7 @@ namespace BusinessCredit.Data
 
         public static void PlanAllLoansViaLoanCalculator()
         {
-            using (var db = new BusinessCreditContext())
+            using (var db = new BusinessCreditContext(""))
             {
                 foreach (var loan in db.Loans.ToList())
                 {

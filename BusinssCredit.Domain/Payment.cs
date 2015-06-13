@@ -713,7 +713,6 @@ namespace BusinessCredit.Domain
 
         public virtual Loan Loan { get; set; }
         public virtual CreditExpert CreditExpert { get; set; }
-        public virtual Branch Branch { get; set; }
         public virtual CashCollectionAgent CashCollectionAgent { get; set; }
     }
 }

@@ -19,8 +19,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
         }
 
         public int BranchID { get; set; }
-        public DateTime BirthDate { get; set; }
-        public string PhoneNumber { get; set; }
+        public string ConnectionString { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

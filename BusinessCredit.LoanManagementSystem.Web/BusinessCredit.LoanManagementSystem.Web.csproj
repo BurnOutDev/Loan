@@ -174,7 +174,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\DailyViewController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -193,6 +192,14 @@
     <Compile Include="Migrations\201506040855364_AddedPropertiesOnIdentityUser.cs" />
     <Compile Include="Migrations\201506040855364_AddedPropertiesOnIdentityUser.Designer.cs">
       <DependentUpon>201506040855364_AddedPropertiesOnIdentityUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506130916200_After_Splitting_By_Branches.cs" />
+    <Compile Include="Migrations\201506130916200_After_Splitting_By_Branches.Designer.cs">
+      <DependentUpon>201506130916200_After_Splitting_By_Branches.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506130926407_BirthDateRemoved.cs" />
+    <Compile Include="Migrations\201506130926407_BirthDateRemoved.Designer.cs">
+      <DependentUpon>201506130926407_BirthDateRemoved.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountLoanViewModel.cs" />
@@ -328,11 +335,6 @@
     <Content Include="Views\DailyView\Index.cshtml" />
     <Content Include="Views\DailyView\Indexer.cshtml" />
     <Content Include="Views\Loans\Add.cshtml" />
-    <Content Include="Views\Branches\Create.cshtml" />
-    <Content Include="Views\Branches\Delete.cshtml" />
-    <Content Include="Views\Branches\Details.cshtml" />
-    <Content Include="Views\Branches\Edit.cshtml" />
-    <Content Include="Views\Branches\Index.cshtml" />
     <Content Include="Views\Loans\CreateViaViewModel.cshtml" />
     <Content Include="Views\Loans\CreateLoanView.cshtml" />
     <Content Include="Views\Reports\PortfolioAnalize.cshtml" />
@@ -366,6 +368,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506040855364_AddedPropertiesOnIdentityUser.resx">
       <DependentUpon>201506040855364_AddedPropertiesOnIdentityUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506130916200_After_Splitting_By_Branches.resx">
+      <DependentUpon>201506130916200_After_Splitting_By_Branches.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506130926407_BirthDateRemoved.resx">
+      <DependentUpon>201506130926407_BirthDateRemoved.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

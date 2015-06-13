@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BusinessCredit.Domain.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Models
@@ -79,6 +80,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "ფილიალი")]
+        public Branches Branch { get; set; }
     }
 
     public class ResetPasswordViewModel

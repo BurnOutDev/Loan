@@ -15,10 +15,10 @@
 @model BusinessCredit.LoanManagementSystem.Web.Models.CreateLoanViewModel
 
 @{
-    ViewBag.Title = "CreateLoanView";
+    ViewBag.Title = "სესხის დამატება";
 }
 
-<h2>CreateLoanView</h2>
+<h2>სესხის დამატება</h2>
 
 <script>
     function Filter(index, obj) {
@@ -46,7 +46,6 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>CreateLoanViewModel</h4>
         <hr />
         @Html.ValidationSummary(true)
 
@@ -125,8 +124,8 @@
                 </tr>
                     @{ var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
                        var currentUser = manager.FindById(User.Identity.GetUserId()); }
-                    @*Need to get Users by Loan BranchID*@
-                    @foreach (var client in new BusinessCreditContext().Accounts.Where(a => a.Branch.BranchID == currentUser.BranchID))
+
+                    @foreach (var client in new BusinessCreditContext(currentUser.ConnectionString).Accounts.ToList())
                     {
                         <tr>
                             <td class="col-1">@client.AccountID</td>

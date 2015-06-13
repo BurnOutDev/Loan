@@ -97,7 +97,6 @@ namespace BusinessCredit.Domain
         public virtual ICollection<Payment> Payments { get; set; }
         public virtual ICollection<PaymentPlanned> PaymentsPlanned { get; set; }
 
-        public virtual Branch Branch { get; set; }
 
         /// სესხის გამცემი (საკრედიტო ექსპერტი)
         public virtual CreditExpert CreditExpert { get; set; }

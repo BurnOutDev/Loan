@@ -8,13 +8,35 @@ using System.Web;
 using System.Web.Mvc;
 using BusinessCredit.Core;
 using BusinessCredit.Domain;
+using Microsoft.AspNet.Identity;
+using BusinessCredit.LoanManagementSystem.Web.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
     [Authorize]
     public class PaymentsPlannedController : Controller
     {
-        private BusinessCreditContext db = new BusinessCreditContext();
+        private BusinessCreditContext _db;
+
+        public BusinessCreditContext db
+        {
+            get
+            {
+                if (_db == null)
+                    _db = new BusinessCreditContext(CurrentUser.ConnectionString);
+                return _db;
+            }
+        }
+
+        public ApplicationUser CurrentUser
+        {
+            get
+            {
+                var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                return manager.FindById(User.Identity.GetUserId());
+            }
+        }
 
         // GET: PaymentsPlanned
         public ActionResult Index()

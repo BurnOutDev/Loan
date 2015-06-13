@@ -23,7 +23,6 @@ namespace BusinessCredit.Domain
         public DateTime RetireDate { get; set; }
 
         public virtual EmployeeStatus Status { get; set; }
-        public virtual Branch Branch { get; set; }
         public virtual ICollection<Loan> Loans { get; set; }
     }
 }

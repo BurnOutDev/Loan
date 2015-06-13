@@ -70,8 +70,8 @@
                 </tr>
                 @{ var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
                  var currentUser = manager.FindById(User.Identity.GetUserId()); }
-                @*Need to get Users by Loan BranchID*@
-                @foreach (var client in new BusinessCreditContext().Accounts.Where(a => a.Branch.BranchID == currentUser.BranchID))
+
+                @foreach (var client in new BusinessCreditContext().Accounts.ToList())
                 {
                     <tr>
                         <td class="col-1">@client.AccountID</td>

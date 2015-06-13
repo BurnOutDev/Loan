@@ -38,6 +38,5 @@ namespace BusinessCredit.Domain
         public string BusinessPhysicalAddress { get; set; }
         
         public virtual ICollection<Loan> Loans { get; set; }
-        public virtual Branch Branch { get; set; }   
     }
 }

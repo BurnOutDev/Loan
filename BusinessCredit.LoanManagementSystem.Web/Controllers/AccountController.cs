@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BusinessCredit.LoanManagementSystem.Web.Models;
+using BusinessCredit.Domain.Enums;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -22,7 +23,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +35,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -119,7 +120,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -135,6 +136,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
         //
         // GET: /Account/Register
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -143,18 +145,48 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                string connectionString;
+
+                #region Switch-Case ConnectionString
+
+                switch (model.Branch)
+                {
+                    case Branches.Central:
+                        connectionString = "name=Head_BusinessCreditDbConnectionString";
+                        break;
+                    case Branches.Isani:
+                        connectionString = "name=Isani_BusinessCreditDbConnectionString";
+                        break;
+                    case Branches.Okriba:
+                        connectionString = "name=Okriba_BusinessCreditDbConnectionString";
+                        break;
+                    case Branches.Lilo:
+                        connectionString = "name=Lilo_BusinessCreditDbConnectionString";
+                        break;
+                    case Branches.Eliava:
+                        connectionString = "name=Eliava_BusinessCreditDbConnectionString";
+                        break;
+                    case Branches.Vagzali:
+                        connectionString = "name=Vagzali_BusinessCreditDbConnectionString";
+                        break;
+                    default:
+                        connectionString = null;
+                        break;
+                } 
+                #endregion
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, BranchID = (int)model.Branch, ConnectionString = connectionString };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

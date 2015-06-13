@@ -20,7 +20,24 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     [Authorize]
     public class LoansController : Controller
     {
-        private BusinessCreditContext db = new BusinessCreditContext();
+        private BusinessCreditContext _db;
+        public BusinessCreditContext db
+        {
+            get
+            {
+                if (_db == null)
+                    _db = new BusinessCreditContext(CurrentUser.ConnectionString);
+                return _db;
+            }
+        }
+        public ApplicationUser CurrentUser
+        {
+            get
+            {
+                var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                return manager.FindById(User.Identity.GetUserId());
+            }
+        }
         private int pageSize = 30;
 
         public ActionResult Index(int? page, int? accountId)
@@ -37,11 +54,10 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             IQueryable<Loan> result;
 
             if (accountId.HasValue)
-                result = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID && l.Account.AccountID == accountId)
+                result = db.Loans.Where(l => l.Account.AccountID == accountId)
                             .OrderBy(x => x.LoanID);
             else
-                result = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID)
-                            .OrderBy(x => x.LoanID);
+                result = db.Loans.OrderBy(x => x.LoanID);
 
             if (page.HasValue)
                 return View(result.ToPagedList(page.Value, pageSize));
@@ -65,7 +81,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Loan loan = db.Loans.FirstOrDefault(l => l.Branch.BranchID == currentUser.BranchID && l.LoanID == id);
+            Loan loan = db.Loans.FirstOrDefault(l => l.LoanID == id);
             if (loan == null)
             {
                 return HttpNotFound();
@@ -118,7 +134,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             loan.AmountToBePaidAll = loanCalculated.Payments.Sum(p => p.PaymentAmount);
             loan.AmountToBePaidDaily = loanCalculated.Payments.First().PaymentAmount;
-            loan.Branch = db.Branches.FirstOrDefault(b => b.BranchID == currentUser.BranchID);
             loan.EffectiveInterestRate = (loanCalculated.Payments.Sum(p => p.Interest) / loanCalculated.TermDays * 30) / loanCalculated.Amount;
             loan.LoanEndDate = loan.LoanStartDate.AddDays(loan.LoanTermDays);
             loan.NetworkDays = 30;
@@ -159,6 +174,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             loan.Guarantors.Add(guarantor);
 
             db.Loans.Add(loan);
+            db.SaveChanges();
+            loan.Agreement = loan.Account.AccountID + "-" + CurrentUser.BranchID + "-" + loan.LoanID;
             db.SaveChanges();
 
             return View();

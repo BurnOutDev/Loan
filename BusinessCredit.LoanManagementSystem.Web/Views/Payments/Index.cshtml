@@ -20,9 +20,6 @@
 <table class="table">
     <tr>
         <th>
-            სესხის #
-        </th>
-        <th>
             სახელი
         </th>
         <th>
@@ -32,7 +29,10 @@
             პირადი ნომერი
          </th>
         <th>
-            ხელშეკრულების ნომერი
+            კლიენტის #
+        </th>
+        <th>
+            სესხის #
         </th>
         <th>
             @Html.DisplayNameFor(model => model.TaxOrderID)
@@ -65,7 +65,7 @@
             @Html.DisplayNameFor(model => model.AccruingPrincipalPayment)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Branch)
+            @*@Html.DisplayNameFor(model => model.Branch)*@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CurrentDebt)
@@ -128,9 +128,6 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Loan.LoanID)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Loan.Account.Name)
             </td>
             <td>
@@ -140,7 +137,10 @@
                 @Html.DisplayFor(modelItem => item.Loan.Account.PrivateNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Loan.Agreement)
+                @Html.DisplayFor(modelItem => item.Loan.Account.AccountID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loan.LoanID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TaxOrderID)
@@ -173,7 +173,7 @@
                 @Html.DisplayFor(modelItem => item.AccruingPrincipalPayment)
             </th>
             <th>
-                @Html.DisplayFor(modelItem => item.Branch.BranchName)
+                @*@Html.DisplayFor(modelItem => item.Branch.BranchName)*@
             </th>
             <th>
                 @Html.DisplayFor(modelItem => item.CurrentDebt)

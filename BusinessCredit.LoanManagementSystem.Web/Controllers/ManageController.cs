@@ -366,7 +366,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user != null)
             {
-                return user.PhoneNumber != null;
+                return user.ConnectionString != null;
             }
             return false;
         }

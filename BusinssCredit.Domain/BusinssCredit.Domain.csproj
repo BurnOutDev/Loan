@@ -60,9 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
-    <Compile Include="Branch.cs" />
     <Compile Include="CashCollectionAgent.cs" />
     <Compile Include="CreditExpert.cs" />
+    <Compile Include="Enums\Branches.cs" />
     <Compile Include="Enums\EmployeeStatus.cs" />
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Guarantor.cs" />

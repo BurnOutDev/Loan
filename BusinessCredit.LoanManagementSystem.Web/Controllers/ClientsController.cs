@@ -18,7 +18,27 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     [Authorize]
     public class ClientsController : Controller
     {
-        private BusinessCreditContext db = new BusinessCreditContext();
+        private BusinessCreditContext _db;
+
+        public BusinessCreditContext db
+        {
+            get
+            {
+                if (_db == null)
+                    _db = new BusinessCreditContext(CurrentUser.ConnectionString);
+                return _db;
+            }
+        }
+
+        public ApplicationUser CurrentUser
+        {
+            get
+            {
+                var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                return manager.FindById(User.Identity.GetUserId());
+            }
+        }
+
         private int pageSize = 30;
 
         // GET: Clients
@@ -36,13 +56,13 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             if (db.Loans.Count() == 0 && db.Accounts.Count() == 0)
                 return View(new List<Account>().ToPagedList(1, pageSize));
 
-            var loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID);
+            var loans = db.Loans.ToList();
             var accounts = (from l in loans
                             select l.Account)
                             .Distinct()
                             .ToList();
 
-            accounts.AddRange(db.Accounts.Where(a => a.Branch.BranchID == currentUser.BranchID));
+            accounts.AddRange(db.Accounts.ToList());
             if (page.HasValue)
                 return View(accounts.OrderBy(x => x.Name).ToPagedList(page.Value, pageSize));
             return View(accounts.OrderBy(x => x.Name).ToPagedList(1, pageSize));
@@ -65,7 +85,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID);
+            var loans = db.Loans.ToList();
             var accounts = (from l in loans
                             select l.Account).ToList();
 
@@ -100,7 +120,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                account.Branch = db.Branches.FirstOrDefault(b => b.BranchID == currentUser.BranchID);
                 db.Accounts.Add(account);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -125,7 +144,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID);
+            var loans = db.Loans.ToList();
             var accounts = (from l in loans
                             select l.Account).ToList();
 
@@ -168,7 +187,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var loans = db.Loans.Where(l => l.Branch.BranchID == currentUser.BranchID);
+            var loans = db.Loans.ToList();
             var accounts = (from l in loans
                             select l.Account).ToList();
             Account account = accounts.FirstOrDefault(a => a.AccountID == id);

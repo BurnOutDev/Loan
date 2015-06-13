@@ -124,6 +124,10 @@
     <Compile Include="Migrations\201506120816501_LoanCurrentDebt_and_LoanWholeDebt_Changed_to_methods.Designer.cs">
       <DependentUpon>201506120816501_LoanCurrentDebt_and_LoanWholeDebt_Changed_to_methods.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506121253494_RemovedBranches.cs" />
+    <Compile Include="Migrations\201506121253494_RemovedBranches.Designer.cs">
+      <DependentUpon>201506121253494_RemovedBranches.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxOrders\TaxOrderGenerator.cs" />
@@ -186,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506120816501_LoanCurrentDebt_and_LoanWholeDebt_Changed_to_methods.resx">
       <DependentUpon>201506120816501_LoanCurrentDebt_and_LoanWholeDebt_Changed_to_methods.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506121253494_RemovedBranches.resx">
+      <DependentUpon>201506121253494_RemovedBranches.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -15,7 +15,6 @@ using System.IO;
 using Ionic.Zlib;
 using Ionic.Zip;
 using BusinessCredit.Core.TaxOrders;
-
 using System.IO.Compression;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
@@ -23,7 +22,26 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     [Authorize]
     public class PaymentsController : Controller
     {
-        private BusinessCreditContext db = new BusinessCreditContext();
+        private BusinessCreditContext _db;
+
+        public BusinessCreditContext db
+        {
+            get
+            {
+                if (_db == null)
+                    _db = new BusinessCreditContext(CurrentUser.ConnectionString);
+                return _db;
+            }
+        }
+
+        public ApplicationUser CurrentUser
+        {
+            get
+            {
+                var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                return manager.FindById(User.Identity.GetUserId());
+            }
+        }
 
         public ActionResult Index(int? loanId, string fromDate, string toDate)
         {
@@ -67,7 +85,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.FirstOrDefault(p => p.Loan.Branch.BranchID == currentUser.BranchID && p.PaymentID == id);
+            Payment payment = db.Payments.FirstOrDefault(p => p.PaymentID == id);
             if (payment == null)
             {
                 return HttpNotFound();

@@ -5,7 +5,7 @@ namespace BusinessCredit.Core
 {
     public class BusinessCreditContext : DbContext
     {
-        public BusinessCreditContext() : base("name=BusinessCreditDbConnectionString")
+        public BusinessCreditContext(string connectionString) : base(connectionString)
         {
             Database.SetInitializer(new BusinessCreditDbInitializer());
         }
@@ -44,11 +44,9 @@ namespace BusinessCredit.Core
         }
 
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<Branch> Branches { get; set; }
         public DbSet<CreditExpert> CreditExperts { get; set; }
         public DbSet<Loan> Loans { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        //public DbSet<PlannedPayments> PlannedPayments { get; set; }
         public DbSet<PaymentPlanned> PaymentEntities { get; set; }
         public DbSet<CashCollectionAgent> CashCollectionAgents { get; set; }
         public DbSet<TaxOrder> TaxOrders { get; set; }
