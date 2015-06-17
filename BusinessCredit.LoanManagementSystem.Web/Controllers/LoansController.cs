@@ -118,6 +118,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             loan.LoanDailyInterestRate = loanModel.DailyInterestRate;
             loan.LoanTermDays = loanModel.TermDays;
             loan.LoanStartDate = DateTime.Today;
+            loan.LoanPurpose = loanModel.LoanPurpose;
 
             loan.LoanPenaltyRate = 0.005;
             loan.AmountToBePaidDaily = Financial.Pmt(loanModel.DailyInterestRate, loanModel.TermDays, loanModel.Amount);

@@ -128,6 +128,18 @@
     <Compile Include="Migrations\201506121253494_RemovedBranches.Designer.cs">
       <DependentUpon>201506121253494_RemovedBranches.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506161209093_Enabled_Keys_Autogenerate.cs" />
+    <Compile Include="Migrations\201506161209093_Enabled_Keys_Autogenerate.Designer.cs">
+      <DependentUpon>201506161209093_Enabled_Keys_Autogenerate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506161230044_Enabled_Keys_Autogenerate2.cs" />
+    <Compile Include="Migrations\201506161230044_Enabled_Keys_Autogenerate2.Designer.cs">
+      <DependentUpon>201506161230044_Enabled_Keys_Autogenerate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506170840039_Payments_Added_BranchID.cs" />
+    <Compile Include="Migrations\201506170840039_Payments_Added_BranchID.Designer.cs">
+      <DependentUpon>201506170840039_Payments_Added_BranchID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxOrders\TaxOrderGenerator.cs" />
@@ -193,6 +205,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506121253494_RemovedBranches.resx">
       <DependentUpon>201506121253494_RemovedBranches.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506161209093_Enabled_Keys_Autogenerate.resx">
+      <DependentUpon>201506161209093_Enabled_Keys_Autogenerate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506161230044_Enabled_Keys_Autogenerate2.resx">
+      <DependentUpon>201506161230044_Enabled_Keys_Autogenerate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506170840039_Payments_Added_BranchID.resx">
+      <DependentUpon>201506170840039_Payments_Added_BranchID.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

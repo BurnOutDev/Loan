@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Linq;
 
@@ -9,6 +10,7 @@ namespace BusinessCredit.Domain
     public class Payment
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PaymentID { get; set; }
 
         [Display(Name = "სშო #")]
@@ -119,8 +121,7 @@ namespace BusinessCredit.Domain
             get
             {
                 Debug.WriteLine("PlannedBalance");
-                //return Math.Round(Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == PaymentDate).EndingBalance, 2);
-                return -1;
+                return Math.Round(Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == PaymentDate).EndingBalance, 2);
             }
         } // გეგმიური ნაშთი 
         #endregion
@@ -714,5 +715,7 @@ namespace BusinessCredit.Domain
         public virtual Loan Loan { get; set; }
         public virtual CreditExpert CreditExpert { get; set; }
         public virtual CashCollectionAgent CashCollectionAgent { get; set; }
+
+        public int BranchID { get; set; }
     }
 }

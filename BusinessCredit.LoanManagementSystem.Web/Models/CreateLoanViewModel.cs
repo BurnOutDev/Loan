@@ -18,6 +18,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
         [Display(Name="თანხა")]
         public double Amount { get; set; }
 
+        [Display(Name="სავარაუდო მიზანი")]
+        public string LoanPurpose { get; set; }
+
         [Display(Name="დღიური პროცენტი")]
         public double DailyInterestRate { get; set; }
 

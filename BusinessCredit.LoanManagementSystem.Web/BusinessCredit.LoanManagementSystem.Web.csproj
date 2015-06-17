@@ -174,6 +174,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\DailyViewController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -201,9 +202,22 @@
     <Compile Include="Migrations\201506130926407_BirthDateRemoved.Designer.cs">
       <DependentUpon>201506130926407_BirthDateRemoved.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506161138039_Enabled_Keys_Autogenerate.cs" />
+    <Compile Include="Migrations\201506161138039_Enabled_Keys_Autogenerate.Designer.cs">
+      <DependentUpon>201506161138039_Enabled_Keys_Autogenerate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506161138522_Enabled_Keys_Autogenerate2.cs" />
+    <Compile Include="Migrations\201506161138522_Enabled_Keys_Autogenerate2.Designer.cs">
+      <DependentUpon>201506161138522_Enabled_Keys_Autogenerate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506170837053_Payments_Added_BranchID.cs" />
+    <Compile Include="Migrations\201506170837053_Payments_Added_BranchID.Designer.cs">
+      <DependentUpon>201506170837053_Payments_Added_BranchID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountLoanViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\AgreementViewModel.cs" />
     <Compile Include="Models\GuarantorViewModel.cs" />
     <Compile Include="Models\LoanIssueReportModel.cs" />
@@ -341,6 +355,9 @@
     <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Reports\IncomeAnalize.cshtml" />
     <Content Include="Views\Reports\LoanIssueDaily.cshtml" />
+    <Content Include="Views\Admin\ClientsAdmin.cshtml" />
+    <Content Include="Views\Admin\PaymentsAdmin.cshtml" />
+    <Content Include="Views\Payments\IndexAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -374,6 +391,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506130926407_BirthDateRemoved.resx">
       <DependentUpon>201506130926407_BirthDateRemoved.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506161138039_Enabled_Keys_Autogenerate.resx">
+      <DependentUpon>201506161138039_Enabled_Keys_Autogenerate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506161138522_Enabled_Keys_Autogenerate2.resx">
+      <DependentUpon>201506161138522_Enabled_Keys_Autogenerate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506170837053_Payments_Added_BranchID.resx">
+      <DependentUpon>201506170837053_Payments_Added_BranchID.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

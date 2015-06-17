@@ -19,7 +19,7 @@ namespace BusinessCredit.Domain
         }
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int LoanID { get; set; }
 
         [Display(Name = "თანხა")]
@@ -102,5 +102,7 @@ namespace BusinessCredit.Domain
         public virtual CreditExpert CreditExpert { get; set; }
 
         public virtual Account Account { get; set; }
+
+        public int BranchID { get; set; }
     }
 }

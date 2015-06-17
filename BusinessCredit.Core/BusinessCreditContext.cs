@@ -1,11 +1,23 @@
 ﻿using BusinessCredit.Domain;
+using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace BusinessCredit.Core
 {
     public class BusinessCreditContext : DbContext
     {
-        public BusinessCreditContext(string connectionString) : base(connectionString)
+        //public BusinessCreditContext() : base("name=Central_BusinessCreditDbConnectionString")
+        //public BusinessCreditContext() : base("name=Isani_BusinessCreditDbConnectionString")
+        //public BusinessCreditContext() : base("name=Okriba_BusinessCreditDbConnectionString" )
+        //public BusinessCreditContext() : base("name=Lilo_BusinessCreditDbConnectionString"   )
+        //public BusinessCreditContext() : base("name=Eliava_BusinessCreditDbConnectionString" )
+        //public BusinessCreditContext() : base("name=Vagzali_BusinessCreditDbConnectionString")
+        //{
+        //    Database.SetInitializer(new BusinessCreditDbInitializer());
+        //}
+
+        public BusinessCreditContext(string connectionString)
+            : base(connectionString)
         {
             Database.SetInitializer(new BusinessCreditDbInitializer());
         }
@@ -41,6 +53,20 @@ namespace BusinessCredit.Core
             // .HasColumnType("datetime2");
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        public string BranchName
+        {
+            get
+            {
+                var branches = new List<string>() { "Central", "Isani", "Okriba", "Lilo", "Eliava", "Vagzali" };
+                foreach (var branch in branches)
+                {
+                    if (Database.Connection.ConnectionString.Contains(branch))
+                        return branch;
+                }
+                throw new KeyNotFoundException("Critical Error! No connection string found!");
+            }
         }
 
         public DbSet<Account> Accounts { get; set; }

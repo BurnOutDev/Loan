@@ -23,6 +23,9 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model[0].AccountID)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model[0].Name)
         </th>
         <th>
@@ -54,6 +57,9 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountID)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>

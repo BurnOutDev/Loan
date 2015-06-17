@@ -1,0 +1,201 @@
+﻿@model IEnumerable<BusinessCredit.LoanManagementSystem.Web.Models.AdminPaymentsViewModel>
+
+@{
+    ViewBag.Title = "PaymentsAdmin";
+}
+
+<h2>PaymentsAdmin</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TaxOrderID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentDebt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WholeDebt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartingPlannedBalance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartingBalance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlannedBalance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PayableInterest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PayablePrincipal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentOverduePrincipal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentOverdueInterest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentPenalty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccruingOverduePrincipal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccruingOverdueInterest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccruingOverduePenalty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccruingPenaltyPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccruingInterestPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccruingPrincipalPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentInterestPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentPrincipalPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrincipalPrepaymant)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaidInterest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaidPenalty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaidPrincipal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrincipalPrepaid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanBalance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Branch)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TaxOrderID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentPayment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentDebt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WholeDebt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartingPlannedBalance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartingBalance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PlannedBalance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PayableInterest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PayablePrincipal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentOverduePrincipal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentOverdueInterest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentPenalty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccruingOverduePrincipal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccruingOverdueInterest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccruingOverduePenalty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccruingPenaltyPayment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccruingInterestPayment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccruingPrincipalPayment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentInterestPayment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentPrincipalPayment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrincipalPrepaymant)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaidInterest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaidPenalty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaidPrincipal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrincipalPrepaid)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanBalance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Branch)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PaymentID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PaymentID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PaymentID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -7,7 +7,7 @@ namespace BusinessCredit.Domain
     public class Account
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AccountID { get; set; }
 
         [Display(Name = "სახელი")]
@@ -38,5 +38,6 @@ namespace BusinessCredit.Domain
         public string BusinessPhysicalAddress { get; set; }
         
         public virtual ICollection<Loan> Loans { get; set; }
+        public int BranchID { get; set; }
     }
 }
