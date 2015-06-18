@@ -36,124 +36,124 @@ namespace BusinessCredit.Data
     {
         static void Main()
         {
-            var excel = new ExcelQueryFactory();
-            excel.FileName = @"C:\Users\BurnOut\Desktop\INSERT.xlsx";
+            //var excel = new ExcelQueryFactory();
+            //excel.FileName = @"C:\Users\BurnOut\Desktop\INSERT.xlsx";
 
-            var loans = (from x in excel.Worksheet<Entity>("AccountsLoans")
-                         select x).ToList();
+            //var loans = (from x in excel.Worksheet<Entity>("AccountsLoans")
+            //             select x).ToList();
 
-            using (var db = new BusinessCreditContext(""))
-            {
-                foreach (var item in loans)
-                {
-                    db.Loans.FirstOrDefault(l => l.LoanID == item.LoanID).Agreement = item.AgreementID;
-                }
-                db.SaveChanges();
+            //using (var db = new BusinessCreditContext(""))
+            //{
+            //    foreach (var item in loans)
+            //    {
+            //        db.Loans.FirstOrDefault(l => l.LoanID == item.LoanID).Agreement = item.AgreementID;
+            //    }
+            //    db.SaveChanges();
 
 
-            }
-            var accounts = loans.GroupBy(acc => acc.AccountID).Select(Grouping);
+            //}
+            //var accounts = loans.GroupBy(acc => acc.AccountID).Select(Grouping);
 
-            var dbAccounts = new List<Account>();
+            //var dbAccounts = new List<Account>();
 
-            using (var db = new BusinessCreditContext(""))
-            {
-                #region Comments
-                //foreach (var row in result)
-                //{
-                //    var acc = new Account()
-                //    {
-                //        AccountID = row.AccountID,
-                //        Name = row.Name,
-                //        LastName = row.LastName,
-                //        PrivateNumber = row.PrivateNumber,
-                //        //Status = (PersonType)row.Status,
-                //        PhysicalAddress = row.PhysicalAddress,
-                //        BusinessPhysicalAddress = row.BusinessPhysicalAddress,
-                //        NumberMobile = row.NumberMobile,
-                //        AccountNumber = row.AccountNumber,
-                //        Gender = row.Gender == "მამრ" ? Gender.Male : Gender.Female
-                //    };
+            //using (var db = new BusinessCreditContext(""))
+            //{
+            //    #region Comments
+            //    //foreach (var row in result)
+            //    //{
+            //    //    var acc = new Account()
+            //    //    {
+            //    //        AccountID = row.AccountID,
+            //    //        Name = row.Name,
+            //    //        LastName = row.LastName,
+            //    //        PrivateNumber = row.PrivateNumber,
+            //    //        //Status = (PersonType)row.Status,
+            //    //        PhysicalAddress = row.PhysicalAddress,
+            //    //        BusinessPhysicalAddress = row.BusinessPhysicalAddress,
+            //    //        NumberMobile = row.NumberMobile,
+            //    //        AccountNumber = row.AccountNumber,
+            //    //        Gender = row.Gender == "მამრ" ? Gender.Male : Gender.Female
+            //    //    };
 
-                //    dbAccounts.Add(acc);
-                //}
+            //    //    dbAccounts.Add(acc);
+            //    //}
 
-                //foreach (var row in loans)
-                //{
-                //    var loan = new Loan()
-                //    {
-                //        LoanID = row.LoanID,
-                //        AgreementDate = row.LoanAgreementDate,
-                //        LoanAmount = row.LoanAmount,
-                //        AmountToBePaidAll = row.LoanAmountToBePaidAll,
-                //        AmountToBePaidDaily = row.LoanPMT,
-                //        LoanDailyInterestRate = row.LoanDailyInterestRate,
-                //        DaysOfGrace = row.LoanDaysOfGrace,
-                //        EffectiveInterestRate = row.LoanEffectiveInterestRate,
-                //        LoanStartDate = row.LoanStartDate,
-                //        LoanEndDate = row.LoanEndDate,
-                //        NetworkDays = row.LoanNetworkDays,
-                //        LoanPenaltyRate = row.LoanPenaltyInterestRate,
-                //        LoanPurpose = row.LoanPurpose,
-                //        //LoanStatus = row.LoanStatus == "აქტიური" ? LoanStatus.Active : LoanStatus.Closed,
-                //        LoanTermDays = row.LoanTermDays
-                //    };
-                //}
-                #endregion
+            //    //foreach (var row in loans)
+            //    //{
+            //    //    var loan = new Loan()
+            //    //    {
+            //    //        LoanID = row.LoanID,
+            //    //        AgreementDate = row.LoanAgreementDate,
+            //    //        LoanAmount = row.LoanAmount,
+            //    //        AmountToBePaidAll = row.LoanAmountToBePaidAll,
+            //    //        AmountToBePaidDaily = row.LoanPMT,
+            //    //        LoanDailyInterestRate = row.LoanDailyInterestRate,
+            //    //        DaysOfGrace = row.LoanDaysOfGrace,
+            //    //        EffectiveInterestRate = row.LoanEffectiveInterestRate,
+            //    //        LoanStartDate = row.LoanStartDate,
+            //    //        LoanEndDate = row.LoanEndDate,
+            //    //        NetworkDays = row.LoanNetworkDays,
+            //    //        LoanPenaltyRate = row.LoanPenaltyInterestRate,
+            //    //        LoanPurpose = row.LoanPurpose,
+            //    //        //LoanStatus = row.LoanStatus == "აქტიური" ? LoanStatus.Active : LoanStatus.Closed,
+            //    //        LoanTermDays = row.LoanTermDays
+            //    //    };
+            //    //}
+            //    #endregion
 
-                db.Accounts.AddRange(accounts);
-                db.SaveChanges();
-            }
-            Console.WriteLine("Getting Data...");
-            var payments = (from x in excel.Worksheet<PaymentClass>("Payments")
-                            select x).ToList();
-            Console.WriteLine("Getting Data Finished (OK)");
-            Console.WriteLine("Adding Payments...");
-            int count = 0;
-            using (var db = new BusinessCreditContext(""))
-            {
-                foreach (var pmt in payments)
-                {
-                    var payment = new Payment()
-                    {
-                        Loan = db.Loans.FirstOrDefault(l => l.LoanID == pmt.LoanID),
-                        CashCollectionAgent = db.CashCollectionAgents.FirstOrDefault(c => c.CashCollectionAgentID == pmt.CollectorID), //droebit
-                        CreditExpert = db.CreditExperts.FirstOrDefault(ce => ce.EmployeeID == pmt.CreditExpertID),
-                        CurrentPayment = pmt.CurrentPMT,
-                        PaymentDate = pmt.PMTDate,
-                        TaxOrderID = pmt.TaxOrder,
-                        _accruingOverdueInterest = pmt.AccruingOverdueInterest,
-                        _accruingOverduePenalty = pmt.AccruingPenalty,
-                        _accruingPenaltyPayment = pmt.AccruingPenaltyPayment,
-                        _CurrentPenalty = pmt.CurrentPenalty,
-                        _payableInterest = pmt.PayableInterest
-                    };
-                    db.Payments.Add(payment);
-                    count++;
-                    Console.WriteLine("Added Payment: " + count);
+            //    db.Accounts.AddRange(accounts);
+            //    db.SaveChanges();
+            //}
+            //Console.WriteLine("Getting Data...");
+            //var payments = (from x in excel.Worksheet<PaymentClass>("Payments")
+            //                select x).ToList();
+            //Console.WriteLine("Getting Data Finished (OK)");
+            //Console.WriteLine("Adding Payments...");
+            //int count = 0;
+            //using (var db = new BusinessCreditContext(""))
+            //{
+            //    foreach (var pmt in payments)
+            //    {
+            //        var payment = new Payment()
+            //        {
+            //            Loan = db.Loans.FirstOrDefault(l => l.LoanID == pmt.LoanID),
+            //            CashCollectionAgent = db.CashCollectionAgents.FirstOrDefault(c => c.CashCollectionAgentID == pmt.CollectorID), //droebit
+            //            CreditExpert = db.CreditExperts.FirstOrDefault(ce => ce.EmployeeID == pmt.CreditExpertID),
+            //            CurrentPayment = pmt.CurrentPMT,
+            //            PaymentDate = pmt.PMTDate,
+            //            TaxOrderID = pmt.TaxOrder,
+            //            _accruingOverdueInterest = pmt.AccruingOverdueInterest,
+            //            _accruingOverduePenalty = pmt.AccruingPenalty,
+            //            _accruingPenaltyPayment = pmt.AccruingPenaltyPayment,
+            //            _CurrentPenalty = pmt.CurrentPenalty,
+            //            _payableInterest = pmt.PayableInterest
+            //        };
+            //        db.Payments.Add(payment);
+            //        count++;
+            //        Console.WriteLine("Added Payment: " + count);
 
-                    if (count == 2000)
-                        db.SaveChanges();
+            //        if (count == 2000)
+            //            db.SaveChanges();
 
-                    if (count == 5000)
-                        db.SaveChanges();
+            //        if (count == 5000)
+            //            db.SaveChanges();
 
-                    if (count == 9000)
-                        db.SaveChanges();
+            //        if (count == 9000)
+            //            db.SaveChanges();
 
-                    if (count == 12000)
-                        db.SaveChanges();
-                }
-                Console.WriteLine("Updating Database...");
+            //        if (count == 12000)
+            //            db.SaveChanges();
+            //    }
+            //    Console.WriteLine("Updating Database...");
 
-                db.SaveChanges();
+            //    db.SaveChanges();
 
-                PlanAllLoansViaLoanCalculator();
+            //    PlanAllLoansViaLoanCalculator();
 
-                db.SaveChanges();
+            //    db.SaveChanges();
 
-                Console.WriteLine("All Done!!!");
-            }
+            //    Console.WriteLine("All Done!!!");
+            //}
         }
 
         public static Account Grouping(IGrouping<int, Entity> group)

@@ -1,4 +1,5 @@
-﻿using BusinessCredit.Domain;
+﻿using BusinessCredit.Core.Migrations;
+using BusinessCredit.Domain;
 using System.Collections.Generic;
 using System.Data.Entity;
 
@@ -12,6 +13,8 @@ namespace BusinessCredit.Core
         //public BusinessCreditContext() : base("name=Lilo_BusinessCreditDbConnectionString"   )
         //public BusinessCreditContext() : base("name=Eliava_BusinessCreditDbConnectionString" )
         //public BusinessCreditContext() : base("name=Vagzali_BusinessCreditDbConnectionString")
+        
+        //public BusinessCreditContext() : base("name=BusinessCreditDbConnectionString")
         //{
         //    Database.SetInitializer(new BusinessCreditDbInitializer());
         //}

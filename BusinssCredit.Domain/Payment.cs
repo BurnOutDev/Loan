@@ -9,6 +9,14 @@ namespace BusinessCredit.Domain
 {
     public class Payment
     {
+        public Payment() { }
+
+        public Payment(double penalty, double payment)
+        {
+            _accruingPenalty = penalty;
+            CurrentPayment = payment;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PaymentID { get; set; }
@@ -19,6 +27,7 @@ namespace BusinessCredit.Domain
         [Display(Name = "შენატანი")]
         public double CurrentPayment { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "შენატანის თარიღი")]
         public DateTime PaymentDate { get; set; }
         
@@ -39,7 +48,7 @@ namespace BusinessCredit.Domain
         private double? InitCurrentDebt()
         {
             Debug.WriteLine("CurrentDebt");
-            var sum = PayableInterest + PayablePrincipal + AccruingOverduePrincipal + AccruingOverdueInterest + AccruingOverduePenalty;
+            var sum = PayableInterest + PayablePrincipal + AccruingOverduePrincipal + AccruingOverdueInterest + AccruingPenalty;
             if (sum > WholeDebt)
                 return WholeDebt;
             else
@@ -64,7 +73,7 @@ namespace BusinessCredit.Domain
         private double? InitWholeDebt()
         {
             Debug.WriteLine("WholeDebt");
-            return LoanBalance + AccruingOverduePenalty + AccruingOverdueInterest + PayableInterest - CurrentInterestPayment - AccruingPenaltyPayment - AccruingInterestPayment;
+            return LoanBalance + AccruingPenalty + AccruingOverdueInterest + PayableInterest - CurrentInterestPayment - AccruingPenaltyPayment - AccruingInterestPayment;
         }
         #endregion
 
@@ -107,7 +116,12 @@ namespace BusinessCredit.Domain
 
         private double? InitStartingBalance()
         {
-            Debug.WriteLine("StartingBalance");
+            var ID = this.PaymentID;
+            var jg = GetPaymentList();
+            var a = GetPaymentList().Sum(x => x.AccruingPrincipalPayment);
+            var b = GetPaymentList().Sum(x => x.CurrentPrincipalPayment);
+            var c = GetPaymentList().Sum(x => x.PrincipalPrepaymant);
+
             return Loan.LoanAmount - GetPaymentList().Sum(x => x.AccruingPrincipalPayment)
                      - GetPaymentList().Sum(x => x.CurrentPrincipalPayment)
                      - GetPaymentList().Sum(x => x.PrincipalPrepaymant);
@@ -121,6 +135,9 @@ namespace BusinessCredit.Domain
             get
             {
                 Debug.WriteLine("PlannedBalance");
+
+                var pp = Loan.PaymentsPlanned.ToList();
+
                 return Math.Round(Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == PaymentDate).EndingBalance, 2);
             }
         } // გეგმიური ნაშთი 
@@ -363,12 +380,43 @@ namespace BusinessCredit.Domain
 
         private double? InitAccruingPenaltyPayment()
         {
-            Debug.WriteLine("AccruingPenaltyPayment");
             //=IF($AD6>$AS6,$AS6,$AD6)
-            if (CurrentPayment > AccruingOverduePenalty)
-                return AccruingOverduePenalty;
+            if (CurrentPayment > AccruingPenalty)
+                return AccruingPenalty;
             else
                 return CurrentPayment;
+        }
+        #endregion
+
+        #region AccruingPenalty
+        public double? _accruingPenalty;
+        [Display(Name = "დაგროვილი ჯარიმის გადახდა")]
+        public double? AccruingPenalty
+        {
+            get
+            {
+                if (!_accruingPenalty.HasValue)
+                    _accruingPenalty = Math.Round(InitAccruingPenalty().Value, 2);
+                return _accruingPenalty;
+            }
+
+            set { _accruingPenalty = value; }
+        }
+
+        private double? InitAccruingPenalty()
+        {
+            try
+            {
+                return Math.Round(
+                                ((AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate)
+                                - GetPaymentList().OrderByDescending(x => x.PaymentDate).First().AccruingPenaltyPayment.Value
+                                + GetPaymentList().OrderByDescending(x => x.PaymentDate).First().AccruingPenaltyPayment.Value
+                                );
+            }
+            catch
+            {
+                return 0;
+            }
         }
         #endregion
 
@@ -708,7 +756,7 @@ namespace BusinessCredit.Domain
         private ICollection<Payment> GetPaymentList()
         {
             return (from x in Loan.Payments
-                    where x.PaymentID == PaymentID && x.PaymentDate < PaymentDate
+                    where x.PaymentDate < PaymentDate
                     select x).ToList();
         }
 

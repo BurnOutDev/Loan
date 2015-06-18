@@ -79,6 +79,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 {
                     var view = new DailyViewModel();
                     view.LoanId = pmt.Loan.LoanID;
+                    view.LoanNumber = view.LoanId;
                     view.Name = pmt.Loan.Account.Name;
                     view.LastName = pmt.Loan.Account.LastName;
                     view.PaymentDate = dailyDate;
@@ -87,9 +88,11 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                     view.PrivateNumber = pmt.Loan.Account.PrivateNumber;
                     view.WholeDebt = pmt.WholeDebt.Value;
                     view.CurrentDebt = pmt.CurrentDebt.Value;
-                    view.OverdueAmount = view.CurrentDebt - view.PlannedPayment;
+                    view.OverdueAmount = view.CurrentDebt - view.PlannedPayment < 0 ? 0 : view.CurrentDebt - view.PlannedPayment;
                     view.AgreementNumber = pmt.Loan.Agreement;
                     view.BusinessAddress = pmt.Loan.Account.BusinessPhysicalAddress;
+                    view.AccountNumber = pmt.Loan.Account.AccountID;
+                    view.DisplayDate = pmt.PaymentDate.AddDays(1);
 
                     viewList.Add(view);
                 }
@@ -103,14 +106,29 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         [HttpPost]
         public ActionResult Index(IList<DailyViewModel> view_Model)
         {
+            //db.Loans.FirstOrDefault().Payments.Add(
+            //        new Payment()
+            //        {
+            //            CurrentPayment = 17,
+            //            PaymentDate = DateTime.Today
+            //        });
+
+            //db.SaveChanges();
+
             foreach (var model in view_Model)
             {
-                db.Loans.Find(model.LoanId).Payments.Add(
-                    new Payment()
-                    {
-                        CurrentPayment = model.Payment,
-                        PaymentDate = model.PaymentDate
-                    });
+                var pmt = db.Payments.Create();
+                pmt.Loan = db.Loans.Find(model.LoanId);
+                pmt.CurrentPayment = model.Payment;
+                pmt.PaymentDate = model.PaymentDate;
+
+                //db.Loans.Find(model.LoanId).Payments.Add(
+                //    new Payment()
+                //    {
+                //        CurrentPayment = model.Payment,
+                //        PaymentDate = model.PaymentDate
+                //    });
+                db.Payments.Add(pmt);
             }
 
             db.Loans.FirstOrDefault().Payments.FirstOrDefault();

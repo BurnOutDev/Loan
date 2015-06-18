@@ -9,8 +9,7 @@ namespace BusinessCredit.Core.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
-            ContextKey = "BusinessCredit.Core.BusinessCreditContext";
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(BusinessCredit.Core.BusinessCreditContext context)

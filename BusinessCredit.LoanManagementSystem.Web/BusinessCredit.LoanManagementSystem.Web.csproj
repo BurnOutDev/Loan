@@ -219,6 +219,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\AgreementViewModel.cs" />
+    <Compile Include="Models\ChangePaymentModel.cs" />
     <Compile Include="Models\GuarantorViewModel.cs" />
     <Compile Include="Models\LoanIssueReportModel.cs" />
     <Compile Include="Models\CreateLoanViewModel.cs" />
@@ -358,6 +359,8 @@
     <Content Include="Views\Admin\ClientsAdmin.cshtml" />
     <Content Include="Views\Admin\PaymentsAdmin.cshtml" />
     <Content Include="Views\Payments\IndexAdmin.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Payments\ChangePenalty.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,6 +17,7 @@ using Ionic.Zip;
 using BusinessCredit.Core.TaxOrders;
 using System.IO.Compression;
 using System.Configuration;
+using System.Web.Security;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -100,8 +101,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         public ICollection<BusinessCreditContext> Databases
         {
             get
-            { 
-                return new List<BusinessCreditContext>() {CentralDb, IsaniDb, OkribaDb, LiloDb, EliavaDb, VagzaliDb};
+            {
+                return new List<BusinessCreditContext>() { CentralDb, IsaniDb, OkribaDb, LiloDb, EliavaDb, VagzaliDb };
             }
         }
 
@@ -141,12 +142,12 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             if (loanId == null)
             {
                 //nothing
-                var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList();
+                var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).ToList();
 
                 if (fromDate != null)
-                    return View(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList());
+                    return View(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).ToList());
 
-                return View(db.Payments.Where(p => p.PaymentDate == DateTime.Today).ToList());
+                return View(db.Payments.Where(p => p.PaymentDate == DateTime.Today).Include(x => x.Loan).ToList());
             }
             if (loanId != null)
                 return View(db.Loans.Find(loanId).Payments.ToList());
@@ -154,10 +155,12 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             return View(new List<Payment>());
         }
 
-        [Authorize(Roles="Administrator")]
-        public ActionResult IndexAdmin(int? loanId, string fromDate, string toDate)
+        [Authorize(Roles = "Administrator")]
+        public ActionResult IndexAdmin(int? loanId, string fromDate, string toDate, int branch = 0)
         {
-            var resultList = new List<Payment>();
+            var dbList = new List<BusinessCreditContext>() { CentralDb, IsaniDb, OkribaDb, LiloDb, EliavaDb, VagzaliDb };
+            var database = dbList[branch];
+
             DateTime dailyFromDate = DateTime.Today;
             DateTime dailyToDate = DateTime.Today;
 
@@ -169,30 +172,54 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             if (loanId == null)
             {
                 //nothing
-                //var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList();
+                var res = database.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList();
 
                 if (fromDate != null)
-                {
-                    foreach (var database in Databases)
-                        resultList.AddRange(database.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList());
-                    return View(resultList);
-                }
+                    return View(database.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList());
 
-                foreach (var database in Databases)
-                    resultList.AddRange(database.Payments.Where(p => p.PaymentDate == DateTime.Today).ToList());
-                return View(resultList);
+                return View(database.Payments.Where(p => p.PaymentDate == DateTime.Today).ToList());
             }
             if (loanId != null)
-            {
-                foreach (var database in Databases)
-                    resultList.AddRange(database.Loans.Find(loanId).Payments.ToList());
-                return View(resultList);
-            }
+                return View(database.Loans.Find(loanId).Payments.ToList());
 
             return View(new List<Payment>());
+
+            //var resultList = new List<Payment>();
+            //DateTime dailyFromDate = DateTime.Today;
+            //DateTime dailyToDate = DateTime.Today;
+
+            //if (!string.IsNullOrEmpty(fromDate) && !string.IsNullOrEmpty(toDate))
+            //{
+            //    dailyFromDate = DateTime.Parse(fromDate);
+            //    dailyToDate = DateTime.Parse(toDate);
+            //}
+            //if (loanId == null)
+            //{
+            //    //nothing
+            //    //var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList();
+
+            //    if (fromDate != null)
+            //    {
+            //        foreach (var database in Databases)
+            //            resultList.AddRange(database.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList());
+            //        return View(resultList);
+            //    }
+
+            //    foreach (var database in Databases)
+            //        resultList.AddRange(database.Payments.Where(p => p.PaymentDate == DateTime.Today).ToList());
+            //    return View(resultList);
+            //}
+            //if (loanId != null)
+            //{
+            //    foreach (var database in Databases)
+            //        resultList.AddRange(database.Loans.Find(loanId).Payments.ToList());
+            //    return View(resultList);
+            //}
+
+            //return View(new List<Payment>());
         }
 
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? branch)
         {
             #region GetUser
 
@@ -202,22 +229,90 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var currentUser = manager.FindById(User.Identity.GetUserId());
 
             #endregion
+            var roles = manager.GetRoles(CurrentUser.Id);
 
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
+            if (!branch.HasValue && roles.Contains("Administrator"))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             Payment payment = db.Payments.FirstOrDefault(p => p.PaymentID == id);
 
             if (payment == null)
-            {
-                return HttpNotFound();
-            }
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            db.Payments.Remove(payment);
+            if (branch.HasValue && roles.Contains("Administrator"))
+                Databases.ElementAt(branch.Value).Payments.Remove(payment);
+            else
+                db.Payments.Remove(payment);
+
             db.SaveChanges();
 
             return View(payment);
+        }
+
+        public ActionResult ChangePenalty(int? id, int? branch)
+        {
+            double _oldPenalty = 0;
+            if (!id.HasValue || !branch.HasValue)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var old = Databases.ElementAt(branch.Value).Payments.FirstOrDefault(x => x.PaymentID == id.Value);
+            var newPayment = old.CurrentPayment;
+
+            if (!old.AccruingPenalty.HasValue)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            else
+                _oldPenalty = old.AccruingPenalty.Value;
+
+            var result = new ChangePaymentModel()
+            {
+                ID = id.Value,
+                BranchID = branch.Value,
+                OldPenalty = _oldPenalty, //accuringPenalty
+                Payment = newPayment
+            };
+
+            return View(result);
+        }
+
+        [HttpPost]
+        public ActionResult ChangePenalty(ChangePaymentModel targetModel)
+        {
+            var database = Databases.ElementAt(targetModel.BranchID);
+            var payment = database.Payments.FirstOrDefault(x => x.PaymentID == targetModel.ID);
+            var loan = payment.Loan;
+            var oldPaymentAmount = payment.CurrentPayment;
+
+            var payments = loan.Payments.Where(x => x.PaymentDate >= payment.PaymentDate).ToList();
+            var paymentDatesAndPayments = new Dictionary<DateTime, double>();
+
+            foreach (var pmt in payments)
+            {
+                paymentDatesAndPayments.Add(pmt.PaymentDate, pmt.CurrentPayment);
+            }
+
+            foreach (var pmt in payments)
+            {
+                loan.Payments.Remove(pmt);
+            }
+
+            db.SaveChanges();
+
+            payments.Remove(payments.FirstOrDefault(x => x.PaymentID == targetModel.ID));
+
+            foreach (var pmt in paymentDatesAndPayments)
+            {
+                loan.Payments.Add(new Payment() { CurrentPayment = pmt.Value, PaymentDate = pmt.Key });
+                db.SaveChanges();
+            }
+
+            loan.Payments.Add(new Payment(targetModel.NewPenalty, oldPaymentAmount));
+
+            db.SaveChanges();
+
+            return View("IndexAdmin");
         }
 
         protected override void Dispose(bool disposing)

@@ -10,6 +10,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
     {
         public int LoanId { get; set; }
 
+        [Display(Name = "თარიღი")]
+        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DisplayDate { get; set; }
 
         [Display(Name = "კლიენტის #")]

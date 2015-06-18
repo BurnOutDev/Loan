@@ -8,6 +8,7 @@ namespace BusinessCredit.Domain
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Display(Name = "კლიენტის #")]
         public int AccountID { get; set; }
 
         [Display(Name = "სახელი")]
