@@ -30,7 +30,7 @@ namespace BusinessCredit.Domain
         [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "შენატანის თარიღი")]
         public DateTime PaymentDate { get; set; }
-        
+
         #region CurrentDebt
         private double? _currentDebt;
         [Display(Name = "მიმდ. დავალიანება")]
@@ -256,10 +256,8 @@ namespace BusinessCredit.Domain
 
             var res = Math.Round((CurrentOverduePrincipal.Value + CurrentOverdueInterest.Value) * Loan.LoanPenaltyRate, 2);
 
-            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
-                return 0;   
-            else
-                return Math.Round((CurrentOverduePrincipal.Value + CurrentOverdueInterest.Value) * Loan.LoanPenaltyRate, 2);
+            //return Math.Round((CurrentOverduePrincipal.Value + CurrentOverdueInterest.Value) * Loan.LoanPenaltyRate, 2);
+            return Math.Round((AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate, 2);
         }
         #endregion
 
@@ -282,6 +280,13 @@ namespace BusinessCredit.Domain
         {
             Debug.WriteLine("AccruingOverduePrincipal");
 
+            ////TemplateFromInterest////
+            //return Math.Round(
+            //    GetPaymentList().Sum(x => x.CurrentOverdueInterest).Value 
+            //  - GetPaymentList().Sum(x => x.CurrentInterestPayment).Value,
+            //    2);
+
+
             //=IF(SUMIF($F$2:$F5,F6,$AN$2:$AN5)-SUMIF($F$2:$F5,F6,$AV$2:$AV5)>AJ6,AJ6,SUMIF($F$2:$F5,F6,$AN$2:$AN5)-SUMIF($F$2:$F5,F6,$AV$2:$AV5))
             if (GetPaymentList().Sum(x => x.CurrentOverduePrincipal) -
                 GetPaymentList().Sum(x => x.AccruingPrincipalPayment) > StartingBalance)
@@ -289,6 +294,15 @@ namespace BusinessCredit.Domain
             else
                 return GetPaymentList().Sum(x => x.CurrentOverduePrincipal) -
                        GetPaymentList().Sum(x => x.AccruingPrincipalPayment);
+
+
+            /////////////////old///////////////
+         //   if (GetPaymentList().Sum(x => x.CurrentOverduePrincipal) -
+         //GetPaymentList().Sum(x => x.AccruingPrincipalPayment) > StartingBalance)
+         //       return StartingBalance;
+         //   else
+         //       return GetPaymentList().Sum(x => x.CurrentOverduePrincipal) -
+         //              GetPaymentList().Sum(x => x.AccruingPrincipalPayment);
         }
         #endregion
 
@@ -311,59 +325,24 @@ namespace BusinessCredit.Domain
         {
             Debug.WriteLine("AccruingOverdueInterest");
 
+            // old
+            //return Math.Round(
+            //    GetPaymentList().Sum(x => x.CurrentOverdueInterest).Value
+            //  - GetPaymentList().Sum(x => x.CurrentInterestPayment).Value,
+            //    2);
+
+            // wegan shevaswore
+
             return Math.Round(
-                GetPaymentList().Sum(x => x.AccruingInterestPayment).Value +
-                GetPaymentList().Sum(x => x.PayableInterest).Value -
-                GetPaymentList().Sum(x => x.CurrentInterestPayment).Value,
+              - GetPaymentList().Sum(x => x.AccruingInterestPayment).Value
+              + GetPaymentList().Sum(x => x.PayableInterest).Value
+              - GetPaymentList().Sum(x => x.CurrentInterestPayment).Value,
                 2);
+
         }
         #endregion
 
-        #region AccruingOverduePenalty
-        public double? _accruingOverduePenalty;
-        [Display(Name = "დაგროვილი ვადაგად. ჯარიმა")]
-        public double? AccruingOverduePenalty
-        {
-            get
-            {
-                if (!_accruingOverduePenalty.HasValue)
-                    _accruingOverduePenalty = Math.Round(InitAccruingOverduePenalty().Value, 2);
-                return _accruingOverduePenalty;
-            }
 
-            set { _accruingOverduePenalty = value; }
-        }
-
-        private double? InitAccruingOverduePenalty()
-        {
-            Debug.WriteLine("AccruingOverduePenalty");
-            try
-            {
-                return Math.Round(
-                                ((AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate)
-                                - GetPaymentList().Where(x => x.PaymentDate == PaymentDate.AddDays(-1)).FirstOrDefault().AccruingPenaltyPayment.Value
-                                + GetPaymentList().Where(x => x.PaymentDate == PaymentDate.AddDays(-1)).FirstOrDefault().AccruingPenaltyPayment.Value
-                                );
-            }
-            catch (NullReferenceException)
-            {
-                return 0;
-            }
-
-            //=IFERROR(
-            //ROUND(
-            //
-            //((AQ13+AR13)*$X13)-
-            //  INDEX($A$2:$BE12,
-            //    MATCH($F13&($AE13-1),$F$2:$F12&$AE$2:$AE12,0),
-            //    MATCH($AT$2,$A$2:$BE$2,0))
-            // +INDEX($A$2:$BE12,
-            //    MATCH($F13&($AE13-1),$F$2:$F12&$AE$2:$AE12,0),
-            //    MATCH($AS$2,$A$2:$BE$2,0))
-            //  ,2)
-            //,0)
-        }
-        #endregion
 
         #region AccruingPenaltyPayment
         public double? _accruingPenaltyPayment;
@@ -409,15 +388,11 @@ namespace BusinessCredit.Domain
         {
             try
             {
-                var tt = ((AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate)
+                var result = ((AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate)
                                 - GetPaymentList().ToList().Sum(x => x.AccruingPenaltyPayment.Value)
                                 + GetPaymentList().ToList().OrderByDescending(x => x.PaymentDate).First().AccruingPenalty.Value;
 
-                var gg = Math.Round(tt, 2);
-
-                return ((AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate)
-                       - GetPaymentList().ToList().Sum(x => x.AccruingPenaltyPayment.Value)
-                       + GetPaymentList().ToList().OrderByDescending(x => x.PaymentDate).First().AccruingPenalty.Value;
+                return result < 0 ? 0 : result;
 
                 // sworia ??
                 //var cp = CurrentPenalty;
@@ -679,7 +654,7 @@ namespace BusinessCredit.Domain
             var pmts = GetPaymentList();
 
 
-            return GetPaymentList().Sum(x => x.AccruingPenaltyPayment);
+            return GetPaymentList().Sum(x => x.AccruingPenaltyPayment) + AccruingPenaltyPayment;
         }
         #endregion
 

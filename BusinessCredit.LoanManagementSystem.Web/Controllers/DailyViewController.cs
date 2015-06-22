@@ -51,7 +51,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             #endregion
 
             var dailyDate = DateTime.Today;
-            
+
             var dailyList = new LstViewModel();
             var viewList = new List<DailyViewModel>();
             var pmtList = new List<Payment>();
@@ -60,21 +60,21 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             var loans = db.Loans.Where(l => l.Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault().WholeDebt > 0 && l.Payments.FirstOrDefault(p => p.PaymentDate == dailyDate) == null).ToList();
 
-            //loans.Add(db.Loans.FirstOrDefault());
+            loans.AddRange(db.Loans.Where(l => l.Payments.Count == 0));
 
             if (loans.Count > 0)
             {
-                    foreach (var loan in loans)
-                    {
-                        var pmt = loan.Payments.FirstOrDefault(x => x.PaymentDate.Date == DateTime.Today.AddDays(-1));
-                        if (loan.Payments.FirstOrDefault(x => x.PaymentDate == DateTime.Today) != null)
-                            pmtList.Add(loan.Payments.FirstOrDefault(x => x.PaymentDate == DateTime.Today));
-                        else if (pmt != null)
-                            pmtList.Add(pmt);
-                        else if (loan.Payments.Count == 0)
-                            pmtList.Add(new Payment() { Loan = loan });
-                    }
-                
+                foreach (var loan in loans)
+                {
+                    var pmt = loan.Payments.FirstOrDefault(x => x.PaymentDate.Date == DateTime.Today.AddDays(-1));
+                    if (loan.Payments.FirstOrDefault(x => x.PaymentDate == DateTime.Today) != null)
+                        pmtList.Add(loan.Payments.FirstOrDefault(x => x.PaymentDate == DateTime.Today));
+                    else if (pmt != null)
+                        pmtList.Add(pmt);
+                    else if (loan.Payments.Count == 0)
+                        pmtList.Add(new Payment() { Loan = loan });
+                }
+
                 db.Loans.Include("Accounts");
 
                 foreach (var pmt in pmtList)
@@ -117,6 +117,16 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             //db.SaveChanges();
 
+            //TestPayments(view_Model.FirstOrDefault(),0,0,0,0,37, 40, 50, 50, 50, 50, 50);
+            //TestPayments(view_Model.FirstOrDefault(), 50, 50, 50, 50, 50, 50, 50, 50, 50);
+            //TestPayments(view_Model.FirstOrDefault(), 37, 37, 37, 37, 37, 37, 37);
+            //TestPayments(view_Model.FirstOrDefault(), 1);
+
+            //db.SaveChanges();
+
+            //return RedirectToAction("Index", "DailyView");
+
+
             foreach (var model in view_Model)
             {
                 var pmt = db.Payments.Create();
@@ -146,6 +156,27 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index", "DailyView");
+        }
+
+        private void TestPayments(DailyViewModel model, params int[] data)
+        {
+            foreach (var amount in data)
+            {
+                var pmt = db.Payments.Create();
+                pmt.Loan = db.Loans.Find(model.LoanId);
+                pmt.CurrentPayment = amount;
+                //pmt.CurrentPayment = 53.45;
+                pmt.PaymentDate = model.PaymentDate;
+
+                //db.Loans.Find(model.LoanId).Payments.Add(
+                //    new Payment()
+                //    {
+                //        CurrentPayment = model.Payment,
+                //        PaymentDate = model.PaymentDate
+                //    });
+                db.Payments.Add(pmt);
+                model.PaymentDate = model.PaymentDate.AddDays(1);
+            }
         }
     }
 }

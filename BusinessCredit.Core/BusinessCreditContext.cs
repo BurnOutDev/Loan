@@ -12,12 +12,12 @@ namespace BusinessCredit.Core
         //public BusinessCreditContext() : base("name=Okriba_BusinessCreditDbConnectionString" )
         //public BusinessCreditContext() : base("name=Lilo_BusinessCreditDbConnectionString"   )
         //public BusinessCreditContext() : base("name=Eliava_BusinessCreditDbConnectionString" )
-        //public BusinessCreditContext() : base("name=Vagzali_BusinessCreditDbConnectionString")
+        public BusinessCreditContext() : base("name=Vagzali_BusinessCreditDbConnectionString")
         
         //public BusinessCreditContext() : base("name=BusinessCreditDbConnectionString")
-        //{
-        //    Database.SetInitializer(new BusinessCreditDbInitializer());
-        //}
+        {
+            Database.SetInitializer(new BusinessCreditDbInitializer());
+        }
 
         public BusinessCreditContext(string connectionString)
             : base(connectionString)
