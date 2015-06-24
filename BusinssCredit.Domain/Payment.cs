@@ -150,7 +150,7 @@ namespace BusinessCredit.Domain
 
         #region PayableInterest
         public double? _payableInterest;
-        [Display(Name = "გადასახადი ძირი")]
+        [Display(Name = "გადასახდელი %")]
         public double? PayableInterest
         {
             get
@@ -172,7 +172,7 @@ namespace BusinessCredit.Domain
 
         #region PayablePrincipal
         private double? _payablePrincipal;
-        [Display(Name = "გადასახადი ძირი")]
+        [Display(Name = "გადასახდელი ძირი")]
         public double? PayablePrincipal
         {
             get
@@ -705,7 +705,7 @@ namespace BusinessCredit.Domain
         {
             Debug.WriteLine("PrincipalPrepaid");
 
-            return GetPaymentList().Sum(x => x.PaymentID);
+            return GetPaymentList().Sum(x => x.PrincipalPrepaymant);
         }
         #endregion
 

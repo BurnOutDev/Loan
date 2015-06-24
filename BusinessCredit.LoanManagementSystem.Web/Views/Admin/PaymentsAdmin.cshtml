@@ -237,7 +237,7 @@
             <td>
                 @if (item.PaymentDate == DateTime.Today)
                 {
-                    <a onclick="window.location.href='../Admin/PaymentDelete?id=@item.PaymentID&branch=' + cbxBranches.selectedIndex">წაშლა</a> @*IndexAdmin*@
+                    <a onclick="window.location.href='../Admin/PaymentDelete?id=@item.PaymentID&branch=' + cbxBranches.selectedIndex" class="text-danger">წაშლა</a> @*IndexAdmin*@
                 }
                 <a onclick="window.location.href='../Admin/PaymentChangePenalty?id=@item.PaymentID&branch=' + cbxBranches.selectedIndex">ჯარიმის პატიება</a> @*ChangePenalty*@
             </td>

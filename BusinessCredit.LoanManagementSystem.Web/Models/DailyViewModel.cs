@@ -12,7 +12,13 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
 
         [Display(Name = "თარიღი")]
         [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime DisplayDate { get; set; }
+        public DateTime DisplayDate
+        {
+            get
+            {
+                return DateTime.Today;
+            }
+        }
 
         [Display(Name = "კლიენტის #")]
         public int AccountNumber { get; set; }

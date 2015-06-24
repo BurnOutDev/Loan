@@ -62,7 +62,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                             .Distinct()
                             .ToList();
 
-            accounts.AddRange(db.Accounts.ToList());
+            //accounts.AddRange(db.Accounts.ToList());
             if (page.HasValue)
                 return View(accounts.OrderBy(x => x.Name).ToPagedList(page.Value, pageSize));
             return View(accounts.OrderBy(x => x.Name).ToPagedList(1, pageSize));

@@ -25,55 +25,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.TaxOrderID)
+            @Html.DisplayNameFor(model => model.Loan.LoanAmount)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CurrentPayment)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PaymentDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanBalance)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingInterestPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingOverdueInterest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingOverduePrincipal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingPenaltyPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingPrincipalPayment)
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.Branch)*@
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.CurrentDebt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentInterestPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentOverdueInterest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentOverduePrincipal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentPenalty)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentPrincipalPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanStatus)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PaidInterest)
@@ -85,28 +43,22 @@
             @Html.DisplayNameFor(model => model.PaidPrincipal)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PayableInterest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PayablePrincipal)
+            @Html.DisplayNameFor(model => model.LoanBalance)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PlannedBalance)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PrincipalPrepaid)
+            @Html.DisplayNameFor(model => model.AccruingOverdueInterest)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PrincipalPrepaymant)
+            @Html.DisplayNameFor(model => model.AccruingPenalty)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartingBalance)
+            @Html.DisplayNameFor(model => model.AccruingInterestPayment)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartingPlannedBalance)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WholeDebt)
+            @Html.DisplayNameFor(model => model.PayableInterest)
         </th>
     </tr>
 
@@ -114,59 +66,17 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TaxOrderID)
+                @Html.DisplayFor(modelItem => item.Loan.LoanAmount)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CurrentPayment)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PaymentDate)
+                @Html.DisplayFor(modelItem => item.CurrentDebt)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LoanBalance)
-            </td>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingInterestPayment)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingOverdueInterest)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingOverduePrincipal)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingPenaltyPayment)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingPrincipalPayment)
-            </th>
-            <th>
-                @*@Html.DisplayFor(modelItem => item.Branch.BranchName)*@
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentDebt)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentInterestPayment)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentOverdueInterest)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentOverduePrincipal)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentPenalty)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentPrincipalPayment)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.LoanStatus)
-            </th>
-            <th>
                 @Html.DisplayFor(modelItem => item.PaidInterest)
-            </th>
+            </td>
             <th>
                 @Html.DisplayFor(modelItem => item.PaidPenalty)
             </th>
@@ -174,28 +84,22 @@
                 @Html.DisplayFor(modelItem => item.PaidPrincipal)
             </th>
             <th>
-                @Html.DisplayFor(modelItem => item.PayableInterest)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.PayablePrincipal)
+                @Html.DisplayFor(modelItem => item.LoanBalance)
             </th>
             <th>
                 @Html.DisplayFor(modelItem => item.PlannedBalance)
             </th>
             <th>
-                @Html.DisplayFor(modelItem => item.PrincipalPrepaid)
+                @Html.DisplayFor(modelItem => item.AccruingOverdueInterest)
             </th>
             <th>
-                @Html.DisplayFor(modelItem => item.PrincipalPrepaymant)
+                @Html.DisplayFor(modelItem => item.AccruingPenalty)
             </th>
             <th>
-                @Html.DisplayFor(modelItem => item.StartingBalance)
+                @Html.DisplayFor(modelItem => item.AccruingInterestPayment)
             </th>
             <th>
-                @Html.DisplayFor(modelItem => item.StartingPlannedBalance)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.WholeDebt)
+                @Html.DisplayFor(modelItem => item.PayableInterest)
             </th>
         </tr>
     }
@@ -205,55 +109,13 @@
 
     <tr>
         <th>
-            ----
+            @Model.Sum(model => model.Loan.LoanAmount)
         </th>
         <th>
             @Model.Sum(model => model.CurrentPayment)
         </th>
         <th>
-            ----
-        </th>
-        <th>
-            @Model.Sum(model => model.LoanBalance)
-        </th>
-        <th>
-            @Model.Sum(model => model.AccruingInterestPayment)
-        </th>
-        <th>
-            @Model.Sum(model => model.AccruingOverdueInterest)
-        </th>
-        <th>
-            @Model.Sum(model => model.AccruingOverduePrincipal)
-        </th>
-        <th>
-            @Model.Sum(model => model.AccruingPenaltyPayment)
-        </th>
-        <th>
-            @Model.Sum(model => model.AccruingPrincipalPayment)
-        </th>
-        <th>
-            ----
-        </th>
-        <th>
             @Model.Sum(model => model.CurrentDebt)
-        </th>
-        <th>
-            @Model.Sum(model => model.CurrentInterestPayment)
-        </th>
-        <th>
-            @Model.Sum(model => model.CurrentOverdueInterest)
-        </th>
-        <th>
-            @Model.Sum(model => model.CurrentOverduePrincipal)
-        </th>
-        <th>
-            @Model.Sum(model => model.CurrentPenalty)
-        </th>
-        <th>
-            @Model.Sum(model => model.CurrentPrincipalPayment)
-        </th>
-        <th>
-            ----
         </th>
         <th>
             @Model.Sum(model => model.PaidInterest)
@@ -265,28 +127,22 @@
             @Model.Sum(model => model.PaidPrincipal)
         </th>
         <th>
-            @Model.Sum(model => model.PayableInterest)
-        </th>
-        <th>
-            @Model.Sum(model => model.PayablePrincipal)
+            @Model.Sum(model => model.LoanBalance)
         </th>
         <th>
             @Model.Sum(model => model.PlannedBalance)
         </th>
         <th>
-            @Model.Sum(model => model.PrincipalPrepaid)
+            @Model.Sum(model => model.AccruingOverdueInterest)
         </th>
         <th>
-            @Model.Sum(model => model.PrincipalPrepaymant)
+            @Model.Sum(model => model.AccruingPenalty)
         </th>
         <th>
-            @Model.Sum(model => model.StartingBalance)
+            @Model.Sum(model => model.AccruingInterestPayment)
         </th>
         <th>
-            @Model.Sum(model => model.StartingPlannedBalance)
-        </th>
-        <th>
-            @Model.Sum(model => model.WholeDebt)
+            @Model.Sum(model => model.PayableInterest)
         </th>
     </tr>
 </table>

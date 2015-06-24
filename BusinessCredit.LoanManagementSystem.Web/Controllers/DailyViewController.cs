@@ -96,7 +96,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                     view.AgreementNumber = pmt.Loan.Agreement;
                     view.BusinessAddress = pmt.Loan.Account.BusinessPhysicalAddress;
                     view.AccountNumber = pmt.Loan.Account.AccountID;
-                    view.DisplayDate = pmt.PaymentDate.AddDays(1);
+                    //view.DisplayDate = pmt.PaymentDate.AddDays(1);  DisplayDate in model temporarily changed to DateTime.Today
 
                     viewList.Add(view);
                 }
@@ -122,41 +122,41 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             //TestPayments(view_Model.FirstOrDefault(),0,0,0,0,37, 40, 50, 50, 50, 50, 50);
             //TestPayments(view_Model.FirstOrDefault(), 50, 50, 50, 50, 50, 50, 50, 50, 50);
             //TestPayments(view_Model.FirstOrDefault(), 37, 37, 37, 37, 37, 37, 37);
-            TestPayments(view_Model.FirstOrDefault(), 25, 25,
- 25.00,
- 25.00,
-0,
- 50.00,
- 25.00,
- 25.00,
- 25.00,
- 25.00,
- 25.00,
-0,
- 50.00,
- 25.00,
- 25.00,
- 25.00,
- 25.00,
- 25.00,
-0,
- 50.00,
- 25.00,
- 25.00,
- 25.00,
- 25.00,
- 25.00,
-0,
- 50.00,
- 25.00,
- 25.00,
- 25.00,
- 25.00, 25.00, 0, 50.00, 268.83
-                );
+//            TestPayments(view_Model.FirstOrDefault(), 25, 25,
+// 25.00,
+// 25.00,
+//0,
+// 50.00,
+// 25.00,
+// 25.00,
+// 25.00,
+// 25.00,
+// 25.00,
+//0,
+// 50.00,
+// 25.00,
+// 25.00,
+// 25.00,
+// 25.00,
+// 25.00,
+//0,
+// 50.00,
+// 25.00,
+// 25.00,
+// 25.00,
+// 25.00,
+// 25.00,
+//0,
+// 50.00,
+// 25.00,
+// 25.00,
+// 25.00,
+// 25.00, 25.00, 0, 50.00, 268.83
+//                );
 
-            db.SaveChanges();
+//            db.SaveChanges();
 
-            return RedirectToAction("Index", "DailyView");
+//            return RedirectToAction("Index", "DailyView");
 
 
             foreach (var model in view_Model)
@@ -198,7 +198,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 pmt.Loan = db.Loans.Find(model.LoanId);
                 pmt.CurrentPayment = amount;
                 //pmt.CurrentPayment = 53.45;
-                pmt.PaymentDate = model.PaymentDate;
+                pmt.PaymentDate = pmt.Loan.LoanStartDate;
 
                 //db.Loans.Find(model.LoanId).Payments.Add(
                 //    new Payment()

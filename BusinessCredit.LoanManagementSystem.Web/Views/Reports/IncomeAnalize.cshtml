@@ -36,6 +36,9 @@
         <th>
             @Html.DisplayNameFor(model => model.CurrentInterestPayment)
         </th>
+        <th>
+            გადახდის ჯამი
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -55,6 +58,9 @@
             </th>
             <th>
                 @Html.DisplayFor(modelItem => item.CurrentInterestPayment)
+            </th>
+            <th>
+                @(item.AccruingPenaltyPayment + item.AccruingInterestPayment + item.CurrentInterestPayment)
             </th>
         </tr>
     }
@@ -77,6 +83,9 @@
         </th>
         <th>
             @Model.Sum(model => model.CurrentInterestPayment)
+        </th>
+        <th>
+            @(Model.Sum(model => model.AccruingPenaltyPayment) + Model.Sum(model => model.AccruingInterestPayment) + Model.Sum(model => model.CurrentInterestPayment))
         </th>
     </tr>
 </table>
