@@ -17,6 +17,12 @@
 
 <button onclick="redirectDaily()" type="button">Go</button>
 
+    @if (Model.Count() > 0)
+    {
+                          <button type="button" onclick="window.location.href = window.location.href + '&gen=1'">სშო გენერაცია</button>
+        
+    }
+
 <table class="table">
     <tr>
         <th>

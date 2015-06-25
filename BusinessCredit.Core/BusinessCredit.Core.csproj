@@ -60,6 +60,14 @@
     <Compile Include="LoanCalculator\LoanCalculator.cs" />
     <Compile Include="LoanCalculator\LoanModel.cs" />
     <Compile Include="LoanCalculator\PaymentModel.cs" />
+    <Compile Include="Migrations\201506251017139_database_migration.cs" />
+    <Compile Include="Migrations\201506251017139_database_migration.Designer.cs">
+      <DependentUpon>201506251017139_database_migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506251142597_RemovedTaxOrders_Table.cs" />
+    <Compile Include="Migrations\201506251142597_RemovedTaxOrders_Table.Designer.cs">
+      <DependentUpon>201506251142597_RemovedTaxOrders_Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxOrders\TaxOrderGenerator.cs" />
@@ -76,6 +84,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\EPPlus.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201506251017139_database_migration.resx">
+      <DependentUpon>201506251017139_database_migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506251142597_RemovedTaxOrders_Table.resx">
+      <DependentUpon>201506251142597_RemovedTaxOrders_Table.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

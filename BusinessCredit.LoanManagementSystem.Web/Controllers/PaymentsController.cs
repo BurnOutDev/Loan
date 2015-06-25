@@ -129,7 +129,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             }
         }
 
-        public ActionResult Index(int? loanId, string fromDate, string toDate)
+        public ActionResult Index(int? loanId, string fromDate, string toDate, int gen = 0)
         {
             DateTime dailyFromDate = DateTime.Today;
             DateTime dailyToDate = DateTime.Today;
@@ -144,6 +144,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 //nothing
                 var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).ToList();
 
+                if (fromDate != null && gen == 1)
+                    return GenerateTaxOrders(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).ToArray());
+
                 if (fromDate != null)
                     return View(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).ToList());
 
@@ -151,6 +154,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             }
             if (loanId != null)
                 return View(db.Loans.Find(loanId).Payments.ToList());
+
+            if (loanId != null && gen == 1)
+                return GenerateTaxOrders(db.Loans.Find(loanId).Payments.ToArray());
 
             return View(new List<Payment>());
         }
@@ -324,21 +330,70 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             base.Dispose(disposing);
         }
 
-        public FileResult GenerateTaxOrders(int[] taxOrderIds)
+        [HttpPost]
+        public FileResult GenerateTaxOrders(IEnumerable<Payment> paymentModels)
+        {
+            int[] ids = new int[paymentModels.Count()];
+
+            for (int i = 0; i < paymentModels.Count(); i++)
+                ids[i] = paymentModels.ElementAt(i).PaymentID;
+
+            return GenerateTaxOrders(paymentIds: ids );
+        }
+
+        //public FileResult GenerateTaxOrders(byte[] taxOrderIds)
+        //{
+        //    var zipMemoryStream = new MemoryStream();
+
+        //    var folder = Server.MapPath(Url.Content("~/Resources/"));
+        //    var filePath = Server.MapPath(Url.Content("~/Resources/TaxOrderTemplate.xlsx"));
+
+        //    TaxOrder[] tos = new TaxOrder[taxOrderIds.Length];
+
+        //    for (int i = 0; i < tos.Length; i++)
+        //    {
+        //        var item = taxOrderIds[i];
+        //        tos[i] = db.TaxOrders.FirstOrDefault(x => x.TaxOrderID == item);
+        //    }
+        //    var strRes = TaxOrderGenerator.Generate(filePath, tos);
+
+        //    strRes.Seek(0, SeekOrigin.Begin);
+
+        //    return File(strRes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        //}
+
+        public FileResult GenerateTaxOrders(params int[] paymentIds)
         {
             var zipMemoryStream = new MemoryStream();
 
             var folder = Server.MapPath(Url.Content("~/Resources/"));
             var filePath = Server.MapPath(Url.Content("~/Resources/TaxOrderTemplate.xlsx"));
 
-            TaxOrder[] tos = new TaxOrder[taxOrderIds.Length];
+            List<Payment> payments = new List<Payment>();
+            foreach (var id in paymentIds)
+                payments.Add(db.Payments.FirstOrDefault(p => p.PaymentID == id));
 
-            for (int i = 0; i < tos.Length; i++)
+            List<TaxOrder> taxOrders = new List<TaxOrder>();
+            foreach (var pmt in payments)
             {
-                var item = taxOrderIds[i];
-                tos[i] = db.TaxOrders.FirstOrDefault(x => x.TaxOrderID == item);
+                if (pmt.TaxOrderID == null)
+                    continue;
+
+                taxOrders.Add(new TaxOrder
+                {
+                    AccountFirstName = pmt.Loan.Account.Name,
+                    AccountLastName = pmt.Loan.Account.LastName,
+                    AccountPrivateNumber = pmt.Loan.Account.PrivateNumber,
+                    Basis = "სესხის ხელშეკრულება #" + pmt.Loan.Agreement + " საფუძველზე",
+                    CollectorFirstName = pmt.CashCollectionAgent.Name,
+                    CollectorLastName = pmt.CashCollectionAgent.LastName,
+                    CollectorPrivateNumber = pmt.CashCollectionAgent.PrivateNumber,
+                    Date = pmt.PaymentDate.ToShortDateString(),
+                    TaxOrderNumber = int.Parse(new string(pmt.TaxOrderID.Where(c => char.IsNumber(c)).ToArray<char>()))
+                });
             }
-            var strRes = TaxOrderGenerator.Generate(filePath, tos);
+
+            var strRes = TaxOrderGenerator.Generate(filePath, taxOrders.ToArray<TaxOrder>());
 
             strRes.Seek(0, SeekOrigin.Begin);
 

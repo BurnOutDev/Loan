@@ -14,9 +14,9 @@ namespace BusinessCredit.Domain
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TaxOrderID { get; set; }
         public int TaxOrderNumber { get; set; }
-        public DateTime Date { get; set; }
-        public int PaymentAmountLari { get; set; }
-        public int PaymentAmountTetri { get; set; }
+        public string Date { get; set; }
+        public int? PaymentAmountLari { get; set; }
+        public int? PaymentAmountTetri { get; set; }
         public string PaymentAmountString { get; set; }
         public string Basis { get; set; }
         public string AccountFirstName { get; set; }

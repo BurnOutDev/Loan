@@ -110,6 +110,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         [HttpPost]
         public ActionResult Index(IList<DailyViewModel> view_Model)
         {
+            #region Comments Old Code (Adding bunch of payments)
             //db.Loans.FirstOrDefault().Payments.Add(
             //        new Payment()
             //        {
@@ -122,56 +123,63 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             //TestPayments(view_Model.FirstOrDefault(),0,0,0,0,37, 40, 50, 50, 50, 50, 50);
             //TestPayments(view_Model.FirstOrDefault(), 50, 50, 50, 50, 50, 50, 50, 50, 50);
             //TestPayments(view_Model.FirstOrDefault(), 37, 37, 37, 37, 37, 37, 37);
-//            TestPayments(view_Model.FirstOrDefault(), 25, 25,
-// 25.00,
-// 25.00,
-//0,
-// 50.00,
-// 25.00,
-// 25.00,
-// 25.00,
-// 25.00,
-// 25.00,
-//0,
-// 50.00,
-// 25.00,
-// 25.00,
-// 25.00,
-// 25.00,
-// 25.00,
-//0,
-// 50.00,
-// 25.00,
-// 25.00,
-// 25.00,
-// 25.00,
-// 25.00,
-//0,
-// 50.00,
-// 25.00,
-// 25.00,
-// 25.00,
-// 25.00, 25.00, 0, 50.00, 268.83
-//                );
+            //            TestPayments(view_Model.FirstOrDefault(), 25, 25,
+            // 25.00,
+            // 25.00,
+            //0,
+            // 50.00,
+            // 25.00,
+            // 25.00,
+            // 25.00,
+            // 25.00,
+            // 25.00,
+            //0,
+            // 50.00,
+            // 25.00,
+            // 25.00,
+            // 25.00,
+            // 25.00,
+            // 25.00,
+            //0,
+            // 50.00,
+            // 25.00,
+            // 25.00,
+            // 25.00,
+            // 25.00,
+            // 25.00,
+            //0,
+            // 50.00,
+            // 25.00,
+            // 25.00,
+            // 25.00,
+            // 25.00, 25.00, 0, 50.00, 268.83
+            //                );
 
-//            db.SaveChanges();
+            //            db.SaveChanges();
 
-//            return RedirectToAction("Index", "DailyView");
+            //            return RedirectToAction("Index", "DailyView");
 
+            #endregion
+
+            int count = 0;
 
             foreach (var model in view_Model)
             {
+                count++;
                 var pmt = db.Payments.Create();
                 pmt.Loan = db.Loans.Find(model.LoanId);
                 pmt.CurrentPayment = model.Payment;
                 pmt.PaymentDate = model.PaymentDate;
-
+                pmt.TaxOrderID = "სშო #" + count;
+                pmt.CreditExpert = db.CreditExperts.FirstOrDefault();
+                pmt.CashCollectionAgent = db.CashCollectionAgents.FirstOrDefault();
                 //db.Loans.Find(model.LoanId).Payments.Add(
                 //    new Payment()
                 //    {
                 //        CurrentPayment = model.Payment,
                 //        PaymentDate = model.PaymentDate
                 //    });
+
                 db.Payments.Add(pmt);
             }
 

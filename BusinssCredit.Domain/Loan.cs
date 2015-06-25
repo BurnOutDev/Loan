@@ -22,6 +22,7 @@ namespace BusinessCredit.Domain
         //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int LoanID { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "თანხა")]
         public double LoanAmount { get; set; }
 
@@ -30,6 +31,7 @@ namespace BusinessCredit.Domain
         public string LoanPurpose { get; set; }
 
         /// სესხის დღიური პროცენტი
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "დღიური პროცენტი")]
         public double LoanDailyInterestRate { get; set; }
 
@@ -46,18 +48,22 @@ namespace BusinessCredit.Domain
         public int DaysOfGrace { get; set; }
 
         /// ჯარიმა (პროცენტი)
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "ჯარიმა")]
         public double LoanPenaltyRate { get; set; } // ჯარიმა
 
         /// ეფექტური პროცენტი
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "ეფექტური პროცენტი")]
         public double EffectiveInterestRate { get; set; } // ეფექტური პროცენტი
 
         /// სულ მოსატანი
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "სულ მოსატანი")]
         public double AmountToBePaidAll { get; set; }
 
         /// დღეში გადასახადი
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "დღეში გადასახადი")]
         public double AmountToBePaidDaily { get; set; }
 

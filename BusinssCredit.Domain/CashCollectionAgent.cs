@@ -13,7 +13,14 @@ namespace BusinessCredit.Domain
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CashCollectionAgentID { get; set; }
+
+        [Display(Name = "სახელი")]
         public string Name { get; set; }
+
+        [Display(Name = "გვარი")]
         public string LastName { get; set; }
+
+        [Display(Name = "პირადი ნომერი")]
+        public string PrivateNumber { get; set; }
     }
 }
