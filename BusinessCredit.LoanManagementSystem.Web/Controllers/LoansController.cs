@@ -121,7 +121,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             loan.LoanPurpose = loanModel.LoanPurpose;
 
             loan.LoanPenaltyRate = 0.005;
-            loan.AmountToBePaidDaily = Financial.Pmt(loanModel.DailyInterestRate, loanModel.TermDays, loanModel.Amount);
+            loan.AmountToBePaidDaily = - Financial.Pmt(loanModel.DailyInterestRate, loanModel.TermDays, loanModel.Amount);
             loan.AmountToBePaidAll = loan.AmountToBePaidDaily * loan.LoanTermDays;
 
             LC.LoanModel loanCalculated = new LC.LoanModel();
@@ -137,7 +137,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             loan.AmountToBePaidDaily = loanCalculated.Payments.First().PaymentAmount;
             loan.EffectiveInterestRate = (loanCalculated.Payments.Sum(p => p.Interest) / loanCalculated.TermDays * 30) / loanCalculated.Amount;
             loan.LoanEndDate = loan.LoanStartDate.AddDays(loan.LoanTermDays);
-            loan.NetworkDays = 30;
+            loan.NetworkDays = 23;
             loan.AgreementDate = DateTime.Today;
 
             for (int i = 0; i < loanCalculated.Payments.Count(); i++)

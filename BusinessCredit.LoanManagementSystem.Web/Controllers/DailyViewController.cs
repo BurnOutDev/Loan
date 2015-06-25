@@ -60,6 +60,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             var loans = db.Loans.Where(l => l.Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault().WholeDebt > 0 && l.Payments.FirstOrDefault(p => p.PaymentDate == dailyDate) == null).ToList();
 
+            //loans.Add(db.Loans.FirstOrDefault());
+
             if (loans.Count > 0)
             {
                     foreach (var loan in loans)
