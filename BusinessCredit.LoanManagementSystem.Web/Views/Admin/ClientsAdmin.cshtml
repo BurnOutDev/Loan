@@ -4,11 +4,19 @@
     ViewBag.Title = "AdminClients";
 }
 
-<h2>AdminClients</h2>
+<h2>კლიენტები</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+        <select id="cbxBranches" onchange="ChangeDatabase()">
+            <option value="Central">ცენტრალური</option>
+            <option value="Isani">ისანი</option>
+            <option value="Okriba">ოკრიბა</option>
+            <option value="Lilo">ლილო</option>
+            <option value="Eliava">ელიავა</option>
+            <option value="Vagzali">ვაგზალი</option>
+        </select>
 </p>
+
 <table class="table">
     <tr>
         <th>
@@ -71,11 +79,22 @@
             @Html.DisplayFor(modelItem => item.Branch)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            <a onclick="RedirectEdit(@item.AccountID)">Edit</a>
         </td>
     </tr>
 }
 
 </table>
+
+<script>
+    cbxBranches.selectedIndex = localStorage.getItem('branch');
+
+    function ChangeDatabase() {
+        localStorage.setItem('branch', cbxBranches.selectedIndex);
+        window.location.href = "?branch=" + cbxBranches.selectedIndex;
+    }
+
+    function RedirectEdit(id) {
+        window.location.href = "../Admin/ClientEdit" + "?accountID=" + id + "&branch=" + localStorage.getItem('branch');
+    }
+</script>

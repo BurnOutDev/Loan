@@ -358,7 +358,6 @@
     <Content Include="Views\Reports\IncomeAnalize.cshtml" />
     <Content Include="Views\Reports\LoanIssueDaily.cshtml" />
     <Content Include="Views\Admin\ClientsAdmin.cshtml" />
-    <Content Include="Views\Admin\PaymentsAdmin.cshtml" />
     <Content Include="Views\Payments\IndexAdmin.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Payments\ChangePenalty.cshtml" />
@@ -366,6 +365,10 @@
     <Content Include="Views\AdminReports\Index.cshtml" />
     <Content Include="Views\AdminReports\PortfolioAnalize.cshtml" />
     <Content Include="Views\AdminReports\LoanIssueDaily.cshtml" />
+    <Content Include="Views\Admin\ClientEdit.cshtml" />
+    <Content Include="Views\Admin\PaymentsAdmin.cshtml" />
+    <Content Include="Views\Admin\PaymentChangePenalty.cshtml" />
+    <Content Include="Views\Admin\PaymentDelete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

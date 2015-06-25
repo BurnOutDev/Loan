@@ -1,9 +1,19 @@
 ﻿@model System.Web.Mvc.HandleErrorInfo
 
 @{
-    ViewBag.Title = "Error";
+    ViewBag.Title = "შეცდომა";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<h2 class="text-danger">დაფიქსირდა შეცდომა!</h2>
+<h2 class="text-danger">გთხოვთ დააკოპიროთ ქვემოთ ტექსტი!</h2>
 
+@if (Model != null)
+{
+    <h3>@Model.Exception.GetType().Name</h3>
+    <pre>
+        @Model.Exception.ToString()
+    </pre>
+    <p>
+        thrown in @Model.ControllerName @Model.ActionName
+    </p>
+}

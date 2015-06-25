@@ -138,6 +138,11 @@ namespace BusinessCredit.Domain
 
                 var pp = Loan.PaymentsPlanned.ToList();
 
+                if (pp.FirstOrDefault(x => x.PaymentDate == PaymentDate) == null)
+                {
+                    Debugger.Break();
+                }
+
                 return Math.Round(Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == PaymentDate).EndingBalance, 2);
             }
         } // გეგმიური ნაშთი 

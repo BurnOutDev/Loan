@@ -1,32 +1,21 @@
 ﻿@model IEnumerable<BusinessCredit.Domain.Payment>
 
 @{
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Index";
 }
 
 <h2>გადახდები</h2>
-<h4>
-    <select id="cbxBranches">
-        <option value="Central">ცენტრალური</option>
-        <option value="Isani">ისანი</option>
-        <option value="Okriba">ოკრიბა</option>
-        <option value="Lilo">ლილო</option>
-        <option value="Eliava">ელიავა</option>
-        <option value="Vagzali">ვაგზალი</option>
-    </select>
 
-    <input type="date" id="displayFromDate" style="font-size: 19px; height: 28px;" />
-    <input type="date" id="displayToDate" style="font-size:19px; height:28px;" />
-    <button onclick="redirectDaily()" type="button">Go</button>
-</h4>
-
-<script>
+                      <script>
                           function redirectDaily() {
-                              var ref = "?fromDate=" + displayFromDate.value + "&" + "toDate=" + displayToDate.value + "&" + "branch=" + cbxBranches.selectedIndex;
-                              localStorage.setItem('branchID', cbxBranches.selectedIndex);
-                              window.location.href = ref;
+                              window.location.href = "?fromDate=" + displayFromDate.value + "&" + "toDate=" + displayToDate.value;
                           }
                       </script>
+
+<input type="date" id="displayFromDate" />
+<input type="date" id="displayToDate" />
+
+<button onclick="redirectDaily()" type="button">Go</button>
 
 <table class="table">
     <tr>
@@ -62,6 +51,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AccruingOverdueInterest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccruingOverduePenalty)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AccruingOverduePrincipal)
@@ -169,6 +161,9 @@
                 @Html.DisplayFor(modelItem => item.AccruingOverdueInterest)
             </th>
             <th>
+                @Html.DisplayFor(modelItem => item.AccruingOverduePenalty)
+            </th>
+            <th>
                 @Html.DisplayFor(modelItem => item.AccruingOverduePrincipal)
             </th>
             <th>
@@ -235,19 +230,11 @@
                 @Html.DisplayFor(modelItem => item.WholeDebt)
             </th>
             <td>
-                @if (item.PaymentDate == DateTime.Today)
-                {
-                    <a onclick="window.location.href='../Admin/PaymentDelete?id=@item.PaymentID&branch=' + cbxBranches.selectedIndex">წაშლა</a> @*IndexAdmin*@
-                }
-                <a onclick="window.location.href='../Admin/PaymentChangePenalty?id=@item.PaymentID&branch=' + cbxBranches.selectedIndex">ჯარიმის პატიება</a> @*ChangePenalty*@
+                @Html.ActionLink("Edit", "Edit", new { id = item.PaymentID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.PaymentID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.PaymentID })
             </td>
         </tr>
     }
 
 </table>
-
-<script>
-    if (localStorage.getItem('branchID') != null) {
-        cbxBranches.selectedIndex = localStorage.getItem('branchID');
-    }
-</script>
