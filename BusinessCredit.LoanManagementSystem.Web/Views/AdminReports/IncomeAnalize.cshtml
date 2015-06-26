@@ -1,0 +1,98 @@
+﻿@model IEnumerable<BusinessCredit.LoanManagementSystem.Web.Models.PaymentsReportViewModel>
+
+@{
+    ViewBag.Title = "შემოსავლის ანალიზი";
+}
+
+<h2>IncomeAnalize</h2>
+
+<h2>შემოსავლის ანალიზი</h2>
+
+<script>
+    function redirectDaily() {
+        window.location.href = "?from=" + fromDate.value + "&" + "to=" + toDate.value;
+    }
+</script>
+
+                      <select id="cbxBranches">
+                          <option value="Central">ცენტრალური</option>
+                          <option value="Isani">ისანი</option>
+                          <option value="Okriba">ოკრიბა</option>
+                          <option value="Lilo">ლილო</option>
+                          <option value="Eliava">ელიავა</option>
+                          <option value="Vagzali">ვაგზალი</option>
+                      </select>
+
+<input type="date" id="fromDate" />
+<input type="date" id="toDate" />
+
+<button onclick="redirectDaily()" type="button">Go</button>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PayableInterest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccruingPenaltyPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccruingInterestPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentInterestPayment)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.PaymentDate)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.PayableInterest)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.AccruingPenaltyPayment)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.AccruingInterestPayment)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.CurrentInterestPayment)
+            </th>
+        </tr>
+    }
+
+
+    <tr class="spaceUnder"></tr>
+
+    <tr>
+        <th>
+            Grand Total:
+        </th>
+        <th>
+            @Model.Sum(model => model.PayableInterest)
+        </th>
+        <th>
+            @Model.Sum(model => model.AccruingPenaltyPayment)
+        </th>
+        <th>
+            @Model.Sum(model => model.AccruingInterestPayment)
+        </th>
+        <th>
+            @Model.Sum(model => model.CurrentInterestPayment)
+        </th>
+    </tr>
+</table>
+
+
+<script>
+    if (localStorage.getItem('branchID') != null) {
+        cbxBranches.selectedIndex = localStorage.getItem('branchID');
+    }
+</script>

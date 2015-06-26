@@ -86,6 +86,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                     view.LastName = pmt.Loan.Account.LastName;
                     view.PaymentDate = dailyDate;
                     view.PhoneNumber = pmt.Loan.Account.NumberMobile;
+                    if (pmt.Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == dailyDate) == null)
+                        continue;
                     view.PlannedPayment = pmt.Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == dailyDate).PaymentAmount;
                     view.PrivateNumber = pmt.Loan.Account.PrivateNumber;
                     view.WholeDebt = pmt.WholeDebt.Value;
@@ -120,11 +122,41 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             //TestPayments(view_Model.FirstOrDefault(),0,0,0,0,37, 40, 50, 50, 50, 50, 50);
             //TestPayments(view_Model.FirstOrDefault(), 50, 50, 50, 50, 50, 50, 50, 50, 50);
             //TestPayments(view_Model.FirstOrDefault(), 37, 37, 37, 37, 37, 37, 37);
-            //TestPayments(view_Model.FirstOrDefault(), 1);
+            TestPayments(view_Model.FirstOrDefault(), 25, 25,
+ 25.00,
+ 25.00,
+0,
+ 50.00,
+ 25.00,
+ 25.00,
+ 25.00,
+ 25.00,
+ 25.00,
+0,
+ 50.00,
+ 25.00,
+ 25.00,
+ 25.00,
+ 25.00,
+ 25.00,
+0,
+ 50.00,
+ 25.00,
+ 25.00,
+ 25.00,
+ 25.00,
+ 25.00,
+0,
+ 50.00,
+ 25.00,
+ 25.00,
+ 25.00,
+ 25.00, 25.00, 0, 50.00, 268.83
+                );
 
-            //db.SaveChanges();
+            db.SaveChanges();
 
-            //return RedirectToAction("Index", "DailyView");
+            return RedirectToAction("Index", "DailyView");
 
 
             foreach (var model in view_Model)
@@ -158,7 +190,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             return RedirectToAction("Index", "DailyView");
         }
 
-        private void TestPayments(DailyViewModel model, params int[] data)
+        private void TestPayments(DailyViewModel model, params double[] data)
         {
             foreach (var amount in data)
             {

@@ -115,7 +115,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var loan = new Loan();
             loan.Account = db.Accounts.FirstOrDefault(a => a.AccountID == loanModel.AccountID);
             loan.LoanAmount = loanModel.Amount;
-            loan.LoanDailyInterestRate = loanModel.DailyInterestRate;
+            loan.LoanDailyInterestRate = loanModel.DailyInterestRate / 100;
             loan.LoanTermDays = loanModel.TermDays;
             loan.LoanStartDate = DateTime.Today;
             loan.LoanPurpose = loanModel.LoanPurpose;
@@ -159,7 +159,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             else
                 loan.LoanID = 1;
 
-            loan.LoanDailyInterestRate /= 100;
+            //loan.LoanDailyInterestRate /= 100;
 
             var guarantor = new Guarantor()
             {

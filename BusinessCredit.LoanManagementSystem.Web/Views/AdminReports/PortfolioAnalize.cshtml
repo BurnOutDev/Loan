@@ -1,39 +1,38 @@
 ﻿@model IEnumerable<BusinessCredit.Domain.Payment>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "გადახდების რეპორტი";
 }
 
-<h2>გადახდები</h2>
+<style>
+    tr .spaceUnder{
+        padding-bottom: 100em;
+    }
+</style>
 
-                      <script>
-                          function redirectDaily() {
-                              window.location.href = "?fromDate=" + displayFromDate.value + "&" + "toDate=" + displayToDate.value;
-                          }
-                      </script>
+<h2>Index</h2>
 
-<input type="date" id="displayFromDate" />
-<input type="date" id="displayToDate" />
+<script>
+    function redirectDaily() {
+        window.location.href = "?displayDate=" + displayDate.value;
+    }
+</script>
+
+                      <select id="cbxBranches">
+                          <option value="Central">ცენტრალური</option>
+                          <option value="Isani">ისანი</option>
+                          <option value="Okriba">ოკრიბა</option>
+                          <option value="Lilo">ლილო</option>
+                          <option value="Eliava">ელიავა</option>
+                          <option value="Vagzali">ვაგზალი</option>
+                      </select>
+
+<input type="date" id="displayDate" />
 
 <button onclick="redirectDaily()" type="button">Go</button>
 
 <table class="table">
     <tr>
-        <th>
-            სახელი
-        </th>
-        <th>
-            გვარი
-        </th>
-        <th>
-            პირადი ნომერი
-         </th>
-        <th>
-            კლიენტის #
-        </th>
-        <th>
-            სესხის #
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.TaxOrderID)
         </th>
@@ -54,9 +53,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AccruingOverduePrincipal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingPenalty)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AccruingPenaltyPayment)
@@ -121,27 +117,11 @@
         <th>
             @Html.DisplayNameFor(model => model.WholeDebt)
         </th>
-        <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.Account.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.Account.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.Account.PrivateNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.Account.AccountID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.LoanID)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TaxOrderID)
             </td>
@@ -162,9 +142,6 @@
             </th>
             <th>
                 @Html.DisplayFor(modelItem => item.AccruingOverduePrincipal)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingPenalty)
             </th>
             <th>
                 @Html.DisplayFor(modelItem => item.AccruingPenaltyPayment)
@@ -229,10 +206,103 @@
             <th>
                 @Html.DisplayFor(modelItem => item.WholeDebt)
             </th>
-            <td>
-                @Html.ActionLink("წაშლა", "Details", new { id = item.PaymentID })
-            </td>
         </tr>
     }
 
+
+    <tr class="spaceUnder"></tr> 
+
+    <tr>
+        <th>
+            ----
+        </th>
+        <th>
+            @Model.Sum(model => model.CurrentPayment)
+        </th>
+        <th>
+            ----
+        </th>
+        <th>
+            @Model.Sum(model => model.LoanBalance)
+        </th>
+        <th>
+            @Model.Sum(model => model.AccruingInterestPayment)
+        </th>
+        <th>
+            @Model.Sum(model => model.AccruingOverdueInterest)
+        </th>
+        <th>
+            @Model.Sum(model => model.AccruingOverduePrincipal)
+        </th>
+        <th>
+            @Model.Sum(model => model.AccruingPenaltyPayment)
+        </th>
+        <th>
+            @Model.Sum(model => model.AccruingPrincipalPayment)
+        </th>
+        <th>
+            ----
+        </th>
+        <th>
+            @Model.Sum(model => model.CurrentDebt)
+        </th>
+        <th>
+            @Model.Sum(model => model.CurrentInterestPayment)
+        </th>
+        <th>
+            @Model.Sum(model => model.CurrentOverdueInterest)
+        </th>
+        <th>
+            @Model.Sum(model => model.CurrentOverduePrincipal)
+        </th>
+        <th>
+            @Model.Sum(model => model.CurrentPenalty)
+        </th>
+        <th>
+            @Model.Sum(model => model.CurrentPrincipalPayment)
+        </th>
+        <th>
+            ----
+        </th>
+        <th>
+            @Model.Sum(model => model.PaidInterest)
+        </th>
+        <th>
+            @Model.Sum(model => model.PaidPenalty)
+        </th>
+        <th>
+            @Model.Sum(model => model.PaidPrincipal)
+        </th>
+        <th>
+            @Model.Sum(model => model.PayableInterest)
+        </th>
+        <th>
+            @Model.Sum(model => model.PayablePrincipal)
+        </th>
+        <th>
+            @Model.Sum(model => model.PlannedBalance)
+        </th>
+        <th>
+            @Model.Sum(model => model.PrincipalPrepaid)
+        </th>
+        <th>
+            @Model.Sum(model => model.PrincipalPrepaymant)
+        </th>
+        <th>
+            @Model.Sum(model => model.StartingBalance)
+        </th>
+        <th>
+            @Model.Sum(model => model.StartingPlannedBalance)
+        </th>
+        <th>
+            @Model.Sum(model => model.WholeDebt)
+        </th>
+    </tr>
 </table>
+
+
+<script>
+    if (localStorage.getItem('branchID') != null) {
+        cbxBranches.selectedIndex = localStorage.getItem('branchID');
+    }
+</script>

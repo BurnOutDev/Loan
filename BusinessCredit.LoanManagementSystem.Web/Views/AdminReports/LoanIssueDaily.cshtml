@@ -1,0 +1,144 @@
+﻿@model IEnumerable<BusinessCredit.LoanManagementSystem.Web.Models.LoanIssueReportModel>
+
+@{
+    ViewBag.Title = "სესხის გაცემების რეპორტი";
+}
+
+<h2>სესხის გაცემების რეპორტი</h2>
+
+<style>
+    #monthsContainer li {
+        border-right: 1px solid #ffffff;
+        width: 260px;
+        float: left;
+    }
+</style>
+
+                      <select id="cbxBranches">
+                          <option value="Central">ცენტრალური</option>
+                          <option value="Isani">ისანი</option>
+                          <option value="Okriba">ოკრიბა</option>
+                          <option value="Lilo">ლილო</option>
+                          <option value="Eliava">ელიავა</option>
+                          <option value="Vagzali">ვაგზალი</option>
+                      </select>
+
+<ul id="monthsContainer">
+    <li>
+        <input type="checkbox" value="1"  id="cbxJanuary"   />
+        <label>იანვარი</label>
+    </li>
+    <li>
+        <input type="checkbox" value="2"  id="cbxFebruary"  />
+        <label>თებერვალი</label>
+    </li>
+    <li>
+        <input type="checkbox" value="3"  id="cbxMarch"     />
+        <label>მარტი</label>
+    </li>
+    <li>
+        <input type="checkbox" value="4"  id="cbxApril"     />
+        <label>აპრილი</label>
+    </li>
+    <li>
+        <input type="checkbox" value="5"  id="cbxMay"       />
+        <label>მაისი</label>
+    </li>
+    <li>
+        <input type="checkbox" value="6"  id="cbxJune"      />
+        <label>ივნისი</label>
+    </li>
+    <li>
+        <input type="checkbox" value="7"  id="cbxJuly"      />
+        <label>ივლისი</label>
+    </li>
+    <li>
+        <input type="checkbox" value="8"  id="cbxAugust"    />
+        <label>აგვისტო</label>
+    </li>
+    <li>
+        <input type="checkbox" value="9"  id="cbxSeptember" />
+        <label>სექტემბერი</label>
+    </li>
+    <li>
+        <input type="checkbox" value="10" id="cbxOctober"   />
+        <label>ოქტომბერი</label>
+    </li>
+    <li>
+        <input type="checkbox" value="11" id="cbxNovember"  />
+        <label>ნოემბერი</label>
+    </li>
+    <li>
+        <input type="checkbox" value="12" id="cbxDecember"  />
+        <label>დეკემბერი</label>
+    </li>
+</ul>
+
+<button onclick="redirectDaily()" type="button">Go</button>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ElementAt(0).LoanStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ElementAt(0).LoanAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ElementAt(0).LoanCount)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanCount)
+        </td>
+    </tr>
+}
+
+    <tr>
+        <th>
+            Grand Total:
+        </th>
+        <th>
+            @Model.Sum(l => l.LoanAmount)
+        </th>
+        <th>
+            @Model.Sum(l => l.LoanCount)
+        </th>
+    </tr>
+
+</table>
+
+<script>
+    function redirectDaily() {
+        var monthlist = [];
+        for (var i = 0; i < $('#monthsContainer :checkbox').length; i++) {
+            if ($('#monthsContainer :checkbox')[i].checked) {
+                monthlist.push($('#monthsContainer :checkbox')[i].value);
+            }
+        }
+
+        var location = "?months=";
+
+        for (var i = 0; i < monthlist.length; i++) {
+            location += monthlist[i];
+            if (i + 1 != monthlist.length) {
+                location += "&months=";
+            }
+        }
+
+        window.location.href = location;
+    }
+
+    if (localStorage.getItem('branchID') != null) {
+        cbxBranches.selectedIndex = localStorage.getItem('branchID');
+    }
+</script>

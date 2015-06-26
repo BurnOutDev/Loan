@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "რეპორტები";
+}
+
+<h2>რეპორტები</h2>
+
+<div class="jumbotron">
+    <p>
+        @Html.ActionLink("პორტფელის ანალიზი", "PortfolioAnalize", "AdminReports")
+        <br />
+        @Html.ActionLink("შემოსავლის ანალიზი", "IncomeAnalize", "AdminReports")
+        <br />
+        @Html.ActionLink("სესხის გაცემების რეპორტი", "LoanIssueDaily", "AdminReports")
+    </p>
+</div>

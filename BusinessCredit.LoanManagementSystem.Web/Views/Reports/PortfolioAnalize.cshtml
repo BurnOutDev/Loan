@@ -43,9 +43,6 @@
             @Html.DisplayNameFor(model => model.AccruingOverdueInterest)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AccruingOverduePenalty)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.AccruingOverduePrincipal)
         </th>
         <th>
@@ -133,9 +130,6 @@
             </th>
             <th>
                 @Html.DisplayFor(modelItem => item.AccruingOverdueInterest)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingOverduePenalty)
             </th>
             <th>
                 @Html.DisplayFor(modelItem => item.AccruingOverduePrincipal)
@@ -227,9 +221,6 @@
         </th>
         <th>
             @Model.Sum(model => model.AccruingOverdueInterest)
-        </th>
-        <th>
-            @Model.Sum(model => model.AccruingOverduePenalty)
         </th>
         <th>
             @Model.Sum(model => model.AccruingOverduePrincipal)

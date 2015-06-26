@@ -175,6 +175,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AdminReportsController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\DailyViewController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -361,6 +362,10 @@
     <Content Include="Views\Payments\IndexAdmin.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Payments\ChangePenalty.cshtml" />
+    <Content Include="Views\AdminReports\IncomeAnalize.cshtml" />
+    <Content Include="Views\AdminReports\Index.cshtml" />
+    <Content Include="Views\AdminReports\PortfolioAnalize.cshtml" />
+    <Content Include="Views\AdminReports\LoanIssueDaily.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

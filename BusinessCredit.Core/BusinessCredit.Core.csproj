@@ -60,10 +60,6 @@
     <Compile Include="LoanCalculator\LoanCalculator.cs" />
     <Compile Include="LoanCalculator\LoanModel.cs" />
     <Compile Include="LoanCalculator\PaymentModel.cs" />
-    <Compile Include="Migrations\201506281117454_RemovedAccruindOverduePenalty_DontNeedIt.cs" />
-    <Compile Include="Migrations\201506281117454_RemovedAccruindOverduePenalty_DontNeedIt.Designer.cs">
-      <DependentUpon>201506281117454_RemovedAccruindOverduePenalty_DontNeedIt.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxOrders\TaxOrderGenerator.cs" />
@@ -80,11 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\EPPlus.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201506281117454_RemovedAccruindOverduePenalty_DontNeedIt.resx">
-      <DependentUpon>201506281117454_RemovedAccruindOverduePenalty_DontNeedIt.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
