@@ -15,6 +15,8 @@ namespace BusinessCredit.Data
     {
         static void Main()
         {
+            PlanAllLoansViaLoanCalculator();
+
             BusinessCreditContext db = new BusinessCreditContext("Eliava_BusinessCreditDbConnectionString");
 
             var excel = new ExcelQueryFactory();

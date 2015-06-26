@@ -1,0 +1,738 @@
+﻿@model PagedList.IPagedList<BusinessCredit.Domain.Loan>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>სესხები</h2>
+
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-filterable.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/styles.css" />
+
+<script src="http://code.jquery.com/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="~/Scripts/scripts.js" type="text/javascript"></script>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<script>
+    function genGrid() {
+        jQuery("#gfrc1").jqGrid({
+            url: 'server.php?q=4',
+            datatype: "json",
+            colNames: ['InvNo', 'Client', 'Amount', 'Tax', 'Total', 'Closed', 'Shipped via', 'Notes'],
+            colModel: [
+                  { name: 'id', index: 'id', width: 60, align: 'center', sorttype: 'date', frozen: true },
+                  { name: 'name', index: 'name', width: 100, frozen: true },
+                  { name: 'amount', index: 'amount', width: 75, formatter: 'number', sorttype: 'number', align: 'right' },
+                  { name: 'tax', index: 'tax', width: 75, formatter: 'number', sorttype: 'number', align: 'right' },
+                  { name: 'total', index: 'total', width: 75, formatter: 'number', sorttype: 'number', align: 'right' },
+                  {
+                      name: 'closed', index: 'closed', width: 75, align: 'center', formatter: 'checkbox',
+                      edittype: 'checkbox', editoptions: { value: 'Yes:No', defaultValue: 'Yes' }
+                  },
+                  {
+                      name: 'ship_via', index: 'ship_via', width: 120, align: 'center', formatter: 'select',
+                      edittype: 'select', editoptions: { value: 'FE:FedEx;TN:TNT;IN:Intim', defaultValue: 'Intime' }
+                  },
+                  { name: 'note', index: 'note', width: 120, sortable: false }
+            ],
+            rowNum: 10,
+            width: 700,
+            rowList: [10, 20, 30],
+            pager: '#pgfrc1',
+            sortname: 'invdate',
+            viewrecords: true,
+            sortorder: "desc",
+            jsonReader: {
+                repeatitems: false
+            },
+            shrinkToFit: false,
+            caption: "Frozen Header",
+            height: 'auto'
+        });
+        jQuery("#gfrc1").jqGrid('setFrozenColumns');
+    }
+</script>
+
+<style>
+    .cbxcontainerLeft {
+        border: 2px solid #ccc;
+        width: auto;
+        height: 70px;
+        overflow-y: scroll;
+    }
+
+    /*.cbxcontainer {
+        border: 2px solid #ccc;
+        width: auto;
+        height: 70px;
+        overflow-y: scroll;
+    }
+
+    .col1 {
+        position: fixed;
+        background-color:AppWorkspace;
+    }*/
+</style>
+
+<script type="text/javascript">
+    function Filter(index, obj) {
+        $(".col" + index).filter(function () {
+            return this.textContent.indexOf(obj.value) == -1;
+        }).parent().hide();
+
+        $(".col" + index).filter(function () {
+            return this.textContent.indexOf(obj.value) > -1;
+        }).parent().show();
+    }
+
+    function ColValues(colIndex) {
+        var retList = [];
+        var lst = $('.col' + colIndex);
+        for (var i = 0; i < lst.length; i++) {
+            retList[i] = lst[i].innerText;
+        }
+        return retList;
+    }
+
+    function GenerateCbxs(colIndex) {
+        var values = $.unique(ColValues(colIndex));
+
+        var nodesList = [];
+
+        for (var i = 1; i <= values; i++) {
+            var node = document.createElement('input');
+            node.type = 'checkbox';
+            node.className = 'cbx' + colIndex;
+            nodesList.push(node);
+        }
+
+        return nodesList;
+    }
+
+    function countColumns() {
+        var count = 0;
+        for (var i = 1; i < 100; i++) {
+            if ($('.col' + i).length == 0)
+                break;
+            count++;
+        }
+        return count;
+    }
+
+    function genFilters() {
+        var cCols = countColumns();
+        for (var i = 1; i <= cCols; i++) {
+            var h = document.createElement('th');
+            var div = document.createElement('div');
+            div.id = 'cbxcontainer' + i;
+            div.className = 'cbxcontainer';
+
+            var cValues = $.unique(ColValues(i));
+            for (var n = 1; n < cValues; n++) {
+                var lbl = document.createElement('label');
+                var cbx = document.createElement('input');
+                cbx.type = 'checkbox';
+                lbl.textContent = cValues[n];
+                lbl.appendChild(cbx);
+                div.appendChild(lbl);
+            }
+            h.appendChild(div);
+            document.getElementById('cbxFilters').appendChild(h);
+        }
+
+        //<input type="checkbox" /> This is checkbox
+    }
+
+    function FilterCBX(colIndex, obj) {
+        if (obj.checked) {
+            $(".col" + colIndex).filter(function () {
+                return this.textContent.indexOf(obj.parentElement.innerText) != -1;
+            }).parent().show();
+        } else {
+            $(".col" + colIndex).filter(function () {
+                return this.textContent.indexOf(obj.parentElement.innerText) != -1;
+            }).parent().hide();
+        }
+    }
+
+    function checkboxesChecked() {
+        var cbxs = $(':checkbox');
+        for (var i = 0; i < cbxs.length; i++) {
+            cbxs[i].checked = true;
+            cbxs[i].onchange();
+        }
+    }
+
+    function checkboxesUnhecked() {
+        var cbxs = $(':checkbox');
+        for (var i = 0; i < cbxs.length; i++) {
+            cbxs[i].checked = false;
+            cbxs[i].onchange();
+        }
+    }
+
+    function hideColumn(colIndex) {
+        $('#tbl td:nth-child(' + colIndex + ')').hide();
+        $('#tbl th:nth-child(' + colIndex + ')').hide();
+    }
+
+    function showColumn(colIndex) {
+        $('#tbl td:nth-child(' + colIndex + ')').show();
+        $('#tbl th:nth-child(' + colIndex + ')').show();
+    }
+
+    function toggleColumn(colIndex, obj) {
+        if (obj.checked) {
+            showColumn(colIndex);
+        } else {
+            hideColumn(colIndex);
+        }
+    }
+
+</script>
+
+<p>
+    @Html.ActionLink("დამატება", "Create")
+</p>
+
+<button onclick="checkboxesChecked()">Check All</button>
+<button onclick="checkboxesUnhecked()">Uncheck All</button>
+<br />
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+<button onclick="$(cbxFilters).toggle()">ფილტრი</button>
+<button onclick="$(columnFilters).toggle()">სვეტები</button>
+
+<div class="row">
+    <div class="col-lg-2" style="z-index:9999" id="columnFilters">
+        <label><input type="checkbox" onchange="toggleColumn(1, this)" /> სახელი </label>
+        <label><input type="checkbox" onchange="toggleColumn(2, this)" /> გვარი </label>
+        <label><input type="checkbox" onchange="toggleColumn(3, this)" /> თანხა </label>
+        <label><input type="checkbox" onchange="toggleColumn(4, this)" /> სავარაუდო მიზანი</label>
+        <label><input type="checkbox" onchange="toggleColumn(5, this)" /> დღიური პროცენტი</label>
+        <label><input type="checkbox" onchange="toggleColumn(6, this)" /> ვადა (დღეები) </label>
+        <label><input type="checkbox" onchange="toggleColumn(7, this)" /> სამუშაო დღეები</label>
+        <label><input type="checkbox" onchange="toggleColumn(8, this)" /> საშეღავათო პერიოდი</label>
+        <label><input type="checkbox" onchange="toggleColumn(9, this)" /> ჯარიმა </label>
+        <label><input type="checkbox" onchange="toggleColumn(10, this)" /> ეფექტური პროცენტი </label>
+        <label><input type="checkbox" onchange="toggleColumn(11, this)" /> სულ მოსატანი </label>
+        <label><input type="checkbox" onchange="toggleColumn(12, this)" /> დღეში გადასახადი </label>
+        <label><input type="checkbox" onchange="toggleColumn(13, this)" /> ხელშეკრულების თარიღი </label>
+        <label><input type="checkbox" onchange="toggleColumn(14, this)" /> დაწყების თარიღი </label>
+        <label><input type="checkbox" onchange="toggleColumn(15, this)" /> დამთავრების თარიღი </label>
+        <label><input type="checkbox" onchange="toggleColumn(16, this)" /> თავდების სახელი </label>
+        <label><input type="checkbox" onchange="toggleColumn(17, this)" /> თავდების გვარი </label>
+        <label><input type="checkbox" onchange="toggleColumn(18, this)" /> თავდების პ. ნ. </label>
+        <label><input type="checkbox" onchange="toggleColumn(19, this)" /> თავდების მისამართი </label>
+        <label><input type="checkbox" onchange="toggleColumn(20, this)" /> თავდების ტელეფონი </label>
+        <label><input type="checkbox" onchange="toggleColumn(21, this)" /> სტატუსი </label>
+    </div>
+    <div class="col-lg-10">
+        <table id="tbl" class="table table-condensed table-hover table-striped" onended="checkboxesChecked()">
+            <tr id="cbxFilters" style="display:none">
+                <th>
+                    <div id="cbxcontainer-1" class="cbxcontainer">
+                        @{var list = new List<string>();}
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(Model.ElementAt(i).Account.Name))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(-1, this)" />@Model.ElementAt(i).Account.Name</label>
+                            list.Add(@Model.ElementAt(i).Account.Name);
+                        }
+                    </div>
+                </th>
+
+                <th>
+                    <div id="cbxcontainer0" class="cbxcontainer">
+                        @{list = new List<string>();}
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(Model.ElementAt(i).Account.LastName))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(0, this)" />@Model.ElementAt(i).Account.LastName</label>
+                            list.Add(Model.ElementAt(i).Account.LastName);
+                        }
+                    </div>
+                </th>
+
+
+                <th>
+                    <div id="cbxcontainer1" class="cbxcontainer">
+                        @{list = new List<string>();}
+
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(Model.ElementAt(i).LoanAmount.ToString()))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(1, this)" />@Model.ElementAt(i).LoanAmount</label>
+                            list.Add(Model.ElementAt(i).LoanAmount.ToString());
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer2" class="cbxcontainer">
+                        @{list = new List<string>();}
+
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(Model.ElementAt(i).LoanPurpose))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(2, this)" />@Model.ElementAt(i).LoanPurpose</label>
+                            list.Add(Model.ElementAt(i).LoanPurpose);
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer3" class="cbxcontainer">
+                        @{list = new List<string>();}
+
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(Model.ElementAt(i).LoanDailyInterestRate.ToString()))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(3, this)" />@Model.ElementAt(i).LoanDailyInterestRate</label>
+                            list.Add(Model.ElementAt(i).LoanDailyInterestRate.ToString());
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer4" class="cbxcontainer">
+                        @{list = new List<string>();}
+
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(Model.ElementAt(i).LoanTermDays.ToString()))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(4, this)" />@Model.ElementAt(i).LoanTermDays</label>
+                            list.Add(Model.ElementAt(i).LoanTermDays.ToString());
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer5" class="cbxcontainer">
+                        @{list = new List<string>();}
+
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(Model.ElementAt(i).NetworkDays.ToString()))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(5, this)" />@Model.ElementAt(i).NetworkDays</label>
+
+                            list.Add(Model.ElementAt(i).NetworkDays.ToString());
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer6" class="cbxcontainer">
+                        @{list = new List<string>();}
+
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(Model.ElementAt(i).DaysOfGrace.ToString()))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(6, this)" />@Model.ElementAt(i).DaysOfGrace</label>
+                            list.Add(Model.ElementAt(i).DaysOfGrace.ToString());
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer7" class="cbxcontainer">
+                        @{list = new List<string>();}
+
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(Model.ElementAt(i).LoanPenaltyRate.ToString()))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(7, this)" />@Model.ElementAt(i).LoanPenaltyRate</label>
+                            list.Add(Model.ElementAt(i).LoanPenaltyRate.ToString());
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer8" class="cbxcontainer">
+                        @{list = new List<string>();}
+
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(System.Math.Round(Model.ElementAt(i).EffectiveInterestRate, 2).ToString()))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input onchange="FilterCBX(8, this)" type="checkbox" />@System.Math.Round(Model.ElementAt(i).EffectiveInterestRate, 2).ToString()</label>
+                            list.Add(Model.ElementAt(i).EffectiveInterestRate.ToString());
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer9" class="cbxcontainer">
+                        @{list = new List<string>();}
+
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (list.Contains(System.Math.Round(Model.ElementAt(i).AmountToBePaidAll, 2).ToString()))
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(9, this)" />@System.Math.Round(Model.ElementAt(i).AmountToBePaidAll, 2).ToString()</label>
+                            list.Add(System.Math.Round(Model.ElementAt(i).AmountToBePaidAll, 2).ToString());
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer10" class="cbxcontainer">
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (Model.ElementAt(i - 1).AmountToBePaidDaily == Model.ElementAt(i).AmountToBePaidDaily)
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(10, this)" />@Model.ElementAt(i).AmountToBePaidDaily</label>
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer11" class="cbxcontainer">
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (Model.ElementAt(i - 1).AgreementDate == Model.ElementAt(i).AgreementDate)
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(11, this)" />@Model.ElementAt(i).AgreementDate</label>
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer12" class="cbxcontainer">
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (Model.ElementAt(i - 1).LoanStartDate == Model.ElementAt(i).LoanStartDate)
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(12, this)" />@Model.ElementAt(i).LoanStartDate</label>
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div id="cbxcontainer13" class="cbxcontainer">
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (Model.ElementAt(i - 1).LoanEndDate == Model.ElementAt(i).LoanEndDate)
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(13, this)" />@Model.ElementAt(i).LoanEndDate</label>
+                        }
+                    </div>
+                </th>
+
+                <th>
+                    <div id="cbxcontainer19" class="cbxcontainer">
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i != 0)
+                            {
+                                if (Model.ElementAt(i - 1).LoanStatus == Model.ElementAt(i).LoanStatus)
+                                {
+                                    continue;
+                                }
+                            }
+                            <label><input type="checkbox" onchange="FilterCBX(19, this)" />@Model.ElementAt(i).LoanStatus</label>
+                        }
+                    </div>
+                </th>
+            </tr>
+
+            <tr>
+                <th>
+                    <input type="text" value=" " onchange="Filter(-1, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(0, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(1, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(2, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(3, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(4, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(5, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(6, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(7, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(8, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(9, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(10, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(11, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(12, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(13, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(14, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(15, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(16, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(17, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(18, this)" />
+                </th>
+                <th>
+                    <input type="text" value=" " onchange="Filter(19, this)" />
+                </th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Account.Name)
+                    <input type="checkbox" onchange="toggleColumn(1, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Account.LastName)
+                    <input type="checkbox" onchange="toggleColumn(2, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].LoanAmount)
+                    <input type="checkbox" onchange="toggleColumn(3, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].LoanPurpose)
+                    <input type="checkbox" onchange="toggleColumn(4, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].LoanDailyInterestRate)
+                    <input type="checkbox" onchange="toggleColumn(5, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].LoanTermDays)
+                    <input type="checkbox" onchange="toggleColumn(6, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].NetworkDays)
+                    <input type="checkbox" onchange="toggleColumn(7, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].DaysOfGrace)
+                    <input type="checkbox" onchange="toggleColumn(8, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].LoanPenaltyRate)
+                    <input type="checkbox" onchange="toggleColumn(9, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].EffectiveInterestRate)
+                    <input type="checkbox" onchange="toggleColumn(10, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].AmountToBePaidAll)
+                    <input type="checkbox" onchange="toggleColumn(11, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].AmountToBePaidDaily)
+                    <input type="checkbox" onchange="toggleColumn(12, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].AgreementDate)
+                    <input type="checkbox" onchange="toggleColumn(13, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].LoanStartDate)
+                    <input type="checkbox" onchange="toggleColumn(14, this)" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].LoanEndDate)
+                    <input type="checkbox" onchange="toggleColumn(15, this)" />
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model[0].LoanStatus)
+                    <input type="checkbox" onchange="toggleColumn(21, this)" />
+                </th>
+                <th>
+                    <label style="width: 150px"><b>მოქმედებები</b></label>
+                </th>
+            </tr>
+
+            @*@for (int i = 0; i < 100; i++)
+                {*@
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="col-1">
+                        @Html.DisplayFor(modelItem => item.Account.Name)
+                    </td>
+                    <td class="col0">
+                        @Html.DisplayFor(modelItem => item.Account.LastName)
+                    </td>
+                    <td class="col1">
+                        @Html.DisplayFor(modelItem => item.LoanAmount)
+                    </td>
+                    <td class="col2">
+                        @Html.DisplayFor(modelItem => item.LoanPurpose)
+                    </td>
+                    <td class="col3">
+                        @Html.DisplayFor(modelItem => item.LoanDailyInterestRate)
+                    </td>
+                    <td class="col4">
+                        @Html.DisplayFor(modelItem => item.LoanTermDays)
+                    </td>
+                    <td class="col5">
+                        @Html.DisplayFor(modelItem => item.NetworkDays)
+                    </td>
+                    <td class="col6">
+                        @Html.DisplayFor(modelItem => item.DaysOfGrace)
+                    </td>
+                    <td class="col7">
+                        @Html.DisplayFor(modelItem => item.LoanPenaltyRate)
+                    </td>
+                    <td class="col8">
+                        @Html.DisplayFor(modelItem => item.EffectiveInterestRate)
+                    </td>
+                    <td class="col9">
+                        @Html.DisplayFor(modelItem => item.AmountToBePaidAll)
+                    </td>
+                    <td class="col10">
+                        @Html.DisplayFor(modelItem => item.AmountToBePaidDaily)
+                    </td>
+                    <td class="col11">
+                        @Html.DisplayFor(modelItem => item.AgreementDate)
+                    </td>
+                    <td class="col12">
+                        @Html.DisplayFor(modelItem => item.LoanStartDate)
+                    </td>
+                    <td class="col13">
+                        @Html.DisplayFor(modelItem => item.LoanEndDate)
+                    </td>
+
+                    <td class="col19">
+                        @Html.DisplayFor(modelItem => item.LoanStatus)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.LoanID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.LoanID }) |
+                        @*@Html.ActionLink("Delete", "Delete", new { id = item.LoanID })*@
+                        @Html.ActionLink("Pay", "Create", "Payments", new { id = item.LoanID }, null)
+                    </td>
+                </tr>
+            }
+            @*}*@
+        </table>
+
+        <br />
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </div>
+</div>
+
+<script>
+    $(document).ready(checkboxesChecked());
+
+    var list = $('.cbxcontainer label');
+    list.sort();
+
+    for (var i = 0; i < list.length; i++) {
+        if (list[i].innerText == list[i-1].innerText) {
+            list[i].hide();
+        }
+    }
+
+        $(columnFilters).toggle();
+</script>

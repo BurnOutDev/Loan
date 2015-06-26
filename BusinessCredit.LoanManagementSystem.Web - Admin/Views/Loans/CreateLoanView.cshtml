@@ -1,0 +1,143 @@
+﻿@using System;
+@using System.Collections.Generic;
+@using System.Data;
+@using System.Data.Entity;
+@using System.Linq;
+@using System.Net;
+@using System.Web;
+@using System.Web.Mvc;
+@using BusinessCredit.Core;
+@using BusinessCredit.Domain;
+@using BusinessCredit.LoanManagementSystem.Web.Models;
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+
+@model BusinessCredit.LoanManagementSystem.Web.Models.CreateLoanViewModel
+
+@{
+    ViewBag.Title = "სესხის დამატება";
+}
+
+<h2>სესხის დამატება</h2>
+
+<script>
+    function Filter(index, obj) {
+        $(".col-" + index).filter(function () {
+            return this.textContent.indexOf(obj.value) == -1;
+        }).parent().hide();
+
+        $(".col-" + index).filter(function () {
+            return this.textContent.indexOf(obj.value) > -1;
+        }).parent().show();
+    }
+</script>
+
+<style>
+    .scrollTable {
+        overflow-y: scroll;
+        height: 200px;
+        width: 100%;
+        position: absolute;
+    }
+</style>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AccountID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AccountID)
+                @Html.ValidationMessageFor(model => model.AccountID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TermDays, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TermDays)
+                @Html.ValidationMessageFor(model => model.TermDays)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Amount)
+                @Html.ValidationMessageFor(model => model.Amount)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DailyInterestRate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DailyInterestRate)
+                @Html.ValidationMessageFor(model => model.DailyInterestRate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Guarantor, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Guarantor)
+                @Html.ValidationMessageFor(model => model.Guarantor)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+    
+    <br />
+    <br />
+    <br />
+    
+       <div class="form-group">
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        <input type="text" id="col-1-text" onchange="Filter(1, this)" />
+                    </th>
+                    <th>
+                        <input type="text" id="col-2-text" onchange="Filter(2, this)" />
+                    </th>
+                    <th>
+                        <input type="text" id="col-3-text" onchange="Filter(3, this)" />
+                    </th>
+                </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>სახელი</th>
+                    <th>გვარი</th>
+                </tr>
+                    @{ var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                       var currentUser = manager.FindById(User.Identity.GetUserId()); }
+
+                    @foreach (var client in new BusinessCreditContext(currentUser.ConnectionString).Accounts.ToList())
+                    {
+                        <tr>
+                            <td class="col-1">@client.AccountID</td>
+                            <td class="col-2">@client.Name</td>
+                            <td class="col-3">@client.LastName</td>
+                        </tr>
+                    }
+               
+            </table>
+        </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
