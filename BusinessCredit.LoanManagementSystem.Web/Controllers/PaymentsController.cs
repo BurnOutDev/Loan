@@ -18,6 +18,7 @@ using BusinessCredit.Core.TaxOrders;
 using System.IO.Compression;
 using System.Configuration;
 using System.Web.Security;
+using Newtonsoft.Json;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -338,7 +339,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             for (int i = 0; i < paymentModels.Count(); i++)
                 ids[i] = paymentModels.ElementAt(i).PaymentID;
 
-            return GenerateTaxOrders(paymentIds: ids );
+            return GenerateTaxOrders(paymentIds: ids);
         }
 
         //public FileResult GenerateTaxOrders(byte[] taxOrderIds)
@@ -399,5 +400,29 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             return File(strRes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
+
+        public ActionResult IndexJson()
+        {
+            return View();
+        }
+
+        public JsonResult Data()
+        {
+            var json = new WebClient().DownloadString("http://jsonplaceholder.typicode.com/posts");
+
+            var t = JsonConvert.DeserializeObject<List<JsonDataClass>>(json);
+
+            //var jsonresult = new JsonResult { Data = json, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+
+            return Json(t, JsonRequestBehavior.AllowGet);
+        }
+    }
+
+    class JsonDataClass
+    {
+        public string userId { get; set; }
+        public string id { get; set; }
+        public string title { get; set; }
+        public string body { get; set; }
     }
 }

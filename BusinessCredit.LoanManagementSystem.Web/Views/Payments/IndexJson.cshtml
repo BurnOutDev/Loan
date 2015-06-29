@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "IndexJson";
+}
+
+@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.js"></script>*@
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrapTable")
+@Scripts.Render("~/bundles/tableExport")
+
+    <table data-toggle="table" data-search="true" data-pagination="true" data-show-refresh="true" data-show-columns="true" data-url="Data" id="hello">
+        <thead>
+            <tr class="filters">
+                <th data-field="userId">User ID</th>
+                <th data-field="id">Item ID</th>
+                <th data-field="title">Item Title</th>
+                <th data-field="body">Item Body</th>
+            </tr>
+        </thead>
+    </table>
