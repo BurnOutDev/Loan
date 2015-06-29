@@ -31,7 +31,7 @@ namespace BusinessCredit.Domain
         public string LoanPurpose { get; set; }
 
         /// სესხის დღიური პროცენტი
-        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:P4}", ApplyFormatInEditMode = true)]
         [Display(Name = "დღიური პროცენტი")]
         public double LoanDailyInterestRate { get; set; }
 
@@ -48,12 +48,12 @@ namespace BusinessCredit.Domain
         public int DaysOfGrace { get; set; }
 
         /// ჯარიმა (პროცენტი)
-        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:P}", ApplyFormatInEditMode = true)]
         [Display(Name = "ჯარიმა")]
         public double LoanPenaltyRate { get; set; } // ჯარიმა
 
         /// ეფექტური პროცენტი
-        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:P4}", ApplyFormatInEditMode = true)]
         [Display(Name = "ეფექტური პროცენტი")]
         public double EffectiveInterestRate { get; set; } // ეფექტური პროცენტი
 
@@ -94,10 +94,31 @@ namespace BusinessCredit.Domain
         {
             get
             {
+                //if (Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault().WholeDebt > 0)
+                //    return LoanStatus.Active;
+                //else
+                //    return LoanStatus.Closed;
                 return LoanStatus.Active;
             }
             private set { }
         }
+
+        #region Enforcement
+        [Display(Name = "გაბრთ. წერილ. თარ")]
+        public DateTime? LoanNotificationLetter { get; set; }
+
+        [Display(Name = "პრობ. გად. თარ.")]
+        public DateTime? ProblemManagerDate { get; set; }
+
+        [Display(Name = "პრობ. მენეჯერი")]
+        public string ProblemManager { get; set; } // Name LastName
+
+        [Display(Name = "აღსრულ. გად. თარ.")]
+        public DateTime? DateOfEnforcement { get; set; }
+
+        [Display(Name = "აღსრ. და სასამ. ხარჯი")]
+        public double CourtAndEnforcementFee { get; set; }
+        #endregion
 
         /// გადახდები
         public virtual ICollection<Payment> Payments { get; set; }

@@ -4,7 +4,7 @@
     ViewBag.Title = "სესხის გაცემების რეპორტი";
 }
 
-<h2>სესხის გაცემების რეპორტი</h2>
+<h3>სესხის გაცემების რეპორტი</h3>
 
 <style>
     #monthsContainer li {
@@ -13,8 +13,7 @@
         float: left;
     }
 </style>
-
-
+                      <br />
 
 <ul id="monthsContainer">
     <li>
@@ -67,7 +66,9 @@
     </li>
 </ul>
 
-<button onclick="redirectDaily()" type="button">Go</button>
+<select name="yearpicker" style="margin:20px; min-width:60px" id="yearpicker" class="dropdown"></select>
+
+<button onclick="redirectDaily()" type="button" class="btn btn-primary btn-lg">Go</button>
 
 <table class="table">
     <tr>
@@ -110,7 +111,7 @@
 
 </table>
 
-<script>
+<script type="text/javascript">
     function redirectDaily() {
         var monthlist = [];
         for (var i = 0; i < $('#monthsContainer :checkbox').length; i++) {
@@ -128,6 +129,15 @@
             }
         }
 
+        location += "&year=" + yearpicker.childNodes[yearpicker.selectedIndex].value;
+
         window.location.href = location;
+    }
+
+    for (i = new Date().getFullYear() ; i > 2010; i--) {
+        var child = document.createElement('option');
+        child.textContent = i;
+        yearpicker.appendChild(child);
+        //$('#yearpicker').append($('<option />').val(i).html(i));
     }
 </script>

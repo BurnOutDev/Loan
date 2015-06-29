@@ -12,6 +12,7 @@ using BusinessCredit.LoanManagementSystem.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.IO;
+using BusinessCredit.Domain.Enums;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -77,11 +78,12 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
                 db.Loans.Include("Accounts");
 
+                int count = 1;
+
                 foreach (var pmt in pmtList)
                 {
                     var view = new DailyViewModel();
                     view.LoanId = pmt.Loan.LoanID;
-                    view.LoanNumber = view.LoanId;
                     view.Name = pmt.Loan.Account.Name;
                     view.LastName = pmt.Loan.Account.LastName;
                     view.PaymentDate = dailyDate;
@@ -92,13 +94,15 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                     view.PrivateNumber = pmt.Loan.Account.PrivateNumber;
                     view.WholeDebt = pmt.WholeDebt.Value;
                     view.CurrentDebt = pmt.CurrentDebt.Value;
-                    view.OverdueAmount = view.CurrentDebt - view.PlannedPayment < 0 ? 0 : view.CurrentDebt - view.PlannedPayment;
                     view.AgreementNumber = pmt.Loan.Agreement;
                     view.BusinessAddress = pmt.Loan.Account.BusinessPhysicalAddress;
                     view.AccountNumber = pmt.Loan.Account.AccountID;
+                    view.PaymentOrderID = count;
+                    view.PaymentOrder = PaymentOrder.სშო;
                     //view.DisplayDate = pmt.PaymentDate.AddDays(1);  DisplayDate in model temporarily changed to DateTime.Today
 
                     viewList.Add(view);
+                    count++;
                 }
 
                 dailyList.DailyList = viewList;
@@ -161,16 +165,13 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             #endregion
 
-            int count = 0;
-
             foreach (var model in view_Model)
             {
-                count++;
                 var pmt = db.Payments.Create();
                 pmt.Loan = db.Loans.Find(model.LoanId);
                 pmt.CurrentPayment = model.Payment;
                 pmt.PaymentDate = model.PaymentDate;
-                pmt.TaxOrderID = "სშო #" + count;
+                pmt.TaxOrderID = model.PaymentOrder.ToString() + " #" + model.PaymentOrderID;
                 pmt.CreditExpert = db.CreditExperts.FirstOrDefault();
                 pmt.CashCollectionAgent = db.CashCollectionAgents.FirstOrDefault();
                 //db.Loans.Find(model.LoanId).Payments.Add(

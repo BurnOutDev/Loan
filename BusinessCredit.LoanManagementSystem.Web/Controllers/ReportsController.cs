@@ -84,12 +84,19 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 if (tempLoans == null || tempLoans.Count == 0)
                     continue;
 
-                list.Add(new LoanIssueReportModel()
-                    {
-                        LoanStartDate = tempLoans.FirstOrDefault().LoanStartDate,
-                        LoanAmount = tempLoans.Sum(x => x.LoanAmount),
-                        LoanCount = tempLoans.Count()
-                    });
+                List<Tuple<DateTime, double, int>> grpDays = null;
+
+                var loansDayGroup = tempLoans.GroupBy(l => l.LoanStartDate);
+
+                foreach (var grp in loansDayGroup)
+                {
+                    list.Add(new LoanIssueReportModel()
+                        {
+                            LoanStartDate = grp.FirstOrDefault().LoanStartDate,
+                            LoanAmount = grp.Sum(l => l.LoanAmount),
+                            LoanCount = grp.Count()
+                        });
+                }
             }
 
             return View(list);

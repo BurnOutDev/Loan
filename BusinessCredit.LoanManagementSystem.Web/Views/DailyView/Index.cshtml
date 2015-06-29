@@ -11,13 +11,10 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model[0].DisplayDate)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model[0].AccountNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].LoanNumber)
+                @Html.DisplayNameFor(model => model[0].LoanId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model[0].Name)
@@ -47,13 +44,16 @@
                 @Html.DisplayNameFor(model => model[0].Payment)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model[0].PaymentOrderID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].PaymentOrder)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model[0].PaymentDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model[0].AgreementNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].OverdueAmount)
             </th>
         </tr>
 
@@ -62,16 +62,12 @@
             {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => Model[0].DisplayDate)
-                    @Html.HiddenFor(modelItem => Model[i].DisplayDate)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => Model[i].AccountNumber)
                     @Html.HiddenFor(modelItem => Model[i].AccountNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model[i].LoanNumber)
-                    @Html.HiddenFor(modelItem => Model[i].LoanNumber)
+                    @Html.DisplayFor(modelItem => Model[i].LoanId)
+                    @Html.HiddenFor(modelItem => Model[i].LoanId)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => Model[i].Name)
@@ -110,6 +106,14 @@
                     @Html.HiddenFor(model => model[i].Payment)
                 </td>
                 <td>
+                    @Html.TextBoxFor(model => model[i].PaymentOrderID)
+                    @Html.HiddenFor(model => model[i].PaymentOrderID)
+                </td>
+                <td>
+                    @Html.EnumDropDownListFor(model => model[i].PaymentOrder)
+                    @Html.HiddenFor(model => model[i].PaymentOrder)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => Model[i].PaymentDate)
                     @Html.HiddenFor(model => model[i].PaymentDate)
                 </td>
@@ -117,14 +121,13 @@
                     @Html.DisplayFor(modelItem => Model[i].AgreementNumber)
                     @Html.HiddenFor(model => model[i].AgreementNumber)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model[i].OverdueAmount)
-                    @Html.HiddenFor(model => model[i].OverdueAmount)
-                </td>
             </tr>
             @Html.HiddenFor(model => model[i].LoanId)
 }
     </table>
 
-    <input type="submit" />
+    @if (Model.Count() > 0)
+    { 
+       <input type="submit" />
+    }
 </form>

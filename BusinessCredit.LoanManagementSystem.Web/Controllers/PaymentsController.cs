@@ -142,15 +142,15 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             if (loanId == null)
             {
                 //nothing
-                var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).ToList();
+                var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).Include(x => x.Loan.PaymentsPlanned).ToList();
 
                 if (fromDate != null && gen == 1)
-                    return GenerateTaxOrders(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).ToArray());
+                    return GenerateTaxOrders(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).Include(x => x.Loan.PaymentsPlanned).ToArray());
 
                 if (fromDate != null)
-                    return View(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).ToList());
+                    return View(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).Include(x => x.Loan.PaymentsPlanned).ToList());
 
-                return View(db.Payments.Where(p => p.PaymentDate == DateTime.Today).Include(x => x.Loan).ToList());
+                return View(db.Payments.Where(p => p.PaymentDate == DateTime.Today).Include(x => x.Loan).Include(x => x.Loan.PaymentsPlanned).ToList());
             }
             if (loanId != null)
                 return View(db.Loans.Find(loanId).Payments.ToList());

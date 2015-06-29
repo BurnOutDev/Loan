@@ -13,6 +13,7 @@
     @Html.ActionLink("დამატება", "Create")
 </p>
 
+
 <br />
 <br />
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
@@ -56,7 +57,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr @String.Concat("onclick=window.location.href='../Loans/Index?page=1&accountId=" + item.AccountID + "';")>
         <td>
             @Html.DisplayFor(modelItem => item.AccountID)
         </td>

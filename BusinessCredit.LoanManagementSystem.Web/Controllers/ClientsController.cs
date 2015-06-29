@@ -56,11 +56,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             if (db.Loans.Count() == 0 && db.Accounts.Count() == 0)
                 return View(new List<Account>().ToPagedList(1, pageSize));
 
-            var loans = db.Loans.ToList();
-            var accounts = (from l in loans
-                            select l.Account)
-                            .Distinct()
-                            .ToList();
+            var accounts = db.Accounts.ToList();
 
             //accounts.AddRange(db.Accounts.ToList());
             if (page.HasValue)
