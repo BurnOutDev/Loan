@@ -1,200 +1,140 @@
-﻿@model PagedList.IPagedList<BusinessCredit.Domain.Loan>
-@using PagedList.Mvc;
+﻿@model BusinessCredit.Domain.Loan
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "სესხები";
 }
 
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrapTable")
+@Scripts.Render("~/bundles/tableExport")
+
 <h2>სესხები</h2>
-
-<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-filterable.css" />
-<link rel="stylesheet" type="text/css" href="~/Content/styles.css" />
-
-<script src="http://code.jquery.com/jquery-1.11.3.min.js" type="text/javascript"></script>
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-
 
 <p>
     @Html.ActionLink("დამატება", "Create")
 </p>
 
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+<script>
+    function actionFormatter(value, row, index) {
+        return [
+            '<a class="like" href="javascript:void(0)" title="Edit" style="margin: 5px">',
+            'სესხები',
+            '</a>',
+            '<a class="edit ml10" href="javascript:void(0)" title="Edit" style="margin: 5px">',
+            'რედაქტირება',
+            '</a>',
+        ].join('');
+    }
 
-<div class="row">
-    <div class="col-lg-10">
-        <table id="tbl" class="table table-condensed table-hover table-striped" onended="checkboxesChecked()">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].Account.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].Account.LastName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].Account.PrivateNumber)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].Account.NumberMobile)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].Account.AccountNumber)
-                </th>
-                <th>
-                    თავდები
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].Account.AccountID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].LoanID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].Agreement)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].LoanStatus)
-                </th>
-                <th>
-                    ექსპერტი
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].LoanAmount)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].LoanPurpose)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].LoanDailyInterestRate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].LoanTermDays)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].NetworkDays)
-                </th>
-                @*<th>
-                    @Html.DisplayNameFor(model => model[0].DaysOfGrace)
-                </th>*@
-                <th>
-                    @Html.DisplayNameFor(model => model[0].LoanPenaltyRate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].EffectiveInterestRate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].AmountToBePaidAll)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].AmountToBePaidDaily)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].AgreementDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].LoanStartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model[0].LoanEndDate)
-                </th>
-                @*<th>
-                    <label style="width: 150px"><b>მოქმედებები</b></label>
-                </th>*@
-            </tr>
+    window.actionEvents = {
+        'click .like': function (e, value, row, index) {
+            window.location.href = "@Url.Action("Index", "Loans")?AccountId=" + row.AccountID;
+        },
+        'click .edit': function (e, value, row, index) {
+            window.location.href = "@Url.Action("Edit")/" + row.AccountID;
+        }
+    };
+</script>
 
-            @*@for (int i = 0; i < 100; i++)
-                {*@
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td class="col-1">
-                        @Html.DisplayFor(modelItem => item.Account.Name)
-                    </td>
-                    <td class="col0">
-                        @Html.DisplayFor(modelItem => item.Account.LastName)
-                    </td>
-                    <td class="col1">
-                        @Html.DisplayFor(modelItem => item.Account.PrivateNumber)
-                    </td>
-                    <td class="col3">
-                        @Html.DisplayFor(modelItem => item.Account.NumberMobile)
-                    </td>
-                    <td class="col4">
-                        @Html.DisplayFor(modelItem => item.Account.AccountNumber)
-                    </td>
-                    <td class="col5">
-                        <a style="cursor:context-menu">თავდები</a>
-                    </td>
-                    <td class="col6">
-                        @Html.DisplayFor(modelItem => item.Account.AccountID)
-                    </td>
-                    <td class="col7">
-                        @Html.DisplayFor(modelItem => item.LoanID)
-                    </td>
-                    <td class="col8">
-                        @Html.DisplayFor(modelItem => item.Agreement)
-                    </td>
-                    <td class="col9">
-                        @Html.DisplayFor(modelItem => item.LoanStatus)
-                    </td>
-                    <td class="col10">
-                        <a style="cursor:context-menu">ექსპერტი</a>
-                    </td>
-                    <td class="col11">
-                        @Html.DisplayFor(modelItem => item.LoanAmount)
-                    </td>
-                    <td class="col12">
-                        @Html.DisplayFor(modelItem => item.LoanPurpose)
-                    </td>
-                    <td class="col13">
-                        @Html.DisplayFor(modelItem => item.LoanDailyInterestRate)
-                    </td>
-                    <td class="col19">
-                        @Html.DisplayFor(modelItem => item.LoanTermDays)
-                    </td>
-                    <td class="col6">
-                        @Html.DisplayFor(modelItem => item.NetworkDays)
-                    </td>
-                    @*<td class="col7">
-                        @Html.DisplayFor(modelItem => item.DaysOfGrace)
-                    </td>*@
-                    <td class="col8">
-                        @Html.DisplayFor(modelItem => item.LoanPenaltyRate)
-                    </td>
-                    <td class="col9">
-                        @Html.DisplayFor(modelItem => item.EffectiveInterestRate)
-                    </td>
-                    <td class="col10">
-                        @Html.DisplayFor(modelItem => item.AmountToBePaidAll)
-                    </td>
-                    <td class="col11">
-                        @Html.DisplayFor(modelItem => item.AmountToBePaidDaily)
-                    </td>
-                    <td class="col12">
-                        @Html.DisplayFor(modelItem => item.AgreementDate)
-                    </td>
-                    <td class="col13">
-                        @Html.DisplayFor(modelItem => item.LoanStartDate)
-                    </td>
-                    <td class="col19">
-                        @Html.DisplayFor(modelItem => item.LoanEndDate)
-                    </td>
 
-                    @*<td>*@
-                        @*@Html.ActionLink("Edit", "Edit", new { id = item.LoanID }) |*@
-                        @*@Html.ActionLink("Details", "Details", new { id = item.LoanID })*@
-                        @*</td>*@
-                </tr>
-            }
-                @*}*@
+
+
+<table id="table" data-show-export="true" data-toggle="table" data-search="true" data-pagination="true" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("IndexJson")">
+    <thead>
+        <tr class="filters">
+            <th data-field="AccountName">
+                @Html.DisplayNameFor(model => model.Account.Name)
+                <i class="icon-filter filterable editable editable-click editable-empty" data-name="0" title="Enter filter for Make"></i>
+            </th>
+            <th data-field="AccountLastName">
+                @Html.DisplayNameFor(model => model.Account.LastName)
+            </th>
+            <th data-field="AccountPrivateNumber">
+                @Html.DisplayNameFor(model => model.Account.PrivateNumber)
+            </th>
+            <th data-field="AccountNumberMobile">
+                @Html.DisplayNameFor(model => model.Account.NumberMobile)
+            </th>
+            <th data-field="AccountAccountNumber">
+                @Html.DisplayNameFor(model => model.Account.AccountNumber)
+            </th>
+            <th>
+                თავდები
+            </th>
+            <th data-field="AccountAccountID">
+                @Html.DisplayNameFor(model => model.Account.AccountID)
+            </th>
+            <th data-field="LoanID">
+                @Html.DisplayNameFor(model => model.LoanID)
+            </th>
+            <th data-field="Agreement">
+                @Html.DisplayNameFor(model => model.Agreement)
+            </th>
+            <th data-field="LoanStatus">
+                @Html.DisplayNameFor(model => model.LoanStatus)
+            </th>
+            <th>
+                ექსპერტი
+            </th>
+            <th data-field="LoanAmount">
+                @Html.DisplayNameFor(model => model.LoanAmount)
+            </th>
+            <th data-field="LoanPurpose">
+                @Html.DisplayNameFor(model => model.LoanPurpose)
+            </th>
+            <th data-field="LoanDailyInterestRate">
+                @Html.DisplayNameFor(model => model.LoanDailyInterestRate)
+            </th>
+            <th data-field="LoanTermDays">
+                @Html.DisplayNameFor(model => model.LoanTermDays)
+            </th>
+            <th data-field="NetworkDays">
+                @Html.DisplayNameFor(model => model.NetworkDays)
+            </th>
+            @*<th data-field="AccountName">
+                @Html.DisplayNameFor(model => model.DaysOfGrace)
+            </th>*@
+            <th data-field="LoanPenaltyRate">
+                @Html.DisplayNameFor(model => model.LoanPenaltyRate)
+            </th>
+            <th data-field="EffectiveInterestRate">
+                @Html.DisplayNameFor(model => model.EffectiveInterestRate)
+            </th>
+            <th data-field="AmountToBePaidAll">
+                @Html.DisplayNameFor(model => model.AmountToBePaidAll)
+            </th>
+            <th data-field="AmountToBePaidDaily">
+                @Html.DisplayNameFor(model => model.AmountToBePaidDaily)
+            </th>
+            <th data-field="AgreementDate">
+                @Html.DisplayNameFor(model => model.AgreementDate)
+            </th>
+            <th data-field="LoanStartDate">
+                @Html.DisplayNameFor(model => model.LoanStartDate)
+            </th>
+            <th data-field="LoanEndDate">
+                @Html.DisplayNameFor(model => model.LoanEndDate)
+            </th>
+            <th data-field="LoanNotificationLetter">
+                @Html.DisplayNameFor(model => model.LoanNotificationLetter)
+            </th>
+            <th data-field="ProblemManagerDate">
+                @Html.DisplayNameFor(model => model.ProblemManagerDate)
+            </th>
+            <th data-field="ProblemManager">
+                @Html.DisplayNameFor(model => model.ProblemManager)
+            </th>
+            <th data-field="DateOfEnforcement">
+                @Html.DisplayNameFor(model => model.DateOfEnforcement)
+            </th>
+            <th data-field="CourtAndEnforcementFee">
+                @Html.DisplayNameFor(model => model.CourtAndEnforcementFee)
+            </th>
+            @*<th data-field="action" data-formatter="actionFormatter" data-events="actionEvents"></th>*@
+        </tr>
+    </thead>
 </table>
 
-        <br />
-        <br />
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-        @Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-    </div>
-</div>
+<script>
+    $(table).filterable();
+</script>

@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using PagedList;
 using Microsoft.VisualBasic;
 using LC = BusinessCredit.Core.LoanCalculator;
+using BusinessCredit.LoanManagementSystem.Web.Models.Json;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -40,7 +41,12 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
         private int pageSize = 30;
 
-        public ActionResult Index(int? page, int? accountId)
+        public ActionResult Index(int? accountId)
+        {
+            return View();
+        }
+
+        public JsonResult IndexJson(int? accountId)
         {
             #region GetUser
 
@@ -51,19 +57,51 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             #endregion
 
-            IQueryable<Loan> result;
+            List<Loan> result;
 
             if (accountId.HasValue)
                 result = db.Loans.Where(l => l.Account.AccountID == accountId)
-                            .OrderBy(x => x.LoanID);
+                            .OrderBy(x => x.LoanID).ToList();
             else
-                result = db.Loans.OrderBy(x => x.LoanID);
+                result = db.Loans.OrderBy(x => x.LoanID).ToList();
 
-            if (page.HasValue)
-                return View(result.ToPagedList(page.Value, pageSize));
-            else
-                return View(result.ToPagedList(1, pageSize));
+            var resultJson = new List<LoanJson>();
 
+            foreach (var loan in result)
+            {
+                resultJson.Add(new LoanJson
+                    {
+                        AccountAccountID = loan.Account.AccountID,
+                        AccountAccountNumber = loan.Account.AccountNumber,
+                        AccountLastName = loan.Account.LastName,
+                        AccountName = loan.Account.Name,
+                        AccountNumberMobile = loan.Account.NumberMobile,
+                        AccountPrivateNumber = loan.Account.PrivateNumber,
+                        Agreement = loan.Agreement,
+                        AgreementDate = loan.AgreementDate.ToShortDateString(),
+                        AmountToBePaidAll = loan.AmountToBePaidAll,
+                        AmountToBePaidDaily = loan.AmountToBePaidDaily,
+                        CourtAndEnforcementFee = loan.CourtAndEnforcementFee,
+                        DateOfEnforcement = loan.DateOfEnforcement.HasValue ? loan.DateOfEnforcement.Value.ToShortDateString() : null,
+                        DaysOfGrace = loan.DaysOfGrace,
+                        EffectiveInterestRate = loan.EffectiveInterestRate,
+                        LoanAmount = loan.LoanAmount,
+                        LoanDailyInterestRate = loan.LoanDailyInterestRate,
+                        LoanEndDate = loan.LoanEndDate.ToShortDateString(),
+                        LoanID = loan.LoanID,
+                        LoanNotificationLetter = loan.LoanNotificationLetter.HasValue ? loan.LoanNotificationLetter.Value.ToShortDateString() : null,
+                        LoanPenaltyRate = loan.LoanPenaltyRate,
+                        LoanPurpose = loan.LoanPurpose,
+                        LoanStartDate = loan.LoanStartDate.ToShortDateString(),
+                        LoanStatus = loan.LoanStatus.ToString(),
+                        LoanTermDays = loan.LoanTermDays,
+                        NetworkDays = loan.NetworkDays,
+                        ProblemManager = loan.ProblemManager,
+                        ProblemManagerDate = loan.ProblemManagerDate.HasValue ? loan.ProblemManagerDate.Value.ToShortDateString() : null
+                    });
+            }
+
+            return Json(resultJson, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Details(int? id)
@@ -121,7 +159,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             loan.LoanPurpose = loanModel.LoanPurpose;
 
             loan.LoanPenaltyRate = 0.005;
-            loan.AmountToBePaidDaily = - Financial.Pmt(loanModel.DailyInterestRate, loanModel.TermDays, loanModel.Amount);
+            loan.AmountToBePaidDaily = -Financial.Pmt(loanModel.DailyInterestRate, loanModel.TermDays, loanModel.Amount);
             loan.AmountToBePaidAll = loan.AmountToBePaidDaily * loan.LoanTermDays;
 
             LC.LoanModel loanCalculated = new LC.LoanModel();

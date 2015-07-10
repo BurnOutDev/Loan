@@ -1,11 +1,37 @@
-﻿@model PagedList.IPagedList<BusinessCredit.Domain.Account>
+﻿@model BusinessCredit.Domain.Account
 @using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
 }
 
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrapTable")
+@Scripts.Render("~/bundles/tableExport")
+
+
+
+<script>
+    function actionFormatter(value, row, index) {
+        return [
+            '<a class="like" href="javascript:void(0)" title="Edit" style="margin: 5px">',
+            'სესხები',
+            '</a>',
+            '<a class="edit ml10" href="javascript:void(0)" title="Edit" style="margin: 5px">',
+            'რედაქტირება',
+            '</a>',
+        ].join('');
+    }
+
+    window.actionEvents = {
+        'click .like': function (e, value, row, index) {
+            window.location.href = "@Url.Action("Index", "Loans")?AccountId=" + row.AccountID;
+        },
+        'click .edit': function (e, value, row, index) {
+            window.location.href = "@Url.Action("Edit")/" + row.AccountID;
+        }
+    };
+</script>
 
 <h2>კლიენტები</h2>
 
@@ -14,94 +40,40 @@
 </p>
 
 
-<br />
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-<br />
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model[0].AccountID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].PrivateNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].PhysicalAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].NumberMobile)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].AccountNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].BusinessPhysicalAddress)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr @String.Concat("onclick=window.location.href='../Loans/Index?page=1&accountId=" + item.AccountID + "';")>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PrivateNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PhysicalAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumberMobile)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BusinessPhysicalAddress)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.AccountID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.AccountID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AccountID })
-        </td>
-    </tr>
-}
-
+<table data-toggle="table" data-show-export="true" data-search="true" data-pagination="true" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("IndexJson")">
+    <thead>
+        <tr class="filters">
+            <th data-field="AccountID">
+                @Html.DisplayNameFor(model => model.AccountID)
+            </th>
+            <th data-field="Name">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th data-field="LastName">
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th data-field="PrivateNumber">
+                @Html.DisplayNameFor(model => model.PrivateNumber)
+            </th>
+            <th data-field="Gender">
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th data-field="Status">
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th data-field="PhysicalAddress">
+                @Html.DisplayNameFor(model => model.PhysicalAddress)
+            </th>
+            <th data-field="NumberMobile">
+                @Html.DisplayNameFor(model => model.NumberMobile)
+            </th>
+            <th data-field="AccountNumber">
+                @Html.DisplayNameFor(model => model.AccountNumber)
+            </th>
+            <th data-field="BusinessPhysicalAddress">
+                @Html.DisplayNameFor(model => model.BusinessPhysicalAddress)
+            </th>
+            <th data-field="action" data-formatter="actionFormatter" data-events="actionEvents"></th>
+        </tr>
+    </thead>
 </table>
-
-<br />
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-<br />
-

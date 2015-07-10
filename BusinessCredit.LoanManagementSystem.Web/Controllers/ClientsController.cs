@@ -11,7 +11,8 @@ using BusinessCredit.Domain;
 using Microsoft.AspNet.Identity;
 using BusinessCredit.LoanManagementSystem.Web.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
-using PagedList;
+using Newtonsoft.Json;
+using BusinessCredit.LoanManagementSystem.Web.Models.Json;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -39,10 +40,14 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             }
         }
 
-        private int pageSize = 30;
 
         // GET: Clients
         public ActionResult Index(int? page)
+        {
+            return View();
+        }
+
+        public JsonResult IndexJson()
         {
             #region GetUser
 
@@ -54,15 +59,32 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             #endregion
 
             if (db.Loans.Count() == 0 && db.Accounts.Count() == 0)
-                return View(new List<Account>().ToPagedList(1, pageSize));
+                return Json(null, JsonRequestBehavior.AllowGet);
 
             var accounts = db.Accounts.ToList();
 
-            //accounts.AddRange(db.Accounts.ToList());
-            if (page.HasValue)
-                return View(accounts.OrderBy(x => x.Name).ToPagedList(page.Value, pageSize));
-            return View(accounts.OrderBy(x => x.Name).ToPagedList(1, pageSize));
+            var accountsJson = new List<AccountJson>();
+
+            foreach (var acc in accounts)
+            {
+                accountsJson.Add(new AccountJson
+                    {
+                        AccountID = acc.AccountID,
+                        AccountNumber = acc.AccountNumber,
+                        BusinessPhysicalAddress = acc.BusinessPhysicalAddress,
+                        Gender = acc.Gender.ToString(),
+                        LastName = acc.LastName,
+                        Name = acc.Name,
+                        NumberMobile = acc.NumberMobile,
+                        PhysicalAddress = acc.PhysicalAddress,
+                        PrivateNumber = acc.PrivateNumber,
+                        Status = acc.Status.ToString()
+                    });
+            }
+
+            return Json(accountsJson, JsonRequestBehavior.AllowGet);
         }
+
 
         // GET: Clients/Details/5
         public ActionResult Details(int? id)
@@ -110,9 +132,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
             // Get the current logged in User and look up the user in ASP.NET Identity
-            var currentUser = manager.FindById(User.Identity.GetUserId()); 
+            var currentUser = manager.FindById(User.Identity.GetUserId());
 
-            #endregion 
+            #endregion
 
             if (ModelState.IsValid)
             {
@@ -134,7 +156,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             // Get the current logged in User and look up the user in ASP.NET Identity
             var currentUser = manager.FindById(User.Identity.GetUserId());
 
-            #endregion 
+            #endregion
 
             if (id == null)
             {
@@ -176,7 +198,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             // Get the current logged in User and look up the user in ASP.NET Identity
             var currentUser = manager.FindById(User.Identity.GetUserId());
 
-            #endregion 
+            #endregion
 
             if (id == null)
             {

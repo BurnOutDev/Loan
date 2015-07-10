@@ -19,12 +19,15 @@ using System.IO.Compression;
 using System.Configuration;
 using System.Web.Security;
 using Newtonsoft.Json;
+using BusinessCredit.LoanManagementSystem.Web.Models.Json;
+using System.Web.UI;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
     [Authorize]
     public class PaymentsController : Controller
     {
+        #region Properties
         #region Databases
         private BusinessCreditContext _centralDb;
 
@@ -129,37 +132,85 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 return manager.FindById(User.Identity.GetUserId());
             }
         }
+        #endregion
 
-        public ActionResult Index(int? loanId, string fromDate, string toDate, int gen = 0)
+        public ActionResult Index(int? loanId, string fromDate, string toDate)
         {
-            DateTime dailyFromDate = DateTime.Today;
-            DateTime dailyToDate = DateTime.Today;
+            ViewData.Add("loanId", loanId);
+            ViewData.Add("fromDate", fromDate);
+            ViewData.Add("toDate", toDate);
 
-            if (!string.IsNullOrEmpty(fromDate) && !string.IsNullOrEmpty(toDate))
-            {
-                dailyFromDate = DateTime.Parse(fromDate);
-                dailyToDate = DateTime.Parse(toDate);
-            }
-            if (loanId == null)
-            {
-                //nothing
-                var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).Include(x => x.Loan.PaymentsPlanned).ToList();
+            return View();
+        }
 
-                if (fromDate != null && gen == 1)
-                    return GenerateTaxOrders(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).Include(x => x.Loan.PaymentsPlanned).ToArray());
-
-                if (fromDate != null)
-                    return View(db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).Include(x => x.Loan).Include(x => x.Loan.PaymentsPlanned).ToList());
-
-                return View(db.Payments.Where(p => p.PaymentDate == DateTime.Today).Include(x => x.Loan).Include(x => x.Loan.PaymentsPlanned).ToList());
-            }
+        public JsonResult IndexJson(int? loanId, string fromDate, string toDate)
+        {
+            var result = db.Payments.ToList();
             if (loanId != null)
-                return View(db.Loans.Find(loanId).Payments.ToList());
+                result = result.Where(l => l.Loan.LoanID == loanId).ToList();
+            else if (loanId == null && fromDate != null && toDate != null)
+                result = result.Where(l => l.PaymentDate >= DateTime.Parse(fromDate) && l.PaymentDate <= DateTime.Parse(toDate)).ToList();
 
-            if (loanId != null && gen == 1)
-                return GenerateTaxOrders(db.Loans.Find(loanId).Payments.ToArray());
+            var resultJson = new List<PaymentJson>();
 
-            return View(new List<Payment>());
+            foreach (var pmt in result)
+            {
+                var jsonPayment = new PaymentJson
+                    {
+                        AccruingInterestPayment = pmt.AccruingInterestPayment,
+                        AccruingOverdueInterest = pmt.AccruingOverdueInterest,
+                        AccruingOverduePrincipal = pmt.AccruingOverduePrincipal,
+                        AccruingPenalty = pmt.AccruingPenalty,
+                        AccruingPenaltyPayment = pmt.AccruingPenaltyPayment,
+                        AccruingPrincipalPayment = pmt.AccruingPrincipalPayment,
+                        CurrentDebt = pmt.CurrentDebt,
+                        CurrentInterestPayment = pmt.CurrentInterestPayment,
+                        CurrentOverdueInterest = pmt.CurrentOverdueInterest,
+                        CurrentOverduePrincipal = pmt.CurrentOverduePrincipal,
+                        CurrentPayment = pmt.CurrentPayment,
+                        CurrentPenalty = pmt.CurrentPenalty,
+                        CurrentPrincipalPayment = pmt.CurrentPrincipalPayment,
+                        LoanAccountAccountID = pmt.Loan.Account.AccountID,
+                        LoanAccountLastName = pmt.Loan.Account.LastName,
+                        LoanAccountName = pmt.Loan.Account.Name,
+                        LoanAccountPrivateNumber = pmt.Loan.Account.PrivateNumber,
+                        LoanBalance = pmt.LoanBalance,
+                        LoanLoanID = pmt.Loan.LoanID,
+                        LoanStatus = pmt.LoanStatus,
+                        PaidInterest = pmt.PaidInterest,
+                        PaidPenalty = pmt.PaidPenalty,
+                        PaidPrincipal = pmt.PaidPrincipal,
+                        PayableInterest = pmt.PayableInterest,
+                        PayablePrincipal = pmt.PayablePrincipal,
+                        PaymentDate = pmt.PaymentDate.ToShortDateString(),
+                        PaymentID = pmt.PaymentID,
+                        PlannedBalance = pmt.PlannedBalance,
+                        PrincipalPrepaid = pmt.PrincipalPrepaid,
+                        PrincipalPrepaymant = pmt.PrincipalPrepaymant,
+                        StartingBalance = pmt.StartingBalance,
+                        StartingPlannedBalance = pmt.StartingPlannedBalance,
+                        TaxOrderID = pmt.TaxOrderID,
+                        WholeDebt = pmt.WholeDebt,
+                        LoanStartDate = pmt.Loan.LoanStartDate.ToShortDateString(),
+                        LoanEndDate = pmt.Loan.LoanEndDate.ToShortDateString(),
+                        LoanProblemManager = pmt.Loan.ProblemManager,
+                        EnforcementAndCourtFee = pmt.Loan.CourtAndEnforcementFee
+                    };
+
+                if (pmt.Loan.DateOfEnforcement.HasValue)
+                    jsonPayment.LoanEnforcementDate = pmt.Loan.DateOfEnforcement.Value.ToShortDateString();
+
+                if (pmt.Loan.ProblemManagerDate.HasValue)
+                    jsonPayment.LoanProblemDate = pmt.Loan.ProblemManagerDate.Value.ToShortDateString();
+
+                if (pmt.Loan.LoanNotificationLetter.HasValue)
+                    jsonPayment.NotificationDate = pmt.Loan.LoanNotificationLetter.Value.ToShortDateString();
+
+                resultJson.Add(jsonPayment);
+
+            }
+
+            return Json(resultJson, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize(Roles = "Administrator")]
@@ -400,29 +451,5 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             return File(strRes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
-
-        public ActionResult IndexJson()
-        {
-            return View();
-        }
-
-        public JsonResult Data()
-        {
-            var json = new WebClient().DownloadString("http://jsonplaceholder.typicode.com/posts");
-
-            var t = JsonConvert.DeserializeObject<List<JsonDataClass>>(json);
-
-            //var jsonresult = new JsonResult { Data = json, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-
-            return Json(t, JsonRequestBehavior.AllowGet);
-        }
-    }
-
-    class JsonDataClass
-    {
-        public string userId { get; set; }
-        public string id { get; set; }
-        public string title { get; set; }
-        public string body { get; set; }
     }
 }

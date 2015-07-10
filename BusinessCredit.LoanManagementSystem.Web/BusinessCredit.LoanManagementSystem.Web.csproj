@@ -222,6 +222,9 @@
     <Compile Include="Models\AgreementViewModel.cs" />
     <Compile Include="Models\ChangePaymentModel.cs" />
     <Compile Include="Models\GuarantorViewModel.cs" />
+    <Compile Include="Models\Json\AccountJson.cs" />
+    <Compile Include="Models\Json\LoanJson.cs" />
+    <Compile Include="Models\Json\PaymentJson.cs" />
     <Compile Include="Models\LoanIssueReportModel.cs" />
     <Compile Include="Models\CreateLoanViewModel.cs" />
     <Compile Include="Models\DailyViewModel.cs" />

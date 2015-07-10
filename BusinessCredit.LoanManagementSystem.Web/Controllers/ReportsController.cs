@@ -14,6 +14,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
     [Authorize]
     public class ReportsController : Controller
     {
+        #region Properties
         private BusinessCreditContext _db;
 
         public BusinessCreditContext db
@@ -33,9 +34,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
                 return manager.FindById(User.Identity.GetUserId());
             }
-        }
+        } 
+        #endregion
 
-        // GET: /Reports/
         public ActionResult Index()
         {
             return View();
