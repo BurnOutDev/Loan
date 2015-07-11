@@ -39,14 +39,15 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 return manager.FindById(User.Identity.GetUserId());
             }
         }
-        private int pageSize = 30;
 
-        public ActionResult Index(int? accountId)
+        public ActionResult Index(int? AccountId)
         {
+            ViewData.Add("AccountId", AccountId);
+
             return View();
         }
 
-        public JsonResult IndexJson(int? accountId)
+        public JsonResult IndexJson(int? AccountId)
         {
             #region GetUser
 
@@ -59,8 +60,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             List<Loan> result;
 
-            if (accountId.HasValue)
-                result = db.Loans.Where(l => l.Account.AccountID == accountId)
+            if (AccountId.HasValue)
+                result = db.Loans.Where(l => l.Account.AccountID == AccountId)
                             .OrderBy(x => x.LoanID).ToList();
             else
                 result = db.Loans.OrderBy(x => x.LoanID).ToList();
@@ -79,29 +80,63 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                         AccountPrivateNumber = loan.Account.PrivateNumber,
                         Agreement = loan.Agreement,
                         AgreementDate = loan.AgreementDate.ToShortDateString(),
-                        AmountToBePaidAll = loan.AmountToBePaidAll,
-                        AmountToBePaidDaily = loan.AmountToBePaidDaily,
-                        CourtAndEnforcementFee = loan.CourtAndEnforcementFee,
+                        AmountToBePaidAll = Math.Round(loan.AmountToBePaidAll, 2),
+                        AmountToBePaidDaily = Math.Round(loan.AmountToBePaidDaily, 2),
+                        CourtAndEnforcementFee = Math.Round(loan.CourtAndEnforcementFee, 2),
                         DateOfEnforcement = loan.DateOfEnforcement.HasValue ? loan.DateOfEnforcement.Value.ToShortDateString() : null,
                         DaysOfGrace = loan.DaysOfGrace,
-                        EffectiveInterestRate = loan.EffectiveInterestRate,
-                        LoanAmount = loan.LoanAmount,
-                        LoanDailyInterestRate = loan.LoanDailyInterestRate,
+                        EffectiveInterestRate = Math.Round(loan.EffectiveInterestRate * 100, 4),
+                        LoanAmount = Math.Round(loan.LoanAmount, 2),
+                        LoanDailyInterestRate = Math.Round(loan.LoanDailyInterestRate * 100, 4),
                         LoanEndDate = loan.LoanEndDate.ToShortDateString(),
                         LoanID = loan.LoanID,
                         LoanNotificationLetter = loan.LoanNotificationLetter.HasValue ? loan.LoanNotificationLetter.Value.ToShortDateString() : null,
-                        LoanPenaltyRate = loan.LoanPenaltyRate,
+                        LoanPenaltyRate = Math.Round(loan.LoanPenaltyRate * 100, 4),
                         LoanPurpose = loan.LoanPurpose,
                         LoanStartDate = loan.LoanStartDate.ToShortDateString(),
                         LoanStatus = loan.LoanStatus.ToString(),
                         LoanTermDays = loan.LoanTermDays,
                         NetworkDays = loan.NetworkDays,
                         ProblemManager = loan.ProblemManager,
-                        ProblemManagerDate = loan.ProblemManagerDate.HasValue ? loan.ProblemManagerDate.Value.ToShortDateString() : null
+                        ProblemManagerDate = loan.ProblemManagerDate.HasValue ? loan.ProblemManagerDate.Value.ToShortDateString() : null,
+                        AccountBusinessPhysicalAddress = loan.Account.BusinessPhysicalAddress,
+                        AccountGender = loan.Account.Gender == Gender.Male ? "მამრ." : "მდედრ.",
+                        AccountPhysicalAddress = loan.Account.PhysicalAddress,
+                        AccountStatus = loan.Account.Status.ToString(),
+                        BranchID = loan.BranchID,
+                        BranchName = db.BranchName,
+                        CreditExpertID = loan.CreditExpert.EmployeeID,
+                        CreditExpertLastName = loan.CreditExpert.LastName,
+                        CreditExpertName = loan.CreditExpert.Name,
+                        GuarantorName = loan.Guarantors.FirstOrDefault() == null ? "" : loan.Guarantors.FirstOrDefault().GuarantorName,
+                        GuarantorLastName = loan.Guarantors.FirstOrDefault() == null ? "" : loan.Guarantors.FirstOrDefault().GuarantorLastName,
+                        GuarantorPhoneNumber = loan.Guarantors.FirstOrDefault() == null ? "" : loan.Guarantors.FirstOrDefault().GuarantorPhoneNumber,
+                        GuarantorPhysicalAddress = loan.Guarantors.FirstOrDefault() == null ? "" : loan.Guarantors.FirstOrDefault().GuarantorPhysicalAddress,
+                        GuarantorPrivateNumber = loan.Guarantors.FirstOrDefault() == null ? "" : loan.Guarantors.FirstOrDefault().GuarantorPrivateNumber,
+                        GuarantorsCount = loan.Guarantors.Count
                     });
             }
 
             return Json(resultJson, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GuarantorsJson(int loanId)
+        {
+            var result = new List<GuarantorJson>();
+
+            foreach (var g in db.Guarantors.Where(x => x.Loan.LoanID == loanId).ToList())
+            {
+                result.Add(new GuarantorJson
+                    {
+                        GuarantorName = g.GuarantorName,
+                        GuarantorLastName = g.GuarantorLastName,
+                        GuarantorPhoneNumber = g.GuarantorPhoneNumber,
+                        GuarantorPhysicalAddress = g.GuarantorPhysicalAddress,
+                        GuarantorPrivateNumber = g.GuarantorPrivateNumber
+                    });
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Details(int? id)

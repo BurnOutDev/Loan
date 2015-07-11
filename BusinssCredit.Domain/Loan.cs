@@ -92,15 +92,16 @@ namespace BusinessCredit.Domain
         [Display(Name = "სტატუსი")]
         public virtual LoanStatus LoanStatus
         {
-            get
-            {
-                //if (Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault().WholeDebt > 0)
-                //    return LoanStatus.Active;
-                //else
-                //    return LoanStatus.Closed;
-                return LoanStatus.Active;
-            }
-            private set { }
+            get; set;
+            //get
+            //{ 
+            //    //if (Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault().WholeDebt > 0)
+            //    //    return LoanStatus.Active;
+            //    //else
+            //    //    return LoanStatus.Closed;
+            //    return Payments.OrderByDescending(p => p.PaymentDate).FirstOrDefault().WholeDebt > 0 ? LoanStatus.Active: LoanStatus.Closed;
+            //}
+            //private set { }
         }
 
         #region Enforcement

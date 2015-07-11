@@ -32,8 +32,6 @@ namespace BusinessCredit.Data
             //        db.Loans.FirstOrDefault(l => l.LoanID == item.LoanID).Agreement = item.AgreementID;
             //    }
             //    db.SaveChanges();
-
-
             //}
             var accounts = loans.GroupBy(acc => acc.AccountID).Select(Grouping);
 

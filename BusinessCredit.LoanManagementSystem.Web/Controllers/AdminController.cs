@@ -26,7 +26,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             get
             {
                 if (_centralDb == null)
-                    _centralDb = new BusinessCreditContext(ConfigurationManager.ConnectionStrings["Central_BusinessCreditDbConnectionString"].ConnectionString);
+                    _centralDb = new BusinessCreditContext(ConfigurationManager.ConnectionStrings["Head_BusinessCreditDbConnectionString"].ConnectionString);
                 return _centralDb;
             }
         }

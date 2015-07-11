@@ -37,9 +37,40 @@
 </script>
 
 
+<script>
+    function operateFormatter(value, row, index) {
+        return [
+            '<a href="#myModal" id="openBtn" data-toggle="modal">',
+            'თავდებები',
+            '</a>',
+        ].join('');
+    }
+
+    window.operateEvents = {
+        'click #openBtn': function (e, value, row, index) {
+            $(tblGrid).bootstrapTable('refresh', { url: '@Url.Action("GuarantorsJson", "Loans")?loanId=' + row.LoanID });
+        }
+    };
+
+    //window.operateEvents = {
+    //    'click .like': function (e, value, row, index) {
+    //        alert('You click like icon, row: ' + JSON.stringify(row));
+    //        console.log(value, row, index);
+    //    },
+    //    'click .edit': function (e, value, row, index) {
+    //        alert('You click edit icon, row: ' + JSON.stringify(row));
+    //        console.log(value, row, index);
+    //    },
+    //    'click .remove': function (e, value, row, index) {
+    //        alert('You click remove icon, row: ' + JSON.stringify(row));
+    //        console.log(value, row, index);
+    //    }
+    //};
+</script>
 
 
-<table id="table" data-show-export="true" data-toggle="table" data-search="true" data-pagination="true" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("IndexJson")">
+
+<table id="table" data-show-export="true" data-toggle="table" data-search="true" data-pagination="true" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("IndexJson", new { AccountId = ViewData["AccountId"] })">
     <thead>
         <tr class="filters">
             <th data-field="AccountName">
@@ -52,20 +83,38 @@
             <th data-field="AccountPrivateNumber">
                 @Html.DisplayNameFor(model => model.Account.PrivateNumber)
             </th>
+            <th data-field="AccountGender">
+                @Html.DisplayNameFor(model => model.Account.Gender)
+            </th>
+            <th data-field="AccountStatus">
+                @Html.DisplayNameFor(model => model.Account.Status)
+            </th>
+            <th data-field="AccountPhysicalAddress">
+                @Html.DisplayNameFor(model => model.Account.PhysicalAddress)
+            </th>
+            <th data-field="BranchID">
+                ფილიალის #
+            </th>
+            <th data-field="BranchName">
+                ფილიალი
+            </th>
+            <th data-field="AccountBusinessPhysicalAddress">
+                @Html.DisplayNameFor(model => model.Account.BusinessPhysicalAddress)
+            </th>
             <th data-field="AccountNumberMobile">
                 @Html.DisplayNameFor(model => model.Account.NumberMobile)
             </th>
             <th data-field="AccountAccountNumber">
                 @Html.DisplayNameFor(model => model.Account.AccountNumber)
             </th>
-            <th>
-                თავდები
+            <th data-field="GuarantorName" data-formatter="operateFormatter" data-events="operateEvents">
+                თავდებები
             </th>
             <th data-field="AccountAccountID">
                 @Html.DisplayNameFor(model => model.Account.AccountID)
             </th>
             <th data-field="LoanID">
-                @Html.DisplayNameFor(model => model.LoanID)
+                სესხის #
             </th>
             <th data-field="Agreement">
                 @Html.DisplayNameFor(model => model.Agreement)
@@ -73,8 +122,29 @@
             <th data-field="LoanStatus">
                 @Html.DisplayNameFor(model => model.LoanStatus)
             </th>
-            <th>
-                ექსპერტი
+            <th data-field="LoanNotificationLetter">
+                @Html.DisplayNameFor(model => model.LoanNotificationLetter)
+            </th>
+            <th data-field="ProblemManagerDate">
+                @Html.DisplayNameFor(model => model.ProblemManagerDate)
+            </th>
+            <th data-field="ProblemManager">
+                @Html.DisplayNameFor(model => model.ProblemManager)
+            </th>
+            <th data-field="DateOfEnforcement">
+                @Html.DisplayNameFor(model => model.DateOfEnforcement)
+            </th>
+            <th data-field="CourtAndEnforcementFee">
+                @Html.DisplayNameFor(model => model.CourtAndEnforcementFee)
+            </th>
+            <th data-field="CreditExpertID">
+                ექსპ. #
+            </th>
+            <th data-field="CreditExpertName">
+                ექსპ. სახელი
+            </th>
+            <th data-field="CreditExpertLastName">
+                ექსპ. გვარი
             </th>
             <th data-field="LoanAmount">
                 @Html.DisplayNameFor(model => model.LoanAmount)
@@ -91,9 +161,9 @@
             <th data-field="NetworkDays">
                 @Html.DisplayNameFor(model => model.NetworkDays)
             </th>
-            @*<th data-field="AccountName">
+            <th data-field="DaysOfGrace">
                 @Html.DisplayNameFor(model => model.DaysOfGrace)
-            </th>*@
+            </th>
             <th data-field="LoanPenaltyRate">
                 @Html.DisplayNameFor(model => model.LoanPenaltyRate)
             </th>
@@ -115,26 +185,59 @@
             <th data-field="LoanEndDate">
                 @Html.DisplayNameFor(model => model.LoanEndDate)
             </th>
-            <th data-field="LoanNotificationLetter">
-                @Html.DisplayNameFor(model => model.LoanNotificationLetter)
-            </th>
-            <th data-field="ProblemManagerDate">
-                @Html.DisplayNameFor(model => model.ProblemManagerDate)
-            </th>
-            <th data-field="ProblemManager">
-                @Html.DisplayNameFor(model => model.ProblemManager)
-            </th>
-            <th data-field="DateOfEnforcement">
-                @Html.DisplayNameFor(model => model.DateOfEnforcement)
-            </th>
-            <th data-field="CourtAndEnforcementFee">
-                @Html.DisplayNameFor(model => model.CourtAndEnforcementFee)
-            </th>
-            @*<th data-field="action" data-formatter="actionFormatter" data-events="actionEvents"></th>*@
-        </tr>
+</tr>
     </thead>
 </table>
 
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <h5 class="text-center">თავდებები</h5>
+                <table  data-toggle="table" class="table table-striped" id="tblGrid">
+                    <thead id="tblHead">
+                        <tr>
+                            <th data-field="GuarantorName">
+                                თავდ. სახელი
+                            </th>
+                            <th data-field="GuarantorLastName">
+                                თავდ. გვარი
+                            </th>
+                            <th data-field="GuarantorPrivateNumber">
+                                თავდ. პ/ნ
+                            </th>
+                            <th data-field="GuarantorPhysicalAddress">
+                                თავდ. ფიზ. მისამ.
+                            </th>
+                            <th data-field="GuarantorPhoneNumber">
+                                თავდ. ტელ.
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+            </div>
+
+    </div><!-- /.modal-dialog -->
+</div>
+
+<style>
+    .modal-content {
+        margin-left: -40%; /* width/2) */
+    }
+</style>
+
+
+
 <script>
     $(table).filterable();
+
+    $('#modal').on('show.bs.modal', function () {
+        $(this).find('.modal-body').css({
+            width: 'auto' //probably not needed
+        });
+    });
 </script>

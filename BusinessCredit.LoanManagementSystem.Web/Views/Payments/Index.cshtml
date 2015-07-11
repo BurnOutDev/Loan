@@ -13,21 +13,15 @@
 <script>
     function actionFormatter(value, row, index) {
         return [
-            '<a class="like" href="javascript:void(0)" title="Edit" style="margin: 5px">',
-            'სესხები',
-            '</a>',
-            '<a class="edit ml10" href="javascript:void(0)" title="Edit" style="margin: 5px">',
+            '<a class="editasd edit ml10" href="javascript:void(0)" title="Edit" style="margin: 5px">',
             'რედაქტირება',
             '</a>',
         ].join('');
     }
 
     window.actionEvents = {
-        'click .like': function (e, value, row, index) {
-            window.location.href = "@Url.Action("Index", "Loans")?AccountId=" + row.AccountID;
-        },
-        'click .edit': function (e, value, row, index) {
-            window.location.href = "@Url.Action("Edit")/" + row.AccountID;
+        'click .editasd': function (e, value, row, index) {
+            window.location.href = "@Url.Action("Details")/" + row.PaymentID;
         }
     };
 </script>
@@ -167,6 +161,9 @@
             </th>
             <th data-field="EnforcementAndCourtFee">
                 აღსრ. და სასამ. ხარჯი
+            </th>
+            <th data-formatter="actionFormatter" data-events="actionEvents">
+
             </th>
         </tr>
     </thead>

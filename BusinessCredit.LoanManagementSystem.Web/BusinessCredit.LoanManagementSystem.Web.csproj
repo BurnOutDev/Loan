@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -223,6 +224,7 @@
     <Compile Include="Models\ChangePaymentModel.cs" />
     <Compile Include="Models\GuarantorViewModel.cs" />
     <Compile Include="Models\Json\AccountJson.cs" />
+    <Compile Include="Models\Json\GuarantorJson.cs" />
     <Compile Include="Models\Json\LoanJson.cs" />
     <Compile Include="Models\Json\PaymentJson.cs" />
     <Compile Include="Models\LoanIssueReportModel.cs" />
@@ -236,6 +238,26 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-BusinessCredit.LoanManagementSystem.Web-20150510083312.mdf" />
+    <Content Include="App_Data\aspnet-BusinessCredit.LoanManagementSystem.Web-20150510083312_log.ldf">
+      <DependentUpon>aspnet-BusinessCredit.LoanManagementSystem.Web-20150510083312.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\aspnet-BusinessCredit.LoanManagementSystem.Web.mdf" />
+    <Content Include="App_Data\aspnet-BusinessCredit.LoanManagementSystem.Web_log.ldf">
+      <DependentUpon>aspnet-BusinessCredit.LoanManagementSystem.Web.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\BusinessCredit.LoanManagementSystem.Web_1_Eliava.mdf" />
+    <Content Include="App_Data\BusinessCredit.LoanManagementSystem.Web_1_Eliava_log.ldf">
+      <DependentUpon>BusinessCredit.LoanManagementSystem.Web_1_Eliava.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\BusinessCredit.LoanManagementSystem.Web_Central.mdf" />
+    <Content Include="App_Data\BusinessCredit.LoanManagementSystem.Web_Central_log.ldf">
+      <DependentUpon>BusinessCredit.LoanManagementSystem.Web_Central.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\BusinessCredit.LoanManagementSystem.Web_Isani.mdf" />
+    <Content Include="App_Data\BusinessCredit.LoanManagementSystem.Web_Isani_log.ldf">
+      <DependentUpon>BusinessCredit.LoanManagementSystem.Web_Isani.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-filterable.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -510,7 +532,6 @@
     <Content Include="Views\Payments\IndexJson.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="JS_BootstrapTable\dist\locale\" />
   </ItemGroup>
   <ItemGroup>

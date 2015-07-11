@@ -78,6 +78,7 @@ namespace BusinessCredit.Core
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentPlanned> PaymentEntities { get; set; }
         public DbSet<CashCollectionAgent> CashCollectionAgents { get; set; }
+        public DbSet<Guarantor> Guarantors { get; set; }
         //public DbSet<TaxOrder> TaxOrders { get; set; }
     }
 }

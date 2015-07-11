@@ -145,7 +145,7 @@ namespace BusinessCredit.Domain
 
                 if (pp.FirstOrDefault(x => x.PaymentDate == PaymentDate) == null)
                 {
-                    Debugger.Break();
+                    return 0;
                 }
 
                 return Math.Round(Loan.PaymentsPlanned.FirstOrDefault(x => x.PaymentDate == PaymentDate).EndingBalance, 2);

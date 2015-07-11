@@ -145,6 +145,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
         public JsonResult IndexJson(int? loanId, string fromDate, string toDate)
         {
+            var a = ViewData["loanId"];
+
             var result = db.Payments.ToList();
             if (loanId != null)
                 result = result.Where(l => l.Loan.LoanID == loanId).ToList();
@@ -157,44 +159,44 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             {
                 var jsonPayment = new PaymentJson
                     {
-                        AccruingInterestPayment = pmt.AccruingInterestPayment,
-                        AccruingOverdueInterest = pmt.AccruingOverdueInterest,
-                        AccruingOverduePrincipal = pmt.AccruingOverduePrincipal,
-                        AccruingPenalty = pmt.AccruingPenalty,
-                        AccruingPenaltyPayment = pmt.AccruingPenaltyPayment,
-                        AccruingPrincipalPayment = pmt.AccruingPrincipalPayment,
-                        CurrentDebt = pmt.CurrentDebt,
-                        CurrentInterestPayment = pmt.CurrentInterestPayment,
-                        CurrentOverdueInterest = pmt.CurrentOverdueInterest,
-                        CurrentOverduePrincipal = pmt.CurrentOverduePrincipal,
-                        CurrentPayment = pmt.CurrentPayment,
-                        CurrentPenalty = pmt.CurrentPenalty,
-                        CurrentPrincipalPayment = pmt.CurrentPrincipalPayment,
+                        AccruingInterestPayment = pmt.AccruingInterestPayment.HasValue ? Math.Round(pmt.AccruingInterestPayment.Value, 2) : 0,
+                        AccruingOverdueInterest = pmt.AccruingOverdueInterest.HasValue ? Math.Round(pmt.AccruingOverdueInterest.Value, 2) : 0,
+                        AccruingOverduePrincipal = pmt.AccruingOverduePrincipal.HasValue ? Math.Round(pmt.AccruingOverduePrincipal.Value, 2) : 0,
+                        AccruingPenalty = pmt.AccruingPenalty.HasValue ? Math.Round(pmt.AccruingPenalty.Value, 2) : 0,
+                        AccruingPenaltyPayment = pmt.AccruingPenaltyPayment.HasValue ? Math.Round(pmt.AccruingPenaltyPayment.Value, 2) : 0,
+                        AccruingPrincipalPayment = pmt.AccruingPrincipalPayment.HasValue ? Math.Round(pmt.AccruingPrincipalPayment.Value, 2) : 0,
+                        CurrentDebt = pmt.CurrentDebt.HasValue ? Math.Round(pmt.CurrentDebt.Value, 2) : 0,
+                        CurrentInterestPayment = pmt.CurrentInterestPayment.HasValue ? Math.Round(pmt.CurrentInterestPayment.Value, 2) : 0,
+                        CurrentOverdueInterest = pmt.CurrentOverdueInterest.HasValue ? Math.Round(pmt.CurrentOverdueInterest.Value, 2) : 0,
+                        CurrentOverduePrincipal = pmt.CurrentOverduePrincipal.HasValue ? Math.Round(pmt.CurrentOverduePrincipal.Value, 2) : 0,
+                        CurrentPayment = Math.Round(pmt.CurrentPayment, 2),
+                        CurrentPenalty = pmt.CurrentPenalty.HasValue ? Math.Round(pmt.CurrentPenalty.Value, 2) : 0,
+                        CurrentPrincipalPayment = pmt.CurrentPrincipalPayment.HasValue ? Math.Round(pmt.CurrentPrincipalPayment.Value, 2) : 0,
                         LoanAccountAccountID = pmt.Loan.Account.AccountID,
                         LoanAccountLastName = pmt.Loan.Account.LastName,
                         LoanAccountName = pmt.Loan.Account.Name,
                         LoanAccountPrivateNumber = pmt.Loan.Account.PrivateNumber,
-                        LoanBalance = pmt.LoanBalance,
+                        LoanBalance = pmt.LoanBalance.HasValue ? Math.Round(pmt.LoanBalance.Value, 2) : 0,
                         LoanLoanID = pmt.Loan.LoanID,
                         LoanStatus = pmt.LoanStatus,
-                        PaidInterest = pmt.PaidInterest,
-                        PaidPenalty = pmt.PaidPenalty,
-                        PaidPrincipal = pmt.PaidPrincipal,
-                        PayableInterest = pmt.PayableInterest,
-                        PayablePrincipal = pmt.PayablePrincipal,
+                        PaidInterest = pmt.PaidInterest.HasValue ? Math.Round(pmt.PaidInterest.Value, 2) : 0,
+                        PaidPenalty = pmt.PaidPenalty.HasValue ? Math.Round(pmt.PaidPenalty.Value, 2) : 0,
+                        PaidPrincipal = pmt.PaidPrincipal.HasValue ? Math.Round(pmt.PaidPrincipal.Value, 2) : 0,
+                        PayableInterest = pmt.PayableInterest.HasValue ? Math.Round(pmt.PayableInterest.Value, 2) : 0,
+                        PayablePrincipal = pmt.PayablePrincipal.HasValue ? Math.Round(pmt.PayablePrincipal.Value, 2) : 0,
                         PaymentDate = pmt.PaymentDate.ToShortDateString(),
                         PaymentID = pmt.PaymentID,
-                        PlannedBalance = pmt.PlannedBalance,
-                        PrincipalPrepaid = pmt.PrincipalPrepaid,
-                        PrincipalPrepaymant = pmt.PrincipalPrepaymant,
-                        StartingBalance = pmt.StartingBalance,
-                        StartingPlannedBalance = pmt.StartingPlannedBalance,
+                        PlannedBalance = Math.Round(pmt.PlannedBalance, 2),
+                        PrincipalPrepaid = pmt.PrincipalPrepaid.HasValue ? Math.Round(pmt.PrincipalPrepaid.Value, 2) : 0,
+                        PrincipalPrepaymant = pmt.PrincipalPrepaymant.HasValue ? Math.Round(pmt.PrincipalPrepaymant.Value, 2) : 0,
+                        StartingBalance = pmt.StartingBalance.HasValue ? Math.Round(pmt.StartingBalance.Value, 2) : 0,
+                        StartingPlannedBalance = pmt.StartingPlannedBalance.HasValue ? Math.Round(pmt.StartingPlannedBalance.Value, 2) : 0,
                         TaxOrderID = pmt.TaxOrderID,
-                        WholeDebt = pmt.WholeDebt,
+                        WholeDebt = pmt.WholeDebt.HasValue ? Math.Round(pmt.WholeDebt.Value, 2) : 0,
                         LoanStartDate = pmt.Loan.LoanStartDate.ToShortDateString(),
                         LoanEndDate = pmt.Loan.LoanEndDate.ToShortDateString(),
                         LoanProblemManager = pmt.Loan.ProblemManager,
-                        EnforcementAndCourtFee = pmt.Loan.CourtAndEnforcementFee
+                        EnforcementAndCourtFee = Math.Round(pmt.Loan.CourtAndEnforcementFee, 2)
                     };
 
                 if (pmt.Loan.DateOfEnforcement.HasValue)
@@ -299,6 +301,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             if (payment == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            else if (payment.PaymentDate != DateTime.Today)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             if (branch.HasValue && roles.Contains("Administrator"))
                 Databases.ElementAt(branch.Value).Payments.Remove(payment);
@@ -307,7 +311,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             db.SaveChanges();
 
-            return View(payment);
+            return RedirectToAction("Index");
         }
 
         public ActionResult ChangePenalty(int? id, int? branch)
