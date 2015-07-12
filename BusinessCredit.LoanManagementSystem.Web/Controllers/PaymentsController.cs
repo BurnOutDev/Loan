@@ -147,7 +147,12 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         {
             var a = ViewData["loanId"];
 
-            var result = db.Payments.ToList();
+            var t = db.Payments.ToList();
+
+            db.Payments.Include(x => x.Loan).Load();
+            db.Loans.Include("Payments").Load();
+
+            var result = db.Payments.Include(x => x.Loan).ToList();
             if (loanId != null)
                 result = result.Where(l => l.Loan.LoanID == loanId).ToList();
             else if (loanId == null && fromDate != null && toDate != null)
@@ -204,7 +209,13 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                         LoanDateOfEnforcement = pmt.Loan.DateOfEnforcement.HasValue ? pmt.Loan.DateOfEnforcement.Value.ToShortDateString() : null,
                         LoanLoanNotificationLetter = pmt.Loan.LoanNotificationLetter.HasValue ? pmt.Loan.LoanNotificationLetter.Value.ToShortDateString() : null,
                         LoanProblemManagerDate = pmt.Loan.ProblemManagerDate.HasValue ? pmt.Loan.ProblemManagerDate.Value.ToShortDateString() : null,
-                        PMT = pmt.Loan.AmountToBePaidDaily
+                        PMT = pmt.Loan.AmountToBePaidDaily,
+                        EnforcementAndCourtFee = pmt.EnforcementAndCourtFee,
+                        EnforcementAndCourtFeeEndingBalance = pmt.EnforcementAndCourtFeeEndingBalance.HasValue ? pmt.EnforcementAndCourtFeeEndingBalance.Value : 0,
+                        EnforcementAndCourtFeePayment = pmt.EnforcementAndCourtFeePayment.HasValue ? pmt.EnforcementAndCourtFeePayment.Value : 0,
+                        EnforcementAndCourtFeeStartingBalance = pmt.EnforcementAndCourtFeeStartingBalance.HasValue ? pmt.EnforcementAndCourtFeeStartingBalance.Value : 0,
+                        TotalEnforcementAndCourtFee = pmt.TotalEnforcementAndCourtFee.HasValue ? pmt.TotalEnforcementAndCourtFee.Value : 0,
+                        TotalEnforcementAndCourtFeePayment = pmt.TotalEnforcementAndCourtFeePayment.HasValue ? pmt.TotalEnforcementAndCourtFeePayment.Value : 0
                     };
 
                 resultJson.Add(jsonPayment);

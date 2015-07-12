@@ -22,6 +22,9 @@ namespace BusinessCredit.Core
         public BusinessCreditContext(string connectionString)
             : base(connectionString)
         {
+            Configuration.LazyLoadingEnabled = true;
+            Configuration.ProxyCreationEnabled = true;
+
             Database.SetInitializer(new BusinessCreditDbInitializer());
         }
 

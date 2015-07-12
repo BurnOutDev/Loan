@@ -54,6 +54,13 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models.Json
         public double? PrincipalPrepaid { get; set; }
         public double? LoanBalance { get; set; }
 
+        public double EnforcementAndCourtFee { get; set; }
+        public double EnforcementAndCourtFeePayment { get; set; }
+        public double EnforcementAndCourtFeeStartingBalance { get; set; }
+        public double EnforcementAndCourtFeeEndingBalance { get; set; }
+        public double TotalEnforcementAndCourtFee { get; set; }
+        public double TotalEnforcementAndCourtFeePayment { get; set; }
+
         //public double? ScheduleCatchUp { get; set; }
     }
 }
