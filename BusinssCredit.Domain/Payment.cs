@@ -170,9 +170,15 @@ namespace BusinessCredit.Domain
 
         private double? InitPayableInterest()
         {
-            Debug.WriteLine("PayableInterest");
-            var t = Math.Round((StartingBalance.Value * Loan.LoanDailyInterestRate), 2);
-            return Math.Round((StartingBalance.Value * Loan.LoanDailyInterestRate), 2); //??
+            //Debug.WriteLine("PayableInterest");
+            //var t = Math.Round((StartingBalance.Value * Loan.LoanDailyInterestRate), 2);
+            if (Loan.DateOfEnforcement.HasValue)
+            {
+                if (DateTime.Today > Loan.DateOfEnforcement.Value)
+                    return 0;
+            }
+
+            return Math.Round((StartingBalance.Value * Loan.LoanDailyInterestRate), 2);
         }
         #endregion
 
@@ -405,13 +411,22 @@ namespace BusinessCredit.Domain
         {
             try
             {
-                var result = ((AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate)
+                var todaysPenalty = (AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate;
+
+                if (Loan.DateOfEnforcement.HasValue)
+                {
+                    if (DateTime.Today > Loan.DateOfEnforcement.Value)
+                        todaysPenalty = 0;
+                }
+
+                var result =  todaysPenalty
                                 - GetPaymentList().ToList().Sum(x => x.AccruingPenaltyPayment.Value)
                                 + GetPaymentList().ToList().OrderByDescending(x => x.PaymentDate).First().AccruingPenalty.Value;
 
                 return result < 0 ? 0 : result;
 
-                // sworia ??
+              #region Comment
+		  // sworia ??
                 //var cp = CurrentPenalty;
                 //
                 //var payments = GetPaymentList();
@@ -419,7 +434,8 @@ namespace BusinessCredit.Domain
                 // Nika
                 //return CurrentPenalty 
                 //     + GetPaymentList().Sum(x => x.CurrentPenalty) 
-                //     - GetPaymentList().Sum(x => x.AccruingPenaltyPayment);
+                //     - GetPaymentList().Sum(x => x.AccruingPenaltyPayment); 
+	#endregion
             }
             catch
             {
