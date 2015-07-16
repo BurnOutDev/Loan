@@ -48,8 +48,7 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentDebt()
         {
-            Debug.WriteLine("CurrentDebt");
-            var sum = PayableInterest + PayablePrincipal + AccruingOverduePrincipal + AccruingOverdueInterest + AccruingPenalty;
+            var sum = EnforcementAndCourtFeeStartingBalance + PayableInterest + PayablePrincipal + AccruingOverduePrincipal + AccruingOverdueInterest + AccruingPenalty;
             if (sum > WholeDebt)
                 return WholeDebt;
             else
@@ -74,8 +73,7 @@ namespace BusinessCredit.Domain
 
         private double? InitWholeDebt()
         {
-            Debug.WriteLine("WholeDebt");
-            return LoanBalance + AccruingPenalty + AccruingOverdueInterest + PayableInterest - CurrentInterestPayment - AccruingPenaltyPayment - AccruingInterestPayment;
+            return EnforcementAndCourtFeeStartingBalance + LoanBalance + AccruingPenalty + AccruingOverdueInterest + PayableInterest - CurrentInterestPayment - AccruingPenaltyPayment - AccruingInterestPayment - EnforcementAndCourtFeePayment;
         }
         #endregion
 
@@ -319,12 +317,12 @@ namespace BusinessCredit.Domain
 
 
             /////////////////old///////////////
-         //   if (GetPaymentList().Sum(x => x.CurrentOverduePrincipal) -
-         //GetPaymentList().Sum(x => x.AccruingPrincipalPayment) > StartingBalance)
-         //       return StartingBalance;
-         //   else
-         //       return GetPaymentList().Sum(x => x.CurrentOverduePrincipal) -
-         //              GetPaymentList().Sum(x => x.AccruingPrincipalPayment);
+            //   if (GetPaymentList().Sum(x => x.CurrentOverduePrincipal) -
+            //GetPaymentList().Sum(x => x.AccruingPrincipalPayment) > StartingBalance)
+            //       return StartingBalance;
+            //   else
+            //       return GetPaymentList().Sum(x => x.CurrentOverduePrincipal) -
+            //              GetPaymentList().Sum(x => x.AccruingPrincipalPayment);
         }
         #endregion
 
@@ -357,7 +355,7 @@ namespace BusinessCredit.Domain
             // wegan shevaswore
 
             return Math.Round(
-              - GetPaymentList().Sum(x => x.AccruingInterestPayment).Value
+              -GetPaymentList().Sum(x => x.AccruingInterestPayment).Value
               + GetPaymentList().Sum(x => x.PayableInterest).Value
               - GetPaymentList().Sum(x => x.CurrentInterestPayment).Value,
                 2);
@@ -384,10 +382,10 @@ namespace BusinessCredit.Domain
         private double? InitAccruingPenaltyPayment()
         {
             //=IF($AD6>$AS6,$AS6,$AD6)
-            if (CurrentPayment > AccruingPenalty)
+            if (CurrentPayment - EnforcementAndCourtFeePayment > AccruingPenalty)
                 return AccruingPenalty;
             else
-                return CurrentPayment;
+                return CurrentPayment - EnforcementAndCourtFeePayment;
         }
         #endregion
 
@@ -419,14 +417,14 @@ namespace BusinessCredit.Domain
                         todaysPenalty = 0;
                 }
 
-                var result =  todaysPenalty
+                var result = todaysPenalty
                                 - GetPaymentList().ToList().Sum(x => x.AccruingPenaltyPayment.Value)
                                 + GetPaymentList().ToList().OrderByDescending(x => x.PaymentDate).First().AccruingPenalty.Value;
 
                 return result < 0 ? 0 : result;
 
-              #region Comment
-		  // sworia ??
+                #region Comment
+                // sworia ??
                 //var cp = CurrentPenalty;
                 //
                 //var payments = GetPaymentList();
@@ -435,7 +433,7 @@ namespace BusinessCredit.Domain
                 //return CurrentPenalty 
                 //     + GetPaymentList().Sum(x => x.CurrentPenalty) 
                 //     - GetPaymentList().Sum(x => x.AccruingPenaltyPayment); 
-	#endregion
+                #endregion
             }
             catch
             {
@@ -452,7 +450,6 @@ namespace BusinessCredit.Domain
         {
             get
             {
-
                 if (!_accruingInterestPayment.HasValue)
                     _accruingInterestPayment = Math.Round(InitAccruingInterestPayment().Value, 2);
                 return _accruingInterestPayment;
@@ -463,13 +460,11 @@ namespace BusinessCredit.Domain
 
         private double? InitAccruingInterestPayment()
         {
-            Debug.WriteLine("AccruingInterestPayment");
-
             //=IF(($AD5-$AT5)>$AR5,$AR5,($AD5-$AT5))
-            if ((CurrentPayment - AccruingPenaltyPayment) > AccruingOverdueInterest)
+            if ((CurrentPayment - EnforcementAndCourtFeePayment - AccruingPenaltyPayment) > AccruingOverdueInterest)
                 return AccruingOverdueInterest;
             else
-                return CurrentPayment - AccruingPenaltyPayment;
+                return CurrentPayment - EnforcementAndCourtFeePayment - AccruingPenaltyPayment;
         }
         #endregion
 
@@ -491,13 +486,11 @@ namespace BusinessCredit.Domain
 
         private double? InitAccruingPrincipalPayment()
         {
-            Debug.WriteLine("AccruingPrincipalPayment");
-
             //=IF(($AD5-$AU5-$AT5-AW5)>$AQ5,$AQ5,($AD5-$AU5-$AT5-AW5))
-            if ((CurrentPayment - AccruingInterestPayment - AccruingPenaltyPayment - CurrentInterestPayment) > AccruingOverduePrincipal)
+            if ((CurrentPayment - EnforcementAndCourtFeePayment - AccruingInterestPayment - AccruingPenaltyPayment - CurrentInterestPayment) > AccruingOverduePrincipal)
                 return AccruingOverduePrincipal;
             else
-                return CurrentPayment - AccruingInterestPayment - AccruingPenaltyPayment - CurrentInterestPayment;
+                return CurrentPayment - EnforcementAndCourtFeePayment - AccruingInterestPayment - AccruingPenaltyPayment - CurrentInterestPayment;
         }
         #endregion
 
@@ -518,8 +511,6 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentInterestPayment()
         {
-            Debug.WriteLine("CurrentInterestPayment");
-
             bool be;
             try
             {
@@ -534,10 +525,10 @@ namespace BusinessCredit.Domain
                 return 0;
             else
             {
-                if (CurrentPayment - AccruingInterestPayment - AccruingPenaltyPayment > PayableInterest)
+                if (CurrentPayment - EnforcementAndCourtFeePayment - AccruingInterestPayment - AccruingPenaltyPayment > PayableInterest)
                     return PayableInterest;
                 else
-                    return CurrentPayment - AccruingInterestPayment - AccruingPenaltyPayment;
+                    return CurrentPayment - EnforcementAndCourtFeePayment - AccruingInterestPayment - AccruingPenaltyPayment;
             }
         }
         #endregion
@@ -559,8 +550,6 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentPrincipalPayment()
         {
-            Debug.WriteLine("CurrentPrincipalPayment");
-
             //=IF(SUMIF($F$2:$F4,$F5,$BE$2:$BE4)>0,0,IF(($AD5-$AU5-$AT5-$AV5-$AW5)>$AM5,$AM5,($AD5-$AU5-$AT5-$AV5-$AW5)))
             bool be;
             try
@@ -575,10 +564,10 @@ namespace BusinessCredit.Domain
                 return 0;
             else
             {
-                if ((CurrentPayment - AccruingInterestPayment - AccruingPenaltyPayment - AccruingPrincipalPayment - CurrentInterestPayment) > PayablePrincipal)
+                if ((CurrentPayment - EnforcementAndCourtFeePayment - AccruingInterestPayment - AccruingPenaltyPayment - AccruingPrincipalPayment - CurrentInterestPayment) > PayablePrincipal)
                     return PayablePrincipal;
                 else
-                    return CurrentPayment - AccruingInterestPayment - AccruingPenaltyPayment - AccruingPrincipalPayment - CurrentInterestPayment;
+                    return CurrentPayment - EnforcementAndCourtFeePayment - AccruingInterestPayment - AccruingPenaltyPayment - AccruingPrincipalPayment - CurrentInterestPayment;
             }
         }
         #endregion
@@ -616,8 +605,8 @@ namespace BusinessCredit.Domain
                 return 0;
             else
             {
-                if (((CurrentPayment - AccruingInterestPayment - AccruingPenaltyPayment - AccruingPrincipalPayment - CurrentInterestPayment - CurrentPrincipalPayment) > 0 ?
-                      (CurrentPayment - AccruingInterestPayment - AccruingPenaltyPayment - AccruingPrincipalPayment - CurrentInterestPayment - CurrentPrincipalPayment) : 0) >
+                if (((CurrentPayment - EnforcementAndCourtFeePayment - AccruingInterestPayment - AccruingPenaltyPayment - AccruingPrincipalPayment - CurrentInterestPayment - CurrentPrincipalPayment) > 0 ?
+                      (CurrentPayment - EnforcementAndCourtFeePayment - AccruingInterestPayment - AccruingPenaltyPayment - AccruingPrincipalPayment - CurrentInterestPayment - CurrentPrincipalPayment) : 0) >
                       (Loan.LoanAmount - CurrentPrincipalPayment - GetPaymentList().Sum(x => x.PrincipalPrepaymant) -
                       GetPaymentList().Sum(x => x.CurrentPrincipalPayment)
                    ))
@@ -625,7 +614,7 @@ namespace BusinessCredit.Domain
                             GetPaymentList().Sum(x => x.PrincipalPrepaymant) -
                             GetPaymentList().Sum(x => x.CurrentPrincipalPayment);
                 else
-                    return CurrentPayment - AccruingInterestPayment - AccruingPenaltyPayment - AccruingPrincipalPayment - CurrentInterestPayment - CurrentPrincipalPayment;
+                    return CurrentPayment - EnforcementAndCourtFeePayment - AccruingInterestPayment - AccruingPenaltyPayment - AccruingPrincipalPayment - CurrentInterestPayment - CurrentPrincipalPayment;
             }
 
             //if (PaymentList.Sum(x => x.BE) > 0)
@@ -789,6 +778,117 @@ namespace BusinessCredit.Domain
             return LoanBalance > 0 ? false : true;
         }
         #endregion
+
+        public double EnforcementAndCourtFee { get; set; } // manual
+
+        #region EnforcementAndCourtFeePayment
+        private double? _enforcementAndCourtFeePayment;
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [Display(Name = "აღს. და სას. ხარჯის გადახდა")]
+        public double? EnforcementAndCourtFeePayment
+        {
+            get
+            {
+                if (!_enforcementAndCourtFeePayment.HasValue)
+                    _enforcementAndCourtFeePayment = Math.Round(InitEnforcementAndCourtFeePayment().Value, 2);
+                return _enforcementAndCourtFeePayment;
+            }
+            set { _enforcementAndCourtFeePayment = value; }
+        }
+
+        private double? InitEnforcementAndCourtFeePayment()
+        {
+            if (CurrentPayment > EnforcementAndCourtFeeStartingBalance)
+                return EnforcementAndCourtFeeStartingBalance;
+            else
+                return CurrentPayment;
+        }
+        #endregion
+
+        #region EnforcementAndCourtFeeStartingBalance
+        private double? _enforcementAndCourtFeeStartingBalance;
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [Display(Name = "აღს. და სას. ხარჯის საწყ. ნაშთი")]
+        public double? EnforcementAndCourtFeeStartingBalance
+        {
+            get
+            {
+                if (!_enforcementAndCourtFeeStartingBalance.HasValue)
+                    _enforcementAndCourtFeeStartingBalance = Math.Round(InitEnforcementAndCourtFeeStartingBalance().Value, 2);
+                return _enforcementAndCourtFeeStartingBalance;
+            }
+            set { _enforcementAndCourtFeeStartingBalance = value; }
+        }
+
+        private double? InitEnforcementAndCourtFeeStartingBalance()
+        {
+            return GetPaymentList().Sum(x => x.EnforcementAndCourtFee) - GetPaymentList().Sum(x => x.EnforcementAndCourtFeePayment);
+        }
+        #endregion
+
+        #region EnforcementAndCourtFeeEndingBalance
+        private double? _enforcementAndCourtFeeEndingBalance;
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [Display(Name = "აღს. და სას. ხარჯის საბ. ნაშთი")]
+        public double? EnforcementAndCourtFeeEndingBalance
+        {
+            get
+            {
+                if (!_enforcementAndCourtFeeEndingBalance.HasValue)
+                    _enforcementAndCourtFeeEndingBalance = Math.Round(InitEnforcementAndCourtFeeEndingBalance().Value, 2);
+                return _enforcementAndCourtFeeEndingBalance;
+            }
+            set { _enforcementAndCourtFeeEndingBalance = value; }
+        }
+
+        private double? InitEnforcementAndCourtFeeEndingBalance()
+        {
+            return (GetPaymentList().Sum(x => x.EnforcementAndCourtFee) + EnforcementAndCourtFee) - (GetPaymentList().Sum(x => x.EnforcementAndCourtFeePayment) + EnforcementAndCourtFeePayment);
+        }
+        #endregion
+
+        #region TotalEnforcementAndCourtFee
+        private double? _totalEnforcementAndCourtFee;
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [Display(Name = "აღს. და სას. ხარჯის გადახდა")]
+        public double? TotalEnforcementAndCourtFee
+        {
+            get
+            {
+                if (!_totalEnforcementAndCourtFee.HasValue)
+                    _totalEnforcementAndCourtFee = Math.Round(InitTotalEnforcementAndCourtFee().Value, 2);
+                return _totalEnforcementAndCourtFee;
+            }
+            set { _totalEnforcementAndCourtFee = value; }
+        }
+
+        private double? InitTotalEnforcementAndCourtFee()
+        {
+            return GetPaymentList().Sum(x => x.EnforcementAndCourtFee) + EnforcementAndCourtFee;
+        }
+        #endregion
+
+        #region TotalEnforcementAndCourtFeePayment
+        private double? _totalEnforcementAndCourtFeePayment;
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [Display(Name = "აღს. და სას. ხარჯის გადახდა")]
+        public double? TotalEnforcementAndCourtFeePayment
+        {
+            get
+            {
+                if (!_totalEnforcementAndCourtFeePayment.HasValue)
+                    _totalEnforcementAndCourtFeePayment = Math.Round(InitTotalEnforcementAndCourtFeePayment().Value, 2);
+                return _totalEnforcementAndCourtFeePayment;
+            }
+            set { _totalEnforcementAndCourtFeePayment = value; }
+        }
+
+        private double? InitTotalEnforcementAndCourtFeePayment()
+        {
+            return GetPaymentList().Sum(x => x.EnforcementAndCourtFeePayment) + EnforcementAndCourtFeePayment;
+        }
+        #endregion
+
 
         //#region ScheduleCatchUp
         //private double? _scheduleCatchUp;
