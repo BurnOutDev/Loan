@@ -178,7 +178,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                         LoanAccountPrivateNumber = pmt.Loan.Account.PrivateNumber,
                         LoanBalance = pmt.LoanBalance.HasValue ? Math.Round(pmt.LoanBalance.Value, 2) : 0,
                         LoanLoanID = pmt.Loan.LoanID,
-                        LoanStatus = pmt.LoanStatus,
+                        LoanStatus = pmt.Loan.LoanStatus.ToString(),
                         PaidInterest = pmt.PaidInterest.HasValue ? Math.Round(pmt.PaidInterest.Value, 2) : 0,
                         PaidPenalty = pmt.PaidPenalty.HasValue ? Math.Round(pmt.PaidPenalty.Value, 2) : 0,
                         PaidPrincipal = pmt.PaidPrincipal.HasValue ? Math.Round(pmt.PaidPrincipal.Value, 2) : 0,
@@ -196,17 +196,16 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                         LoanStartDate = pmt.Loan.LoanStartDate.ToShortDateString(),
                         LoanEndDate = pmt.Loan.LoanEndDate.ToShortDateString(),
                         LoanProblemManager = pmt.Loan.ProblemManager,
-                        EnforcementAndCourtFee = Math.Round(pmt.Loan.CourtAndEnforcementFee, 2)
+                        LoanEnforcementAndCourtFee = Math.Round(pmt.Loan.CourtAndEnforcementFee, 2),
+                        Agreement = pmt.Loan.Agreement,
+                        CashCollectorID = pmt.Loan.CreditExpert.EmployeeID,
+                        CashCollectorLastName = pmt.Loan.CreditExpert.LastName,
+                        CashCollectorName = pmt.Loan.CreditExpert.Name,
+                        LoanDateOfEnforcement = pmt.Loan.DateOfEnforcement.HasValue ? pmt.Loan.DateOfEnforcement.Value.ToShortDateString() : null,
+                        LoanLoanNotificationLetter = pmt.Loan.LoanNotificationLetter.HasValue ? pmt.Loan.LoanNotificationLetter.Value.ToShortDateString() : null,
+                        LoanProblemManagerDate = pmt.Loan.ProblemManagerDate.HasValue ? pmt.Loan.ProblemManagerDate.Value.ToShortDateString() : null,
+                        PMT = pmt.Loan.AmountToBePaidDaily
                     };
-
-                if (pmt.Loan.DateOfEnforcement.HasValue)
-                    jsonPayment.LoanEnforcementDate = pmt.Loan.DateOfEnforcement.Value.ToShortDateString();
-
-                if (pmt.Loan.ProblemManagerDate.HasValue)
-                    jsonPayment.LoanProblemDate = pmt.Loan.ProblemManagerDate.Value.ToShortDateString();
-
-                if (pmt.Loan.LoanNotificationLetter.HasValue)
-                    jsonPayment.NotificationDate = pmt.Loan.LoanNotificationLetter.Value.ToShortDateString();
 
                 resultJson.Add(jsonPayment);
 

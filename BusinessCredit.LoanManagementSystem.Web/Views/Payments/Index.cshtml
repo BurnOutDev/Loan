@@ -54,98 +54,20 @@
             <th data-field="TaxOrderID">
                 @Html.DisplayNameFor(model => model.TaxOrderID)
             </th>
-            <th data-field="CurrentPayment">
-                @Html.DisplayNameFor(model => model.CurrentPayment)
+            <th data-field="CashCollectorID">
+                ინკ. ID
             </th>
-            <th data-field="PaymentDate">
-                @Html.DisplayNameFor(model => model.PaymentDate)
+            <th data-field="CashCollectorName">
+                ინკ. სახელი
             </th>
-            <th data-field="LoanBalance">
-                @Html.DisplayNameFor(model => model.LoanBalance)
+            <th data-field="CashCollectorLastName">
+                ინკ. გვარი
             </th>
-            <th data-field="AccruingInterestPayment">
-                @Html.DisplayNameFor(model => model.AccruingInterestPayment)
-            </th>
-            <th data-field="AccruingOverdueInterest">
-                @Html.DisplayNameFor(model => model.AccruingOverdueInterest)
-            </th>
-            <th data-field="AccruingOverduePrincipal">
-                @Html.DisplayNameFor(model => model.AccruingOverduePrincipal)
-            </th>
-            <th data-field="AccruingPenalty">
-                @Html.DisplayNameFor(model => model.AccruingPenalty)
-            </th>
-            <th data-field="AccruingPenaltyPayment">
-                @Html.DisplayNameFor(model => model.AccruingPenaltyPayment)
-            </th>
-            <th data-field="AccruingPrincipalPayment">
-                @Html.DisplayNameFor(model => model.AccruingPrincipalPayment)
-            </th>
-            <th data-field="Branch">
-                @*@Html.DisplayNameFor(model => model.Branch)*@
-            </th>
-            <th data-field="CurrentDebt">
-                @Html.DisplayNameFor(model => model.CurrentDebt)
-            </th>
-            <th data-field="CurrentInterestPayment">
-                @Html.DisplayNameFor(model => model.CurrentInterestPayment)
-            </th>
-            <th data-field="CurrentOverdueInterest">
-                @Html.DisplayNameFor(model => model.CurrentOverdueInterest)
-            </th>
-            <th data-field="CurrentOverduePrincipal">
-                @Html.DisplayNameFor(model => model.CurrentOverduePrincipal)
-            </th>
-            <th data-field="CurrentPenalty">
-                @Html.DisplayNameFor(model => model.CurrentPenalty)
-            </th>
-            <th data-field="CurrentPrincipalPayment">
-                @Html.DisplayNameFor(model => model.CurrentPrincipalPayment)
+            <th data-field="Agreement">
+                ხელშეკრულების #
             </th>
             <th data-field="LoanStatus">
                 @Html.DisplayNameFor(model => model.LoanStatus)
-            </th>
-            <th data-field="PaidInterest">
-                @Html.DisplayNameFor(model => model.PaidInterest)
-            </th>
-            <th data-field="PaidPenalty">
-                @Html.DisplayNameFor(model => model.PaidPenalty)
-            </th>
-            <th data-field="PaidPrincipal">
-                @Html.DisplayNameFor(model => model.PaidPrincipal)
-            </th>
-            <th data-field="PayableInterest">
-                @Html.DisplayNameFor(model => model.PayableInterest)
-            </th>
-            <th data-field="PayablePrincipal">
-                @Html.DisplayNameFor(model => model.PayablePrincipal)
-            </th>
-            <th data-field="PlannedBalance">
-                @Html.DisplayNameFor(model => model.PlannedBalance)
-            </th>
-            <th data-field="PrincipalPrepaid">
-                @Html.DisplayNameFor(model => model.PrincipalPrepaid)
-            </th>
-            <th data-field="PrincipalPrepaymant">
-                @Html.DisplayNameFor(model => model.PrincipalPrepaymant)
-            </th>
-            <th data-field="StartingBalance">
-                @Html.DisplayNameFor(model => model.StartingBalance)
-            </th>
-            <th data-field="StartingPlannedBalance">
-                @Html.DisplayNameFor(model => model.StartingPlannedBalance)
-            </th>
-            <th data-field="WholeDebt">
-                @Html.DisplayNameFor(model => model.WholeDebt)
-            </th>
-            @*<th data-field="ScheduleCatchUp">
-                    @Html.DisplayNameFor(model => model.ScheduleCatchUp)
-                </th>*@
-            <th data-field="LoanStartDate">
-                Start Date
-            </th>
-            <th data-field="LoanEndDate">
-                End Date
             </th>
             <th data-field="LoanNotificationLetter">
                 გაფრთხ. წერ. თარიღი
@@ -161,6 +83,93 @@
             </th>
             <th data-field="EnforcementAndCourtFee">
                 აღსრ. და სასამ. ხარჯი
+            </th>
+            <th data-field="PMT">
+                PMT
+            </th>
+            <th data-field="CurrentDebt">
+                @Html.DisplayNameFor(model => model.CurrentDebt)
+            </th>
+            <th data-field="WholeDebt">
+                @Html.DisplayNameFor(model => model.WholeDebt)
+            </th>
+            <th data-field="CurrentPayment">
+                @Html.DisplayNameFor(model => model.CurrentPayment)
+            </th>
+            <th data-field="PaymentDate">
+                @Html.DisplayNameFor(model => model.PaymentDate)
+            </th>
+            <th data-field="LoanStartDate">
+                Start Date
+            </th>
+            <th data-field="LoanEndDate">
+                End Date
+            </th>
+            <th data-field="StartingPlannedBalance">
+                @Html.DisplayNameFor(model => model.StartingPlannedBalance)
+            </th>
+            <th data-field="StartingBalance">
+                @Html.DisplayNameFor(model => model.StartingBalance)
+            </th>
+            <th data-field="PlannedBalance">
+                @Html.DisplayNameFor(model => model.PlannedBalance)
+            </th>
+            <th data-field="PayableInterest">
+                @Html.DisplayNameFor(model => model.PayableInterest)
+            </th>
+            <th data-field="PayablePrincipal">
+                @Html.DisplayNameFor(model => model.PayablePrincipal)
+            </th>
+            <th data-field="CurrentOverduePrincipal">
+                @Html.DisplayNameFor(model => model.CurrentOverduePrincipal)
+            </th>
+            <th data-field="CurrentOverdueInterest">
+                @Html.DisplayNameFor(model => model.CurrentOverdueInterest)
+            </th>
+            <th data-field="CurrentPenalty">
+                @Html.DisplayNameFor(model => model.CurrentPenalty)
+            </th>
+            <th data-field="AccruingOverduePrincipal">
+                @Html.DisplayNameFor(model => model.AccruingOverduePrincipal)
+            </th>
+            <th data-field="AccruingOverdueInterest">
+                @Html.DisplayNameFor(model => model.AccruingOverdueInterest)
+            </th>
+            <th data-field="AccruingPenalty">
+                @Html.DisplayNameFor(model => model.AccruingPenalty)
+            </th>
+            <th data-field="AccruingPenaltyPayment">
+                @Html.DisplayNameFor(model => model.AccruingPenaltyPayment)
+            </th>
+            <th data-field="AccruingInterestPayment">
+                @Html.DisplayNameFor(model => model.AccruingInterestPayment)
+            </th>
+            <th data-field="AccruingPrincipalPayment">
+                @Html.DisplayNameFor(model => model.AccruingPrincipalPayment)
+            </th>
+            <th data-field="CurrentInterestPayment">
+                @Html.DisplayNameFor(model => model.CurrentInterestPayment)
+            </th>
+            <th data-field="CurrentPrincipalPayment">
+                @Html.DisplayNameFor(model => model.CurrentPrincipalPayment)
+            </th>
+            <th data-field="PrincipalPrepaymant">
+                @Html.DisplayNameFor(model => model.PrincipalPrepaymant)
+            </th>
+            <th data-field="PaidInterest">
+                @Html.DisplayNameFor(model => model.PaidInterest)
+            </th>
+            <th data-field="PaidPenalty">
+                @Html.DisplayNameFor(model => model.PaidPenalty)
+            </th>
+            <th data-field="PaidPrincipal">
+                @Html.DisplayNameFor(model => model.PaidPrincipal)
+            </th>
+            <th data-field="PrincipalPrepaid">
+                @Html.DisplayNameFor(model => model.PrincipalPrepaid)
+            </th>
+            <th data-field="LoanBalance">
+                @Html.DisplayNameFor(model => model.LoanBalance)
             </th>
             <th data-formatter="actionFormatter" data-events="actionEvents">
 
