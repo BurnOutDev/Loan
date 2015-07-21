@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,6 +10,12 @@ namespace BusinessCredit.Domain
     public class Payment
     {
         public Payment() { }
+        public Payment(string taxOrderID, double currentPayment, DateTime paymentDate, double accruingPenalty) {
+            TaxOrderID = taxOrderID;
+            CurrentPayment = currentPayment;
+            PaymentDate = paymentDate;
+            _accruingPenalty = accruingPenalty;
+        }
 
         public Payment(double penalty, double payment)
         {
@@ -890,30 +896,30 @@ namespace BusinessCredit.Domain
         #endregion
 
 
-        //#region ScheduleCatchUp
-        //private double? _scheduleCatchUp;
-        //[Display(Name = "გრაფიკზე დაწევა")]
-        //[DisplayFormat(DataFormatString = "{0:N}")]
-        //public double? ScheduleCatchUp
-        //{
-        //    get
-        //    {
-        //        if (!_scheduleCatchUp.HasValue)
-        //            _scheduleCatchUp = Math.Round(InitScheduleCatchUp().Value, 2);
-        //        return _scheduleCatchUp;
-        //    }
-        //    set { _scheduleCatchUp = value; }
-        //}
+        #region ScheduleCatchUp
+        private double? _scheduleCatchUp;
+        [Display(Name = "გრაფიკზე დაწევა")]
+        [DisplayFormat(DataFormatString = "{0:N}")]
+        public double? ScheduleCatchUp
+        {
+            get
+            {
+                if (!_scheduleCatchUp.HasValue)
+                    _scheduleCatchUp = Math.Round(InitScheduleCatchUp().Value, 2);
+                return _scheduleCatchUp;
+            }
+            set { _scheduleCatchUp = value; }
+        }
 
-        //private double? InitScheduleCatchUp()
-        //{
-        //    var diff = StartingBalance - PlannedBalance;
-        //    if (diff < 0)
-        //        diff = 0;
+        private double? InitScheduleCatchUp()
+        {
+            var diff = StartingBalance - PlannedBalance;
+            if (diff < 0)
+                diff = 0;
 
-        //    return AccruingPenalty + AccruingOverdueInterest + PayableInterest + diff;
-        //}
-        //#endregion
+            return AccruingPenalty + AccruingOverdueInterest + PayableInterest + diff;
+        }
+        #endregion
 
 
         private ICollection<Payment> GetPaymentList()

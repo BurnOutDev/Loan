@@ -1,6 +1,7 @@
 ﻿using BusinessCredit.Core;
 using BusinessCredit.Domain;
 using BusinessCredit.LoanManagementSystem.Web.Models;
+using BusinessCredit.LoanManagementSystem.Web.Models.Json;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -186,65 +187,14 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         #region Payments
         public ActionResult PaymentsAdmin(int? loanId, string fromDate, string toDate, int branch = 0)
         {
+            if (loanId.HasValue)
+            ViewData.Add("loanId", loanId.Value);
 
-            var database = Databases.ElementAt(branch);
+            ViewData.Add("fromDate", fromDate);
+            ViewData.Add("toDate", toDate);
+            ViewData.Add("branch", branch);
 
-            DateTime dailyFromDate = DateTime.Today;
-            DateTime dailyToDate = DateTime.Today;
-
-            if (!string.IsNullOrEmpty(fromDate) && !string.IsNullOrEmpty(toDate))
-            {
-                dailyFromDate = DateTime.Parse(fromDate);
-                dailyToDate = DateTime.Parse(toDate);
-            }
-            if (loanId == null)
-            {
-                //nothing
-                var res = database.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList();
-
-                if (fromDate != null)
-                    return View(database.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList());
-
-                return View(database.Payments.Where(p => p.PaymentDate == DateTime.Today).ToList());
-            }
-            if (loanId != null)
-                return View(database.Loans.Find(loanId).Payments.ToList());
-
-            return View(new List<Payment>());
-
-            //var resultList = new List<Payment>();
-            //DateTime dailyFromDate = DateTime.Today;
-            //DateTime dailyToDate = DateTime.Today;
-
-            //if (!string.IsNullOrEmpty(fromDate) && !string.IsNullOrEmpty(toDate))
-            //{
-            //    dailyFromDate = DateTime.Parse(fromDate);
-            //    dailyToDate = DateTime.Parse(toDate);
-            //}
-            //if (loanId == null)
-            //{
-            //    //nothing
-            //    //var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList();
-
-            //    if (fromDate != null)
-            //    {
-            //        foreach (var database in Databases)
-            //            resultList.AddRange(database.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList());
-            //        return View(resultList);
-            //    }
-
-            //    foreach (var database in Databases)
-            //        resultList.AddRange(database.Payments.Where(p => p.PaymentDate == DateTime.Today).ToList());
-            //    return View(resultList);
-            //}
-            //if (loanId != null)
-            //{
-            //    foreach (var database in Databases)
-            //        resultList.AddRange(database.Loans.Find(loanId).Payments.ToList());
-            //    return View(resultList);
-            //}
-
-            //return View(new List<Payment>());        } 
+            return View();
         }
 
         public ActionResult PaymentDelete(int? id, int? branch)
@@ -300,31 +250,23 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult PaymentChangePenalty(ChangePaymentModel targetModel)
+        public void PaymentChangePenalty(ChangePaymentModel targetModel)
         {
             var database = Databases.ElementAt(targetModel.BranchID);
-
             var payment = database.Payments.FirstOrDefault(x => x.PaymentID == targetModel.ID);
-
             var loan = payment.Loan;
-
-            var oldPaymentAmount = payment.CurrentPayment;
 
             var payments = loan.Payments.Where(x => x.PaymentDate >= payment.PaymentDate).ToList().OrderBy(x => x.PaymentDate).ToList();
 
-            List<double> amounts = new List<double>();
+            payments.FirstOrDefault(x => x.PaymentID == targetModel.ID)._accruingPenalty = targetModel.NewPenalty;
 
-            foreach (var pmt in payments)
-                amounts.Add(pmt.CurrentPayment);
+            //database.Payments.RemoveRange(payments);
 
-            var toPass = amounts.ToArray<double>();
+            //database.SaveChanges();
 
-            database.Payments.RemoveRange(payments);
+            RecalculatePayments(loan.LoanID, targetModel.BranchID, payments);
 
-            database.SaveChanges();
-
-            TestPayments(loan.LoanID, targetModel.BranchID, payments.FirstOrDefault().PaymentDate, targetModel.NewPenalty, toPass);
-
+            #region Comment Old
             //var paymentDatesAndPayments = new Dictionary<DateTime, double>();
 
             //foreach (var pmt in payments)
@@ -347,36 +289,188 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             //{
             //    loan.Payments.Add(new Payment() { CurrentPayment = pmt.Value, PaymentDate = pmt.Key });
             //    database.SaveChanges();
-            //}
-
+            //} 
+            #endregion
 
             database.SaveChanges();
-
-            return View("IndexAdmin");
         }
 
-        private void TestPayments(int loanId, int branch, DateTime startDate, double newAccruingPenalty, params double[] data)
+        [HttpPost]
+        public void PaymentZeroizePenalty(ChangePaymentModel targetModel)
         {
-            bool first = true;
-            
-            foreach (var amount in data)
+            var database = Databases.ElementAt(targetModel.BranchID);
+            var payment = database.Payments.FirstOrDefault(x => x.PaymentID == targetModel.ID);
+            var loan = payment.Loan;
+
+            var payments = loan.Payments.Where(x => x.PaymentDate >= payment.PaymentDate).ToList().OrderBy(x => x.PaymentDate).ToList();
+
+            payments.FirstOrDefault(x => x.PaymentID == targetModel.ID)._accruingPenalty = 0;
+
+            RecalculatePayments(loan.LoanID, targetModel.BranchID, payments);
+
+            database.SaveChanges();
+        }
+
+        private void RecalculatePayments(int loanId, int branch, ICollection<Payment> payments)
+        {
+            Databases.ElementAt(branch).Payments.RemoveRange(payments);
+            Databases.ElementAt(branch).SaveChanges();
+
+            foreach (var payment in payments)
             {
                 var pmt = Databases.ElementAt(branch).Payments.Create();
-                pmt.Loan = Databases.ElementAt(branch).Loans.Find(loanId);
-                pmt.CurrentPayment = amount;
-                pmt.PaymentDate = startDate;
 
-                if (first)
-                {
-                    pmt._accruingPenalty = newAccruingPenalty;
-                    first = false;
-                }
+                
+
+                pmt.Loan = Databases.ElementAt(branch).Loans.Find(loanId);
+                pmt.TaxOrderID = payment.TaxOrderID;
+                pmt.CurrentPayment = payment.CurrentPayment;
+                pmt.PaymentDate = payment.PaymentDate;
+                pmt._accruingPenalty = payment.AccruingPenalty;
+                pmt.CreditExpert = Databases.ElementAt(branch).CreditExperts.FirstOrDefault();
+                pmt.CashCollectionAgent = Databases.ElementAt(branch).CashCollectionAgents.FirstOrDefault();
 
                 Databases.ElementAt(branch).Payments.Add(pmt);
-                startDate = startDate.AddDays(1);
             }
         }
 
+        public JsonResult PaymentsAdminJson(int? loanId, string fromDate, string toDate, int branch = 0)
+        {
+            var database = Databases.ElementAt(branch);
+
+            DateTime dailyFromDate = DateTime.Today;
+            DateTime dailyToDate = DateTime.Today;
+
+            if (!string.IsNullOrEmpty(fromDate) && !string.IsNullOrEmpty(toDate))
+            {
+                dailyFromDate = DateTime.Parse(fromDate);
+                dailyToDate = DateTime.Parse(toDate);
+            }
+            if (loanId == null)
+            {
+                //nothing
+                var res = database.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList();
+
+                if (fromDate != null)
+                    return Json(PaymentsToJson(database.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList()), JsonRequestBehavior.AllowGet);
+
+                return Json(PaymentsToJson(database.Payments.Where(p => p.PaymentDate == DateTime.Today).ToList()), JsonRequestBehavior.AllowGet);
+            }
+            if (loanId != null)
+                return Json(PaymentsToJson(database.Loans.Find(loanId).Payments.ToList()), JsonRequestBehavior.AllowGet);
+
+            return Json(new List<Payment>(), JsonRequestBehavior.AllowGet);
+
+            #region Comment
+            //var resultList = new List<Payment>();
+            //DateTime dailyFromDate = DateTime.Today;
+            //DateTime dailyToDate = DateTime.Today;
+
+            //if (!string.IsNullOrEmpty(fromDate) && !string.IsNullOrEmpty(toDate))
+            //{
+            //    dailyFromDate = DateTime.Parse(fromDate);
+            //    dailyToDate = DateTime.Parse(toDate);
+            //}
+            //if (loanId == null)
+            //{
+            //    //nothing
+            //    //var res = db.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList();
+
+            //    if (fromDate != null)
+            //    {
+            //        foreach (var database in Databases)
+            //            resultList.AddRange(database.Payments.Where(p => p.PaymentDate >= dailyFromDate && p.PaymentDate <= dailyToDate).ToList());
+            //        return View(resultList);
+            //    }
+
+            //    foreach (var database in Databases)
+            //        resultList.AddRange(database.Payments.Where(p => p.PaymentDate == DateTime.Today).ToList());
+            //    return View(resultList);
+            //}
+            //if (loanId != null)
+            //{
+            //    foreach (var database in Databases)
+            //        resultList.AddRange(database.Loans.Find(loanId).Payments.ToList());
+            //    return View(resultList);
+            //}
+
+            //return View(new List<Payment>());   
+            #endregion  
+        }
+
         #endregion
+
+        public List<PaymentJson> PaymentsToJson(List<Payment> payments)
+        {
+            var resultJson = new List<PaymentJson>();
+
+            foreach (var pmt in payments)
+            {
+                var jsonPayment = new PaymentJson
+                {
+                    AccruingInterestPayment = pmt.AccruingInterestPayment.HasValue ? Math.Round(pmt.AccruingInterestPayment.Value, 2) : 0,
+                    AccruingOverdueInterest = pmt.AccruingOverdueInterest.HasValue ? Math.Round(pmt.AccruingOverdueInterest.Value, 2) : 0,
+                    AccruingOverduePrincipal = pmt.AccruingOverduePrincipal.HasValue ? Math.Round(pmt.AccruingOverduePrincipal.Value, 2) : 0,
+                    AccruingPenalty = pmt.AccruingPenalty.HasValue ? Math.Round(pmt.AccruingPenalty.Value, 2) : 0,
+                    AccruingPenaltyPayment = pmt.AccruingPenaltyPayment.HasValue ? Math.Round(pmt.AccruingPenaltyPayment.Value, 2) : 0,
+                    AccruingPrincipalPayment = pmt.AccruingPrincipalPayment.HasValue ? Math.Round(pmt.AccruingPrincipalPayment.Value, 2) : 0,
+                    CurrentDebt = pmt.CurrentDebt.HasValue ? Math.Round(pmt.CurrentDebt.Value, 2) : 0,
+                    CurrentInterestPayment = pmt.CurrentInterestPayment.HasValue ? Math.Round(pmt.CurrentInterestPayment.Value, 2) : 0,
+                    CurrentOverdueInterest = pmt.CurrentOverdueInterest.HasValue ? Math.Round(pmt.CurrentOverdueInterest.Value, 2) : 0,
+                    CurrentOverduePrincipal = pmt.CurrentOverduePrincipal.HasValue ? Math.Round(pmt.CurrentOverduePrincipal.Value, 2) : 0,
+                    CurrentPayment = Math.Round(pmt.CurrentPayment, 2),
+                    CurrentPenalty = pmt.CurrentPenalty.HasValue ? Math.Round(pmt.CurrentPenalty.Value, 2) : 0,
+                    CurrentPrincipalPayment = pmt.CurrentPrincipalPayment.HasValue ? Math.Round(pmt.CurrentPrincipalPayment.Value, 2) : 0,
+                    LoanAccountAccountID = pmt.Loan.Account.AccountID,
+                    LoanAccountLastName = pmt.Loan.Account.LastName,
+                    LoanAccountName = pmt.Loan.Account.Name,
+                    LoanAccountPrivateNumber = pmt.Loan.Account.PrivateNumber,
+                    LoanBalance = pmt.LoanBalance.HasValue ? Math.Round(pmt.LoanBalance.Value, 2) : 0,
+                    LoanLoanID = pmt.Loan.LoanID,
+                    LoanStatus = pmt.Loan.LoanStatus.ToString(),
+                    PaidInterest = pmt.PaidInterest.HasValue ? Math.Round(pmt.PaidInterest.Value, 2) : 0,
+                    PaidPenalty = pmt.PaidPenalty.HasValue ? Math.Round(pmt.PaidPenalty.Value, 2) : 0,
+                    PaidPrincipal = pmt.PaidPrincipal.HasValue ? Math.Round(pmt.PaidPrincipal.Value, 2) : 0,
+                    PayableInterest = pmt.PayableInterest.HasValue ? Math.Round(pmt.PayableInterest.Value, 2) : 0,
+                    PayablePrincipal = pmt.PayablePrincipal.HasValue ? Math.Round(pmt.PayablePrincipal.Value, 2) : 0,
+                    PaymentDate = pmt.PaymentDate.ToShortDateString(),
+                    PaymentID = pmt.PaymentID,
+                    PlannedBalance = Math.Round(pmt.PlannedBalance, 2),
+                    PrincipalPrepaid = pmt.PrincipalPrepaid.HasValue ? Math.Round(pmt.PrincipalPrepaid.Value, 2) : 0,
+                    PrincipalPrepaymant = pmt.PrincipalPrepaymant.HasValue ? Math.Round(pmt.PrincipalPrepaymant.Value, 2) : 0,
+                    StartingBalance = pmt.StartingBalance.HasValue ? Math.Round(pmt.StartingBalance.Value, 2) : 0,
+                    StartingPlannedBalance = pmt.StartingPlannedBalance.HasValue ? Math.Round(pmt.StartingPlannedBalance.Value, 2) : 0,
+                    TaxOrderID = pmt.TaxOrderID,
+                    WholeDebt = pmt.WholeDebt.HasValue ? Math.Round(pmt.WholeDebt.Value, 2) : 0,
+                    LoanStartDate = pmt.Loan.LoanStartDate.ToShortDateString(),
+                    LoanEndDate = pmt.Loan.LoanEndDate.ToShortDateString(),
+                    LoanProblemManager = pmt.Loan.ProblemManager,
+                    LoanEnforcementAndCourtFee = Math.Round(pmt.Loan.CourtAndEnforcementFee, 2),
+                    Agreement = pmt.Loan.Agreement,
+                    CashCollectorID = pmt.Loan.CreditExpert.EmployeeID,
+                    CashCollectorLastName = pmt.Loan.CreditExpert.LastName,
+                    CashCollectorName = pmt.Loan.CreditExpert.Name,
+                    LoanDateOfEnforcement = pmt.Loan.DateOfEnforcement.HasValue ? pmt.Loan.DateOfEnforcement.Value.ToShortDateString() : null,
+                    LoanLoanNotificationLetter = pmt.Loan.LoanNotificationLetter.HasValue ? pmt.Loan.LoanNotificationLetter.Value.ToShortDateString() : null,
+                    LoanProblemManagerDate = pmt.Loan.ProblemManagerDate.HasValue ? pmt.Loan.ProblemManagerDate.Value.ToShortDateString() : null,
+                    PMT = Math.Round(pmt.Loan.AmountToBePaidDaily, 2),
+                    EnforcementAndCourtFee = Math.Round(pmt.EnforcementAndCourtFee),
+                    EnforcementAndCourtFeeEndingBalance = pmt.EnforcementAndCourtFeeEndingBalance.HasValue ? Math.Round(pmt.EnforcementAndCourtFeeEndingBalance.Value, 2) : 0,
+                    EnforcementAndCourtFeePayment = pmt.EnforcementAndCourtFeePayment.HasValue ? Math.Round(pmt.EnforcementAndCourtFeePayment.Value, 2) : 0,
+                    EnforcementAndCourtFeeStartingBalance = pmt.EnforcementAndCourtFeeStartingBalance.HasValue ? Math.Round(pmt.EnforcementAndCourtFeeStartingBalance.Value, 2) : 0,
+                    TotalEnforcementAndCourtFee = pmt.TotalEnforcementAndCourtFee.HasValue ? Math.Round(pmt.TotalEnforcementAndCourtFee.Value, 2) : 0,
+                    TotalEnforcementAndCourtFeePayment = pmt.TotalEnforcementAndCourtFeePayment.HasValue ? Math.Round(pmt.TotalEnforcementAndCourtFeePayment.Value, 2) : 0,
+                    ScheduleCatchUp = pmt.ScheduleCatchUp.HasValue ? Math.Round(pmt.ScheduleCatchUp.Value, 2) : 0
+                };
+
+                resultJson.Add(jsonPayment);
+            }
+            return resultJson.OrderBy(x => x.LoanLoanID).ToList();
+        }
+
+        public void PaymentZeroizePenalty(int? id, int? branch)
+        {
+            PaymentZeroizePenalty(new ChangePaymentModel() { ID = id.Value, BranchID = branch.Value, NewPenalty = 0, OldPenalty = 0, Payment = 0});
+        }
     }
 }

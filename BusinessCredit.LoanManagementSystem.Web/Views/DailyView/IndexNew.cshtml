@@ -1,0 +1,170 @@
+﻿@model BusinessCredit.LoanManagementSystem.Web.Models.Json.DailyJson
+
+@{
+    ViewBag.Title = "IndexNew";
+}
+
+<h2>IndexNew</h2>
+
+@Scripts.Render("~/bundles/bootstrapTable")
+@Scripts.Render("~/bundles/tableExport")
+
+<link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+<script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+
+<script>
+    function actionFormatter(value, row, index) {
+        return [
+            '<input class="editasd edit ml10" href="javascript:void(0)" title="Edit" type="text" style="margin: 5px">',
+            'რედაქტირება',
+            '</input>',
+        ].join('');
+    }
+
+    window.actionEvents = {
+        'click .editasd': function (e, value, row, index) {
+            window.location.href = "@Url.Action("Details")/" + row.PaymentID;
+        }
+    };
+
+    function DownloadTaxOrders() {
+        var url = '../Payments/GenerateTaxOrders';
+
+        var array = $(table).bootstrapTable('getData');
+        var paymentIds = [];
+
+        for (var i = 0; i < array.length; i++) {
+            paymentIds[i] = array[i].PaymentID;
+        }
+
+        //$.ajax({
+        //    type: 'GET',
+        //    url: '../Payments/GenerateTaxOrders',
+        //    data: JSON.stringify(paymentIds),
+        //    dataType: 'json',
+        //    contentType: 'application/json; charset=utf-8',
+        //    success: function (data) {
+        //        alert('success');
+        //    },
+        //    error: function (xhr, ajaxOptions, thrownError) {
+        //        alert('error');
+        //    }
+        //});
+
+        jQuery.ajaxSettings.traditional = true;
+
+        window.location.href = url + '?' + decodeURIComponent($.param({ paymentIds: paymentIds }));
+
+        //return $.get('../Payments/GenerateTaxOrders', { paymentIds: paymentIds });
+    }
+</script>
+
+<button onclick="DownloadTaxOrders()">Download Tax Orders</button>
+
+<form action="IndexNew" method="post">
+<table id="table" data-advanced-search="true" data-show-export="true" data-toggle="table" data-search="true" data-pagination="true" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("IndexNewJson", new { loanId = ViewData["loanId"], fromDate = ViewData["fromDate"], toDate = ViewData["toDate"] })" class="table">
+    <thead>
+        <tr>
+            <th data-field="AccountNumber">
+                კლიენტის #
+            </th>
+            <th data-field="LoanId">
+                სესხის #
+            </th>
+            <th data-field="Name">
+                სახელი
+            </th>
+            <th data-field="LastName">
+                გვარი
+            </th>
+            <th data-field="PrivateNumber">
+                პირადი ნომერი
+            </th>
+            <th data-field="BusinessAddress">
+                ბიზნესის მისამართი
+            </th>
+            <th data-field="PhoneNumber">
+                მობ. ნომერი
+            </th>
+            <th data-field="PlannedPayment">
+                PMT
+            </th>
+            <th data-field="CurrentDebt">
+                მიმდ. დავალიანება
+            </th>
+            <th data-field="WholeDebt">
+                სულ განულება
+            </th>
+            <th data-field="Payment" data-editable="true">
+                გადახდა
+            </th>
+            <th data-field="PaymentDate">
+                თარიღი
+            </th>
+            <th data-field="AgreementNumber">
+                ხელშ. ნომერი
+            </th>
+            <th data-field="ScheduleCatchUp">
+                გრაფიკზე დაწევა
+            </th>
+            <th data-field="PaymentOrderID" data-editable="true">
+                #
+            </th>
+            <th data-field="PaymentOrder" data-editable="true">
+                გადახდის არხი
+            </th>
+            <th data-field="StartDate">
+                StartDate
+            </th>
+            <th data-field="EndDate">
+                EndDate
+            </th>
+            <th data-field="LoanNotificationLetter">
+                გაბრთ. წერილ. თარ
+            </th>
+            <th data-field="ProblemManagerDate">
+                პრობ. გად. თარ.
+            </th>
+            <th data-field="ProblemManager">
+                პრობ. მენეჯერი
+            </th>
+            <th data-field="DateOfEnforcement">
+                აღსრულ. გად. თარ.
+            </th>
+            <th data-field="CourtAndEnforcementFee">
+                აღსრ. და სასამ. ხარჯი
+            </th>
+        </tr>
+    </thead>
+</table>
+
+    <script>
+        function sub() {
+            //window.location.href = 'IndexNew';
+            jQuery.ajaxSettings.traditional = true;
+          //$.post('IndexNew', JSON.stringify($(table).bootstrapTable('getData')), { }, 'application/json');
+
+            $.ajax({
+                url: 'IndexNew',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify($(table).bootstrapTable('getData'))
+            });
+
+            ////window.location.href = 'IndexNew';
+            //jQuery.ajaxSettings.traditional = true;
+            ////$.post('IndexNew', JSON.stringify($(table).bootstrapTable('getData')), { }, 'application/json');
+            //var t = '';
+            //$.ajax({
+            //    url: 'IndexNew',
+            //    type: 'POST',
+            //    contentType: 'application/json',
+            //    data: JSON.stringify($(table).bootstrapTable('getData')),
+            //    error: function (text) { t = text }
+            //})
+        }
+    </script>
+
+<button type="button" onclick="sub()">ატვირთვა</button>
+</form>

@@ -61,11 +61,6 @@
     <Compile Include="LoanCalculator\LoanCalculator.cs" />
     <Compile Include="LoanCalculator\LoanModel.cs" />
     <Compile Include="LoanCalculator\PaymentModel.cs" />
-    <Compile Include="Migrations\201507161521488_AddedEnforcementFee_ColumnsToPayments.cs" />
-    <Compile Include="Migrations\201507161521488_AddedEnforcementFee_ColumnsToPayments.Designer.cs">
-      <DependentUpon>201507161521488_AddedEnforcementFee_ColumnsToPayments.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxOrders\TaxOrderGenerator.cs" />
   </ItemGroup>
@@ -81,11 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\EPPlus.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201507161521488_AddedEnforcementFee_ColumnsToPayments.resx">
-      <DependentUpon>201507161521488_AddedEnforcementFee_ColumnsToPayments.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

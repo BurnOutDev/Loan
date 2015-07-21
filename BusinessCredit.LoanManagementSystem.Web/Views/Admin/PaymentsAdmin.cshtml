@@ -4,6 +4,42 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrapTable")
+@Scripts.Render("~/bundles/tableExport")
+
+<script>
+    function actionFormatter(value, row, index) {
+        return [
+            '<a class="editasd edit ml10" href="javascript:void(0)" title="Edit" style="margin: 5px">',
+            'ჯარიმის ცვლილება',
+            '</a>',
+            '<a class="zeroing edit ml10" href="javascript:void(0)" title="Edit" style="margin: 5px">',
+            'ჯარიმის განულება',
+            '</a>',
+        ].join('');
+
+    }
+
+    window.actionEvents = {
+        'click .editasd': function (e, value, row, index) {
+            window.location.href = "@Url.Action("PaymentChangePenalty")/?id=" + row.PaymentID + "&branch=" + cbxBranches.selectedIndex;
+        },
+        'click .zeroing': function (e, value, row, index) {
+            window.location.href = "@Url.Action("PaymentZeroizePenalty")/?id=" + row.PaymentID + "&branch=" + cbxBranches.selectedIndex;
+        }
+    };
+</script>
+
+<script>
+    function redirectDaily() {
+        var ref = "?fromDate=" + displayFromDate.value + "&" + "toDate=" + displayToDate.value + "&" + "branch=" + cbxBranches.selectedIndex;
+        localStorage.setItem('branchID', cbxBranches.selectedIndex);
+        window.location.href = ref;
+    }
+</script>
+
+
 <h2>გადახდები</h2>
 <h4>
     <select id="cbxBranches">
@@ -20,230 +56,171 @@
     <button onclick="redirectDaily()" type="button">Go</button>
 </h4>
 
-<script>
-                          function redirectDaily() {
-                              var ref = "?fromDate=" + displayFromDate.value + "&" + "toDate=" + displayToDate.value + "&" + "branch=" + cbxBranches.selectedIndex;
-                              localStorage.setItem('branchID', cbxBranches.selectedIndex);
-                              window.location.href = ref;
-                          }
-                      </script>
-
-<table class="table">
-    <tr>
-        <th>
-            სახელი
-        </th>
-        <th>
-            გვარი
-        </th>
-        <th>
-            პირადი ნომერი
-         </th>
-        <th>
-            კლიენტის #
-        </th>
-        <th>
-            სესხის #
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TaxOrderID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanBalance)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingInterestPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingOverdueInterest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingOverduePrincipal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingPenaltyPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccruingPrincipalPayment)
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.Branch)*@
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentDebt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentInterestPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentOverdueInterest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentOverduePrincipal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentPenalty)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentPrincipalPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanStatus)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaidInterest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaidPenalty)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaidPrincipal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PayableInterest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PayablePrincipal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PlannedBalance)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PrincipalPrepaid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PrincipalPrepaymant)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartingBalance)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartingPlannedBalance)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WholeDebt)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<table id="table" data-toolbar="#toolbar" data-show-export="true" data-toggle="table" data-search="true" data-pagination="false" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("PaymentsAdminJson", new { loanId = ViewData["loanId"], fromDate = ViewData["fromDate"], toDate = ViewData["toDate"], branch = ViewData["branch"] })" class="table">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.Account.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.Account.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.Account.PrivateNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.Account.AccountID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.LoanID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TaxOrderID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentPayment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoanBalance)
-            </td>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingInterestPayment)
+            <th data-field="LoanAccountName">
+                სახელი
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingOverdueInterest)
+            <th data-field="LoanAccountLastName">
+                გვარი
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingOverduePrincipal)
+            <th data-field="LoanAccountPrivateNumber">
+                პირადი ნომერი
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingPenaltyPayment)
+            <th data-field="LoanAccountAccountID">
+                კლიენტის #
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.AccruingPrincipalPayment)
+            <th data-field="LoanLoanID">
+                სესხის #
             </th>
-            <th>
-                @*@Html.DisplayFor(modelItem => item.Branch.BranchName)*@
+            <th data-field="TaxOrderID">
+                @Html.DisplayNameFor(model => model.TaxOrderID)
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentDebt)
+            <th data-field="CashCollectorID">
+                ინკ. ID
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentInterestPayment)
+            <th data-field="CashCollectorName">
+                ინკ. სახელი
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentOverdueInterest)
+            <th data-field="CashCollectorLastName">
+                ინკ. გვარი
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentOverduePrincipal)
+            <th data-field="Agreement">
+                ხელშეკრულების #
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentPenalty)
+            <th data-field="LoanStatus">
+                @Html.DisplayNameFor(model => model.LoanStatus)
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.CurrentPrincipalPayment)
+            <th data-field="LoanNotificationLetter">
+                გაფრთხ. წერ. თარიღი
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.LoanStatus)
+            <th data-field="ProblemManagerDate">
+                პრობ. გადაც. თარიღი
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.PaidInterest)
+            <th data-field="LoanProblemManager">
+                პრობ. მენეჯერი
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.PaidPenalty)
+            <th data-field="LoanEnforcementDate">
+                აღსრ. გადაც. თარიღი
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.PaidPrincipal)
+            <th data-field="EnforcementAndCourtFee">
+                აღსრ. და სასამ. ხარჯი
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.PayableInterest)
+            <th data-field="PMT">
+                PMT
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.PayablePrincipal)
+            <th data-field="CurrentDebt">
+                @Html.DisplayNameFor(model => model.CurrentDebt)
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.PlannedBalance)
+            <th data-field="WholeDebt">
+                @Html.DisplayNameFor(model => model.WholeDebt)
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.PrincipalPrepaid)
+            <th data-field="CurrentPayment">
+                @Html.DisplayNameFor(model => model.CurrentPayment)
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.PrincipalPrepaymant)
+            <th data-field="PaymentDate">
+                @Html.DisplayNameFor(model => model.PaymentDate)
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.StartingBalance)
+            <th data-field="LoanStartDate">
+                Start Date
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.StartingPlannedBalance)
+            <th data-field="LoanEndDate">
+                End Date
             </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.WholeDebt)
+            <th data-field="StartingPlannedBalance">
+                @Html.DisplayNameFor(model => model.StartingPlannedBalance)
             </th>
-            <td>
-                @if (item.PaymentDate == DateTime.Today)
-                {
-                    <a onclick="window.location.href='../Admin/PaymentDelete?id=@item.PaymentID&branch=' + cbxBranches.selectedIndex" class="text-danger">წაშლა</a> @*IndexAdmin*@
-                }
-                <a onclick="window.location.href='../Admin/PaymentChangePenalty?id=@item.PaymentID&branch=' + cbxBranches.selectedIndex">ჯარიმის პატიება</a> @*ChangePenalty*@
-            </td>
-        </tr>
-    }
+            <th data-field="StartingBalance">
+                @Html.DisplayNameFor(model => model.StartingBalance)
+            </th>
+            <th data-field="PlannedBalance">
+                @Html.DisplayNameFor(model => model.PlannedBalance)
+            </th>
+            <th data-field="PayableInterest">
+                @Html.DisplayNameFor(model => model.PayableInterest)
+            </th>
+            <th data-field="PayablePrincipal">
+                @Html.DisplayNameFor(model => model.PayablePrincipal)
+            </th>
+            <th data-field="CurrentOverduePrincipal">
+                @Html.DisplayNameFor(model => model.CurrentOverduePrincipal)
+            </th>
+            <th data-field="CurrentOverdueInterest">
+                @Html.DisplayNameFor(model => model.CurrentOverdueInterest)
+            </th>
+            <th data-field="CurrentPenalty">
+                @Html.DisplayNameFor(model => model.CurrentPenalty)
+            </th>
+            <th data-field="AccruingOverduePrincipal">
+                @Html.DisplayNameFor(model => model.AccruingOverduePrincipal)
+            </th>
+            <th data-field="AccruingOverdueInterest">
+                @Html.DisplayNameFor(model => model.AccruingOverdueInterest)
+            </th>
+            <th data-field="AccruingPenalty">
+                @Html.DisplayNameFor(model => model.AccruingPenalty)
+            </th>
+            <th data-field="AccruingPenaltyPayment">
+                @Html.DisplayNameFor(model => model.AccruingPenaltyPayment)
+            </th>
+            <th data-field="AccruingInterestPayment">
+                @Html.DisplayNameFor(model => model.AccruingInterestPayment)
+            </th>
+            <th data-field="AccruingPrincipalPayment">
+                @Html.DisplayNameFor(model => model.AccruingPrincipalPayment)
+            </th>
+            <th data-field="CurrentInterestPayment">
+                @Html.DisplayNameFor(model => model.CurrentInterestPayment)
+            </th>
+            <th data-field="CurrentPrincipalPayment">
+                @Html.DisplayNameFor(model => model.CurrentPrincipalPayment)
+            </th>
+            <th data-field="PrincipalPrepaymant">
+                @Html.DisplayNameFor(model => model.PrincipalPrepaymant)
+            </th>
+            <th data-field="PaidInterest">
+                @Html.DisplayNameFor(model => model.PaidInterest)
+            </th>
+            <th data-field="PaidPenalty">
+                @Html.DisplayNameFor(model => model.PaidPenalty)
+            </th>
+            <th data-field="PaidPrincipal">
+                @Html.DisplayNameFor(model => model.PaidPrincipal)
+            </th>
+            <th data-field="PrincipalPrepaid">
+                @Html.DisplayNameFor(model => model.PrincipalPrepaid)
+            </th>
+            <th data-field="LoanBalance">
+                @Html.DisplayNameFor(model => model.LoanBalance)
+            </th>
+            <th data-field="ScheduleCatchUp">
+                @Html.DisplayNameFor(model => model.ScheduleCatchUp)
+            </th>
 
+            <th data-field="EnforcementAndCourtFee">
+                @Html.DisplayNameFor(model => model.EnforcementAndCourtFee)
+            </th>
+            <th data-field="EnforcementAndCourtFeePayment">
+                @Html.DisplayNameFor(model => model.EnforcementAndCourtFeePayment)
+            </th>
+            <th data-field="EnforcementAndCourtFeeStartingBalance">
+                @Html.DisplayNameFor(model => model.EnforcementAndCourtFeeStartingBalance)
+            </th>
+            <th data-field="EnforcementAndCourtFeeEndingBalance">
+                @Html.DisplayNameFor(model => model.EnforcementAndCourtFeeEndingBalance)
+            </th>
+            <th data-field="TotalEnforcementAndCourtFee">
+                @Html.DisplayNameFor(model => model.TotalEnforcementAndCourtFee)
+            </th>
+            <th data-field="TotalEnforcementAndCourtFeePayment">
+                @Html.DisplayNameFor(model => model.TotalEnforcementAndCourtFeePayment)
+            </th>
+            <th data-formatter="actionFormatter" data-events="actionEvents">
+
+            </th>
+        </tr>
+    </thead>
 </table>
 
 <script>

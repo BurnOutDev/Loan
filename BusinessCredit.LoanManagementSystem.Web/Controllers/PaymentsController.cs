@@ -145,10 +145,6 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
         public JsonResult IndexJson(int? loanId, string fromDate, string toDate)
         {
-            var a = ViewData["loanId"];
-
-            var t = db.Payments.ToList();
-
             db.Payments.Include(x => x.Loan).Load();
             db.Loans.Include("Payments").Load();
 
@@ -215,7 +211,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                         EnforcementAndCourtFeePayment = pmt.EnforcementAndCourtFeePayment.HasValue ? pmt.EnforcementAndCourtFeePayment.Value : 0,
                         EnforcementAndCourtFeeStartingBalance = pmt.EnforcementAndCourtFeeStartingBalance.HasValue ? pmt.EnforcementAndCourtFeeStartingBalance.Value : 0,
                         TotalEnforcementAndCourtFee = pmt.TotalEnforcementAndCourtFee.HasValue ? pmt.TotalEnforcementAndCourtFee.Value : 0,
-                        TotalEnforcementAndCourtFeePayment = pmt.TotalEnforcementAndCourtFeePayment.HasValue ? pmt.TotalEnforcementAndCourtFeePayment.Value : 0
+                        TotalEnforcementAndCourtFeePayment = pmt.TotalEnforcementAndCourtFeePayment.HasValue ? pmt.TotalEnforcementAndCourtFeePayment.Value : 0,
+                        ScheduleCatchUp = pmt.ScheduleCatchUp.HasValue ? pmt.ScheduleCatchUp.Value : 0
                     };
 
                 resultJson.Add(jsonPayment);

@@ -247,6 +247,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             loan.Guarantors.Add(guarantor);
 
+            loan.CreditExpert = db.CreditExperts.FirstOrDefault();
+
             db.Loans.Add(loan);
             db.SaveChanges();
             loan.Agreement = loan.Account.AccountID + "-" + CurrentUser.BranchID + "-" + loan.LoanID;

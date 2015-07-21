@@ -24,7 +24,40 @@
             window.location.href = "@Url.Action("Details")/" + row.PaymentID;
         }
     };
+
+    function DownloadTaxOrders() {
+        var url = '../Payments/GenerateTaxOrders';
+
+        var array = $(table).bootstrapTable('getData');
+        var paymentIds = [];
+
+        for (var i = 0; i < array.length; i++) {
+            paymentIds[i] = array[i].PaymentID;
+        }
+
+        //$.ajax({
+        //    type: 'GET',
+        //    url: '../Payments/GenerateTaxOrders',
+        //    data: JSON.stringify(paymentIds),
+        //    dataType: 'json',
+        //    contentType: 'application/json; charset=utf-8',
+        //    success: function (data) {
+        //        alert('success');
+        //    },
+        //    error: function (xhr, ajaxOptions, thrownError) {
+        //        alert('error');
+        //    }
+        //});
+
+        jQuery.ajaxSettings.traditional = true;
+
+        window.location.href = url + '?' + decodeURIComponent($.param({ paymentIds: paymentIds }));
+
+        //return $.get('../Payments/GenerateTaxOrders', { paymentIds: paymentIds });
+    }
 </script>
+
+<button onclick="DownloadTaxOrders()">Download Tax Orders</button>
 
 <div id="toolbar" class="btn-group">
     <input id="fromDate" type="date" />
@@ -33,7 +66,7 @@
         <i class="glyphicon glyphicon-arrow-right"></i>
     </button>
 </div>
-<table id="table" data-toolbar="#toolbar" data-show-export="true" data-toggle="table" data-search="true" data-pagination="true" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("IndexJson", new { loanId = ViewData["loanId"], fromDate = ViewData["fromDate"], toDate = ViewData["toDate"] })" class="table">
+<table id="table" data-toolbar="#toolbar" data-show-export="true" data-toggle="table" data-advanced-search="true" data-search="true" data-pagination="true" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("IndexJson", new { loanId = ViewData["loanId"], fromDate = ViewData["fromDate"], toDate = ViewData["toDate"] })" class="table">
     <thead>
         <tr>
             <th data-field="LoanAccountName">
@@ -171,7 +204,9 @@
             <th data-field="LoanBalance">
                 @Html.DisplayNameFor(model => model.LoanBalance)
             </th>
-
+            <th data-field="ScheduleCatchUp">
+                @Html.DisplayNameFor(model => model.ScheduleCatchUp)
+            </th>
             <th data-field="EnforcementAndCourtFee">
                 @Html.DisplayNameFor(model => model.EnforcementAndCourtFee)
             </th>

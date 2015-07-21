@@ -1,5 +1,4 @@
-﻿using BusinessCredit.Core.Migrations;
-using BusinessCredit.Domain;
+﻿using BusinessCredit.Domain;
 using System.Collections.Generic;
 using System.Data.Entity;
 

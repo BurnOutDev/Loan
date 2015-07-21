@@ -224,6 +224,7 @@
     <Compile Include="Models\ChangePaymentModel.cs" />
     <Compile Include="Models\GuarantorViewModel.cs" />
     <Compile Include="Models\Json\AccountJson.cs" />
+    <Compile Include="Models\Json\DailyJson.cs" />
     <Compile Include="Models\Json\GuarantorJson.cs" />
     <Compile Include="Models\Json\LoanJson.cs" />
     <Compile Include="Models\Json\PaymentJson.cs" />
@@ -533,6 +534,7 @@
     <Content Include="Views\Admin\PaymentChangePenalty.cshtml" />
     <Content Include="Views\Admin\PaymentDelete.cshtml" />
     <Content Include="Views\Payments\IndexJson.cshtml" />
+    <Content Include="Views\DailyView\IndexNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="JS_BootstrapTable\dist\locale\" />
