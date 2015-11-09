@@ -1655,14 +1655,14 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         }
 
 
-        public ActionResult AccountingReport2(string date)
+        public ActionResult AccountingReportAllBranches2(string date)
         {
             ViewData.Add("date", date);
 
             return View();
         }
 
-        public JsonResult AccountingReportJson2(string date)
+        public JsonResult AccountingReportAllBranchesJson2(string date)
         {
             List<AccountingReportModel2> result = new List<AccountingReportModel2>();
             DateTime Date = DateTime.Today;
@@ -1730,7 +1730,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AccountingReportAllBranches2(string date, int branch = -1)
+        public ActionResult AccountingReport2(string date, int branch = -1)
         {
             ViewData.Add("date", date);
             ViewData.Add("branch", branch);
@@ -1738,7 +1738,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             return View();
         }
 
-        public JsonResult AccountingReportAllBranchesJson2(string date, int branch = -1)
+        public JsonResult AccountingReportJson2(string date, int branch = -1)
         {
             if (branch == -1)
                 return Json(null, JsonRequestBehavior.AllowGet);
