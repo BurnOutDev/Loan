@@ -127,6 +127,12 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AccountID,Name,LastName,PrivateNumber,Gender,Status,PhysicalAddress,NumberMobile,AccountNumber,BusinessPhysicalAddress")] Account account)
         {
+            if (account.AccountID == 0)
+            {
+                return null;
+            }
+            db.Database.ExecuteSqlCommand("DBCC CHECKIDENT ('[Accounts]', RESEED, " + (account.AccountID - 1) + ")");
+
             #region GetUser
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));

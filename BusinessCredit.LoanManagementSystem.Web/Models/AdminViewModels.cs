@@ -40,6 +40,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
 
         [Display(Name="ფილიალი")]
         public string Branch { get; set; }
+
+        [Display(Name = "კომენტარი")]
+        public string Comment { get; set; }
     }
 
     //public class AdminPaymentsViewModel : Payment

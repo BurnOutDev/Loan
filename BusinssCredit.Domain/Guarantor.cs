@@ -27,6 +27,8 @@ namespace BusinessCredit.Domain
         [Display(Name = "თავდების ტელეფონი")]
         public string GuarantorPhoneNumber { get; set; }
 
+        public string Comment { get; set; }
+
         public Loan Loan { get; set; }
     }
 }

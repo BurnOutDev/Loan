@@ -11,7 +11,7 @@ namespace BusinessCredit.Core.TaxOrders
 {
     public static class TaxOrderGenerator
     {
-        public static Stream Generate(string templatePath, params TaxOrder[] data)
+        public static Stream Generate(string templatePath, string branchInitial, params TaxOrder[] data)
         {
             var result = new MemoryStream();
             ExcelPackage ePack = new ExcelPackage();
@@ -50,7 +50,7 @@ namespace BusinessCredit.Core.TaxOrders
                     if (array.Count > 0)
                     {
                         //OrderNumber
-                        worksheet.Cells["B5"].Value = array.ElementAt(0).TaxOrderNumber;
+                        worksheet.Cells["B5"].Value = branchInitial + array.ElementAt(0).TaxOrderNumber;
                         //Date
                         worksheet.Cells["B6"].Value = array.ElementAt(0).Date;
                         //PaymentAmountLari
@@ -78,7 +78,7 @@ namespace BusinessCredit.Core.TaxOrders
                     if (array.Count > 1)
                     {
                         //OrderNumber
-                        worksheet.Cells["H5"].Value = array.ElementAt(1).TaxOrderNumber;
+                        worksheet.Cells["H5"].Value = branchInitial + array.ElementAt(1).TaxOrderNumber;
                         //Date                                        
                         worksheet.Cells["H6"].Value = array.ElementAt(1).Date;
                         //PaymentAmountLari                           
@@ -106,7 +106,7 @@ namespace BusinessCredit.Core.TaxOrders
                     if (array.Count > 2)
                     {
                         //OrderNumber
-                        worksheet.Cells["B28"].Value = array.ElementAt(2).TaxOrderNumber;
+                        worksheet.Cells["B28"].Value = branchInitial + array.ElementAt(2).TaxOrderNumber;
                         //Date                                        
                         worksheet.Cells["B29"].Value = array.ElementAt(2).Date;
                         //PaymentAmountLari                           
@@ -134,7 +134,7 @@ namespace BusinessCredit.Core.TaxOrders
                     if (array.Count > 3)
                     {
                         //OrderNumber
-                        worksheet.Cells["H28"].Value = array.ElementAt(3).TaxOrderNumber;
+                        worksheet.Cells["H28"].Value = branchInitial + array.ElementAt(3).TaxOrderNumber;
                         //Date                                         
                         worksheet.Cells["H29"].Value = array.ElementAt(3).Date;
                         //PaymentAmountLari                            

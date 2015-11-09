@@ -50,6 +50,14 @@
         @Html.ValidationSummary(true)
 
         <div class="form-group">
+            @Html.LabelFor(model => model.LoanID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LoanID)
+                @Html.ValidationMessageFor(model => model.LoanID)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.AccountID, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.AccountID)

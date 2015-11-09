@@ -59,7 +59,9 @@
     <Compile Include="Account.cs" />
     <Compile Include="CashCollectionAgent.cs" />
     <Compile Include="CreditExpert.cs" />
+    <Compile Include="Enums\Branch.cs" />
     <Compile Include="Enums\Branches.cs" />
+    <Compile Include="Enums\CommentType.cs" />
     <Compile Include="Enums\EmployeeStatus.cs" />
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\PaymentOrder.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Enums\PersonType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxOrder.cs" />
+    <Compile Include="Comment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

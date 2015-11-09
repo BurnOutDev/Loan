@@ -61,6 +61,7 @@
     <Compile Include="LoanCalculator\LoanCalculator.cs" />
     <Compile Include="LoanCalculator\LoanModel.cs" />
     <Compile Include="LoanCalculator\PaymentModel.cs" />
+    <Compile Include="MonitoringDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxOrders\TaxOrderGenerator.cs" />
   </ItemGroup>

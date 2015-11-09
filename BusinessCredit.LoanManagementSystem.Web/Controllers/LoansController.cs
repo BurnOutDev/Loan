@@ -176,6 +176,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateLoanView(CreateLoanViewModel loanModel)
         {
+            db.Database.ExecuteSqlCommand("DBCC CHECKIDENT ('[Loans]', RESEED, " + (loanModel.LoanID - 1) + ")");
+
             #region GetUser
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
@@ -251,6 +253,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             db.Loans.Add(loan);
             db.SaveChanges();
+            loan.LoanStatus = LoanStatus.Active;
             loan.Agreement = loan.Account.AccountID + "-" + CurrentUser.BranchID + "-" + loan.LoanID;
             db.SaveChanges();
 

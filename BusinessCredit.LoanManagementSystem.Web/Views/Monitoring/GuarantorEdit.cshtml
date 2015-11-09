@@ -1,0 +1,100 @@
+﻿@model BusinessCredit.LoanManagementSystem.Web.Models.GuarantorEditModel
+
+@{
+    ViewBag.Title = "GuarantorEdit";
+    Layout = "~/Views/Shared/_LayoutMonitoring.cshtml";
+}
+
+<h2>GuarantorEdit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>GuarantorEditModel</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.LabelFor(model => model.LoanID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LoanID)
+                @Html.ValidationMessageFor(model => model.LoanID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GuarantorID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GuarantorID)
+                @Html.ValidationMessageFor(model => model.GuarantorID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GuarantorName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GuarantorName)
+                @Html.ValidationMessageFor(model => model.GuarantorName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GuarantorLastName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GuarantorLastName)
+                @Html.ValidationMessageFor(model => model.GuarantorLastName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GuarantorPrivateNumber, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GuarantorPrivateNumber)
+                @Html.ValidationMessageFor(model => model.GuarantorPrivateNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GuarantorPhysicalAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GuarantorPhysicalAddress)
+                @Html.ValidationMessageFor(model => model.GuarantorPhysicalAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GuarantorPhoneNumber, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GuarantorPhoneNumber)
+                @Html.ValidationMessageFor(model => model.GuarantorPhoneNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comment, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comment)
+                @Html.ValidationMessageFor(model => model.Comment)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.branch, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.branch)
+                @Html.ValidationMessageFor(model => model.branch)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

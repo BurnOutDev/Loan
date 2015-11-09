@@ -79,7 +79,6 @@
 /// <reference path="../js_bootstraptable/dist/extensions/mobile/bootstrap-table-mobile.js" />
 /// <reference path="../js_bootstraptable/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js" />
 /// <reference path="../js_bootstraptable/dist/extensions/natural-sorting/bootstrap-table-natural-sorting.js" />
-/// <reference path="../js_bootstraptable/dist/extensions/reorder-columns/bootstrap-table-reorder-columns.js" />
 /// <reference path="../js_bootstraptable/dist/extensions/reorder-rows/bootstrap-table-reorder-rows.js" />
 /// <reference path="../js_bootstraptable/dist/extensions/resizable/bootstrap-table-resizable.js" />
 /// <reference path="../js_bootstraptable/dist/extensions/toolbar/bootstrap-table-toolbar.js" />

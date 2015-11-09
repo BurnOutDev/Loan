@@ -22,7 +22,7 @@ namespace BusinessCredit.Domain
         //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int LoanID { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
         [Display(Name = "თანხა")]
         public double LoanAmount { get; set; }
 
@@ -31,7 +31,7 @@ namespace BusinessCredit.Domain
         public string LoanPurpose { get; set; }
 
         /// სესხის დღიური პროცენტი
-        [DisplayFormat(DataFormatString = "{0:P4}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:P4}", ApplyFormatInEditMode = false)]
         [Display(Name = "დღიური პროცენტი")]
         public double LoanDailyInterestRate { get; set; }
 
@@ -48,38 +48,41 @@ namespace BusinessCredit.Domain
         public int DaysOfGrace { get; set; }
 
         /// ჯარიმა (პროცენტი)
-        [DisplayFormat(DataFormatString = "{0:P}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:P}", ApplyFormatInEditMode = false)]
         [Display(Name = "ჯარიმა")]
         public double LoanPenaltyRate { get; set; } // ჯარიმა
 
         /// ეფექტური პროცენტი
-        [DisplayFormat(DataFormatString = "{0:P4}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:P4}", ApplyFormatInEditMode = false)]
         [Display(Name = "ეფექტური პროცენტი")]
         public double EffectiveInterestRate { get; set; } // ეფექტური პროცენტი
 
         /// სულ მოსატანი
-        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
         [Display(Name = "სულ მოსატანი")]
         public double AmountToBePaidAll { get; set; }
 
         /// დღეში გადასახადი
-        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
         [Display(Name = "დღეში გადასახადი")]
         public double AmountToBePaidDaily { get; set; }
 
         /// გენერალური ხელშეკრულების თარიღი
         [Display(Name = "ხელშეკრულების თარიღი")]
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime AgreementDate { get; set; }
 
         /// სესხის დაწყების თარიღი
         [Display(Name = "დაწყების თარიღი")]
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime LoanStartDate { get; set; }
 
         /// სესხის დამთავრების თარიღი
         [Display(Name = "დამთავრების თარიღი")]
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime LoanEndDate { get; set; }
 
         public virtual ICollection<Guarantor> Guarantors { get; set; }
@@ -106,15 +109,21 @@ namespace BusinessCredit.Domain
 
         #region Enforcement
         [Display(Name = "გაბრთ. წერილ. თარ")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? LoanNotificationLetter { get; set; }
 
         [Display(Name = "პრობ. გად. თარ.")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ProblemManagerDate { get; set; }
 
         [Display(Name = "პრობ. მენეჯერი")]
         public string ProblemManager { get; set; } // Name LastName
 
         [Display(Name = "აღსრულ. გად. თარ.")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DateOfEnforcement { get; set; }
 
         [Display(Name = "აღსრ. და სასამ. ხარჯი")]
@@ -132,5 +141,7 @@ namespace BusinessCredit.Domain
         public virtual Account Account { get; set; }
 
         public int BranchID { get; set; }
+
+        public string Comment { get; set; }
     }
 }

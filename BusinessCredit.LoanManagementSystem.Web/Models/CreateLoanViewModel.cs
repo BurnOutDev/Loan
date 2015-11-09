@@ -9,6 +9,8 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models
 {
     public class CreateLoanViewModel
     {
+        [Display(Name="სესხის ID")]
+        public int LoanID { get; set; }
         [Display(Name="მსესხებლის ID")]
         public int AccountID { get; set; }
 

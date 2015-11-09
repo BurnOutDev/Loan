@@ -11,6 +11,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models.Json
         public string LoanAccountName { get; set; }
         public string LoanAccountLastName { get; set; }
         public string LoanAccountPrivateNumber { get; set; }
+        public string NumberMobile { get; set; }
+        public string BusinessPhysicalAddress { get; set; }
+        public string LoanAgreement { get; set; }
         public int LoanAccountAccountID { get; set; }
         public int LoanLoanID { get; set; }
         public string TaxOrderID { get; set; }
@@ -61,6 +64,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Models.Json
         public double EnforcementAndCourtFeeEndingBalance { get; set; }
         public double TotalEnforcementAndCourtFee { get; set; }
         public double TotalEnforcementAndCourtFeePayment { get; set; }
+        public string Comment { get; set; }
 
         //public double? ScheduleCatchUp { get; set; }
     }

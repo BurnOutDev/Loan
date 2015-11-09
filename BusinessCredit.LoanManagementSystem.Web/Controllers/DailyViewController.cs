@@ -15,6 +15,9 @@ using System.IO;
 using BusinessCredit.Domain.Enums;
 using BusinessCredit.Core.TaxOrders;
 using BusinessCredit.LoanManagementSystem.Web.Models.Json;
+using OrdersAPI;
+using AccountsAPI;
+using CustomersAPI;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
@@ -287,7 +290,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 });
             }
 
-            var strRes = TaxOrderGenerator.Generate(filePath, taxOrders.ToArray<TaxOrder>());
+            var strRes = TaxOrderGenerator.Generate(filePath, CurrentUser.PhoneNumber, taxOrders.ToArray<TaxOrder>());
 
             strRes.Seek(0, SeekOrigin.Begin);
 
@@ -323,7 +326,15 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
         {
             foreach (var pmt in data)
             {
-                var payment = db.Payments.FirstOrDefault(p => p.PaymentID == pmt.PaymentID);
+                Payment payment = null;
+                try
+                {
+                    payment = db.Payments.FirstOrDefault(p => p.PaymentID == pmt.PaymentID);
+                }
+                catch
+                {
+                    continue;
+                }
                 var loanId = payment.Loan.LoanID;
 
                 db.Payments.Remove(payment);
@@ -339,14 +350,61 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
                 db.Payments.Add(paymentNew);
                 db.SaveChanges();
+
+                if (paymentNew.WholeDebt.Value <= 0)
+                {
+                    paymentNew.Loan.LoanStatus = LoanStatus.Closed;
+                    db.SaveChanges();
+                }
             }
             db.SaveChanges();
             return View();
         }
 
+        public bool InsertDaily(string date)
+        {
+            var Date = DateTime.Parse(date).Date;
+
+            var loans = db.Loans.Where(l => l.LoanStatus == LoanStatus.Active && l.LoanStartDate < Date).ToList();
+
+            for (int i = 0; i < loans.Count; i++)
+            {
+                if (loans[i].Payments.FirstOrDefault(p => p.PaymentDate == Date) == null)
+                {
+                    var pmt = db.Payments.Create();
+                    pmt.Loan = loans[i];
+                    pmt.CurrentPayment = 0;
+                    pmt.PaymentDate = Date;
+                    pmt.TaxOrderID = "სშო #" + (i + 1);
+                    pmt.CreditExpert = db.CreditExperts.FirstOrDefault();
+                    pmt.CashCollectionAgent = db.CashCollectionAgents.FirstOrDefault();
+
+                    db.Payments.Add(pmt);
+                    db.SaveChanges();
+                }
+            }
+
+            return true;
+        }
+
         public JsonResult IndexNewJson()
         {
-            var loans = db.Loans.Where(l => l.LoanStatus == LoanStatus.Active).ToList();
+            if (DateTime.Today.DayOfWeek == DayOfWeek.Monday)
+            {
+                InsertDaily(DateTime.Today.AddDays(-1).ToShortDateString());
+            }
+
+            if (DateTime.Today.DayOfWeek == DayOfWeek.Thursday)
+            {
+                InsertDaily(DateTime.Today.AddDays(-1).ToShortDateString());
+            }
+
+            if (CurrentUser.Email == "lilo@businesscredit.ge" && DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+            {
+                InsertDaily(DateTime.Today.AddDays(-1).ToShortDateString());
+            }
+
+            var loans = db.Loans.Where(l => l.LoanStatus == LoanStatus.Active && l.LoanStartDate < DateTime.Today).ToList();
 
             for (int i = 0; i < loans.Count; i++)
             {
@@ -389,15 +447,151 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                     PaymentOrder = PaymentOrder.სშო.ToString(),
                     StartDate = pmt.Loan.LoanStartDate.ToShortDateString(),
                     EndDate = pmt.Loan.LoanEndDate.ToShortDateString(),
-                    CourtAndEnforcementFee = pmt.EnforcementAndCourtFee,
+                    CourtAndEnforcementFee = pmt.Loan.CourtAndEnforcementFee,
                     Payment = pmt.CurrentPayment,
                     PlannedPayment = Math.Round(pmt.Loan.AmountToBePaidDaily, 2),
                     ProblemManager = pmt.Loan.ProblemManager,
-                    ScheduleCatchUp = pmt.ScheduleCatchUp.Value
+                    ScheduleCatchUp = pmt.ScheduleCatchUp.Value,
+                    DateOfEnforcement = pmt.Loan.DateOfEnforcement.HasValue ? pmt.Loan.DateOfEnforcement.Value.ToShortDateString() : "",
+                    LoanNotificationLetter = pmt.Loan.LoanNotificationLetter.HasValue ? pmt.Loan.LoanNotificationLetter.Value.ToShortDateString() : "",
+                    ProblemManagerDate = pmt.Loan.ProblemManagerDate.HasValue ? pmt.Loan.ProblemManagerDate.Value.ToShortDateString() : ""
                 });
             }
 
             return Json(dailies, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult CollectorsJson()
+        {
+            var collectors = db.CashCollectionAgents.ToList();
+            List<CollectorJson> json = new List<CollectorJson>();
+            foreach (var item in collectors)
+            {
+                json.Add(new CollectorJson
+                {
+                    Name = item.Name,
+                    LastName = item.LastName,
+                    PrivateNumber = item.PrivateNumber,
+                    CashCollectionAgentID = item.CashCollectionAgentID
+                });
+            }
+
+            return Json(json, JsonRequestBehavior.AllowGet);
+        }
+
+        public string ChangeCollectorsManual(int? id, string date)
+        {
+            var Date = DateTime.Parse(date).Date;
+
+            CashCollectionAgent collector = null;
+            if (id.HasValue)
+                collector = db.CashCollectionAgents.FirstOrDefault(c => c.CashCollectionAgentID == id.Value);
+            if (collector == null)
+                return "არ შეიცვალა";
+
+            var payments = db.Payments.Where(p => p.PaymentDate == Date).ToList();
+
+            foreach (var p in payments)
+            {
+                p.CashCollectionAgent = collector;
+            }
+
+            db.SaveChanges();
+            return "შეიცვალა";
+        }
+
+        public string ChangeCollectors(int? id)
+        {
+            CashCollectionAgent collector = null;
+            if (id.HasValue)
+                collector = db.CashCollectionAgents.FirstOrDefault(c => c.CashCollectionAgentID == id.Value);
+            if (collector == null)
+                return "არ შეიცვალა";
+
+            var payments = db.Payments.Where(p => p.PaymentDate == DateTime.Today).ToList();
+
+            foreach (var p in payments)
+            {
+                p.CashCollectionAgent = collector;
+            }
+
+            db.SaveChanges();
+            return "შეიცვალა";
+        }
     }
 }
+ 
+
+//218
+//234
+//315
+//348
+//378
+//462
+//486
+//497
+//610
+//625
+//651
+//690
+//817
+//885
+//911
+//1064
+//1098
+//1177
+//1195
+//1207
+//1254
+//1274
+//1275
+//1293
+//1294
+//1299
+//1305
+//1307
+//1330
+//1335
+//1346
+//1350
+//1359
+//1364
+//1365
+//1368
+//1383
+//1384
+//1385
+//1387
+//1389
+//1396
+//1398
+//1399
+//1405
+//1418
+//1429
+//1440
+//1449
+//1450
+//1451
+//1452
+//1454
+//1458
+//1464
+//1474
+//1475
+//1477
+//1483
+//1484
+//1486
+//1493
+//1498
+//1510
+//1511
+//1515
+//1516
+//1524
+//1525
+//1526
+//1528
+//1529
+//1537

@@ -56,9 +56,12 @@
     <button onclick="redirectDaily()" type="button">Go</button>
 </h4>
 
-<table id="table" data-toolbar="#toolbar" data-show-export="true" data-toggle="table" data-search="true" data-pagination="false" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("PaymentsAdminJson", new { loanId = ViewData["loanId"], fromDate = ViewData["fromDate"], toDate = ViewData["toDate"], branch = ViewData["branch"] })" class="table">
+<table id="table" data-click-to-select="true" data-toolbar="#toolbar" data-show-export="true" data-toggle="table" data-search="true" data-pagination="false" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("PaymentsAdminJson", new { loanId = ViewData["loanId"], fromDate = ViewData["fromDate"], toDate = ViewData["toDate"], branch = ViewData["branch"] })" class="table">
     <thead>
         <tr>
+            <th data-checkbox="true">
+
+            </th>
             <th data-field="LoanAccountName">
                 სახელი
             </th>

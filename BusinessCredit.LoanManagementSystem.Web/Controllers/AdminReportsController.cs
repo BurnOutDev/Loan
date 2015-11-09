@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Users = "nkandelaki@businesscredit.ge,accounting@businesscredit.ge,dioramashvili@businesscredit.ge,zrusia@businesscredit.ge")]
     public class AdminReportsController : Controller
     {
         #region Databases
@@ -23,7 +23,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
             get
             {
                 if (_centralDb == null)
-                    _centralDb = new BusinessCreditContext(ConfigurationManager.ConnectionStrings["Central_BusinessCreditDbConnectionString"].ConnectionString);
+                    _centralDb = new BusinessCreditContext(ConfigurationManager.ConnectionStrings["Head_BusinessCreditDbConnectionString"].ConnectionString);
                 return _centralDb;
             }
         }

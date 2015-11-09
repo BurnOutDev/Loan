@@ -22,6 +22,8 @@ namespace BusinessCredit.Domain
         public DateTime HireDate { get; set; }
         public DateTime RetireDate { get; set; }
 
+        public string Comment { get; set; }
+
         public virtual EmployeeStatus Status { get; set; }
         public virtual ICollection<Loan> Loans { get; set; }
     }

@@ -63,81 +63,83 @@
 <button onclick="DownloadTaxOrders()">Download Tax Orders</button>
 
 <form action="IndexNew" method="post">
-<table id="table" data-advanced-search="true" data-show-export="true" data-toggle="table" data-search="true" data-pagination="true" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("IndexNewJson", new { loanId = ViewData["loanId"], fromDate = ViewData["fromDate"], toDate = ViewData["toDate"] })" class="table">
-    <thead>
-        <tr>
-            <th data-field="AccountNumber">
-                კლიენტის #
-            </th>
-            <th data-field="LoanId">
-                სესხის #
-            </th>
-            <th data-field="Name">
-                სახელი
-            </th>
-            <th data-field="LastName">
-                გვარი
-            </th>
-            <th data-field="PrivateNumber">
-                პირადი ნომერი
-            </th>
-            <th data-field="BusinessAddress">
-                ბიზნესის მისამართი
-            </th>
-            <th data-field="PhoneNumber">
-                მობ. ნომერი
-            </th>
-            <th data-field="PlannedPayment">
-                PMT
-            </th>
-            <th data-field="CurrentDebt">
-                მიმდ. დავალიანება
-            </th>
-            <th data-field="WholeDebt">
-                სულ განულება
-            </th>
-            <th data-field="Payment" data-editable="true">
-                გადახდა
-            </th>
-            <th data-field="PaymentDate">
-                თარიღი
-            </th>
-            <th data-field="AgreementNumber">
-                ხელშ. ნომერი
-            </th>
-            <th data-field="ScheduleCatchUp">
-                გრაფიკზე დაწევა
-            </th>
-            <th data-field="PaymentOrderID" data-editable="true">
-                #
-            </th>
-            <th data-field="PaymentOrder" data-editable="true">
-                გადახდის არხი
-            </th>
-            <th data-field="StartDate">
-                StartDate
-            </th>
-            <th data-field="EndDate">
-                EndDate
-            </th>
-            <th data-field="LoanNotificationLetter">
-                გაბრთ. წერილ. თარ
-            </th>
-            <th data-field="ProblemManagerDate">
-                პრობ. გად. თარ.
-            </th>
-            <th data-field="ProblemManager">
-                პრობ. მენეჯერი
-            </th>
-            <th data-field="DateOfEnforcement">
-                აღსრულ. გად. თარ.
-            </th>
-            <th data-field="CourtAndEnforcementFee">
-                აღსრ. და სასამ. ხარჯი
-            </th>
-        </tr>
-    </thead>
-</table>
+    <table id="table" data-show-columns="true" data-advanced-search="true" data-show-export="true" data-toggle="table" data-search="true" data-pagination="true" data-show-refresh="true" data-show-columns="true" data-url="@Url.Action("IndexNewJson", new { loanId = ViewData["loanId"], fromDate = ViewData["fromDate"], toDate = ViewData["toDate"] })" class="table">
+        <thead>
+            <tr>
+                <th data-field="AccountNumber">
+                    კლიენტის #
+                </th>
+                <th data-field="LoanId">
+                    სესხის #
+                </th>
+                <th data-field="Name">
+                    სახელი
+                </th>
+                <th data-field="LastName">
+                    გვარი
+                </th>
+                <th data-field="PrivateNumber">
+                    პირადი ნომერი
+                </th>
+                <th data-field="BusinessAddress">
+                    ბიზნესის მისამართი
+                </th>
+                <th data-field="PhoneNumber">
+                    მობ. ნომერი
+                </th>
+                <th data-field="PlannedPayment">
+                    PMT
+                </th>
+                <th data-field="CurrentDebt">
+                    მიმდ. დავალიანება
+                </th>
+                <th data-field="WholeDebt">
+                    სულ განულება
+                </th>
+                <th data-field="Payment" data-editable="true">
+                    გადახდა
+                </th>
+                <th data-field="PaymentDate">
+                    თარიღი
+                </th>
+                <th data-field="AgreementNumber">
+                    ხელშ. ნომერი
+                </th>
+                <th data-field="ScheduleCatchUp">
+                    გრაფიკზე დაწევა
+                </th>
+                <th data-field="PaymentOrderID" data-editable="true">
+                    #
+                </th>
+                <th data-field="PaymentOrder" data-editable="true">
+                    გადახდის არხი
+                </th>
+                <th data-field="StartDate">
+                    StartDate
+                </th>
+                <th data-field="EndDate">
+                    EndDate
+                </th>
+                <th data-field="LoanNotificationLetter">
+                    გაბრთ. წერილ. თარ
+                </th>
+                <th data-field="ProblemManagerDate">
+                    პრობ. გად. თარ.
+                </th>
+                <th data-field="ProblemManager">
+                    პრობ. მენეჯერი
+                </th>
+                <th data-field="DateOfEnforcement">
+                    აღსრულ. გად. თარ.
+                </th>
+                <th data-field="CourtAndEnforcementFee">
+                    აღსრ. და სასამ. ხარჯი
+                </th>
+            </tr>
+        </thead>
+    </table>
+
+  
 
     <script>
         function sub() {

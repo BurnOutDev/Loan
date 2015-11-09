@@ -40,5 +40,7 @@ namespace BusinessCredit.Domain
         
         public virtual ICollection<Loan> Loans { get; set; }
         public int BranchID { get; set; }
+
+        public string Comment { get; set; }
     }
 }

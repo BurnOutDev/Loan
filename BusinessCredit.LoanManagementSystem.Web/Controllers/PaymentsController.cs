@@ -156,7 +156,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
 
             var resultJson = new List<PaymentJson>();
 
-            foreach (var pmt in result)
+            foreach (var pmt in result.OrderBy(x => x.PaymentDate).ToList())
             {
                 var jsonPayment = new PaymentJson
                     {
@@ -199,9 +199,9 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                         LoanProblemManager = pmt.Loan.ProblemManager,
                         LoanEnforcementAndCourtFee = Math.Round(pmt.Loan.CourtAndEnforcementFee, 2),
                         Agreement = pmt.Loan.Agreement,
-                        CashCollectorID = pmt.Loan.CreditExpert.EmployeeID,
-                        CashCollectorLastName = pmt.Loan.CreditExpert.LastName,
-                        CashCollectorName = pmt.Loan.CreditExpert.Name,
+                        CashCollectorID = pmt.CashCollectionAgent.CashCollectionAgentID,
+                        CashCollectorLastName = pmt.CashCollectionAgent.LastName,
+                        CashCollectorName = pmt.CashCollectionAgent.Name,
                         LoanDateOfEnforcement = pmt.Loan.DateOfEnforcement.HasValue ? pmt.Loan.DateOfEnforcement.Value.ToShortDateString() : null,
                         LoanLoanNotificationLetter = pmt.Loan.LoanNotificationLetter.HasValue ? pmt.Loan.LoanNotificationLetter.Value.ToShortDateString() : null,
                         LoanProblemManagerDate = pmt.Loan.ProblemManagerDate.HasValue ? pmt.Loan.ProblemManagerDate.Value.ToShortDateString() : null,
@@ -212,14 +212,17 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                         EnforcementAndCourtFeeStartingBalance = pmt.EnforcementAndCourtFeeStartingBalance.HasValue ? pmt.EnforcementAndCourtFeeStartingBalance.Value : 0,
                         TotalEnforcementAndCourtFee = pmt.TotalEnforcementAndCourtFee.HasValue ? pmt.TotalEnforcementAndCourtFee.Value : 0,
                         TotalEnforcementAndCourtFeePayment = pmt.TotalEnforcementAndCourtFeePayment.HasValue ? pmt.TotalEnforcementAndCourtFeePayment.Value : 0,
-                        ScheduleCatchUp = pmt.ScheduleCatchUp.HasValue ? pmt.ScheduleCatchUp.Value : 0
+                        ScheduleCatchUp = pmt.ScheduleCatchUp.HasValue ? pmt.ScheduleCatchUp.Value : 0,
+                        BusinessPhysicalAddress = pmt.Loan.Account.BusinessPhysicalAddress,
+                        LoanAgreement = pmt.Loan.Agreement,
+                        NumberMobile = pmt.Loan.Account.NumberMobile
                     };
 
                 resultJson.Add(jsonPayment);
 
             }
 
-            return Json(resultJson, JsonRequestBehavior.AllowGet);
+            return Json(resultJson.ToList(), JsonRequestBehavior.AllowGet);
         }
 
         [Authorize(Roles = "Administrator")]
@@ -456,7 +459,7 @@ namespace BusinessCredit.LoanManagementSystem.Web.Controllers
                 });
             }
 
-            var strRes = TaxOrderGenerator.Generate(filePath, taxOrders.ToArray<TaxOrder>());
+            var strRes = TaxOrderGenerator.Generate(filePath, CurrentUser.PhoneNumber, taxOrders.ToArray<TaxOrder>());
 
             strRes.Seek(0, SeekOrigin.Begin);
 

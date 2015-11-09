@@ -184,7 +184,7 @@ namespace BusinessCredit.Data
 
         public static void PlanAllLoansViaLoanCalculator()
         {
-            using (var db = new BusinessCreditContext("Eliava_BusinessCreditDbConnectionString"))
+            using (var db = new BusinessCreditContext("Sandro_Head_BusinessCreditDbConnectionString"))
             {
                 foreach (var loan in db.Loans.ToList())
                 {

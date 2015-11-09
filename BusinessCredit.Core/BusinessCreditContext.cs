@@ -64,7 +64,7 @@ namespace BusinessCredit.Core
         {
             get
             {
-                var branches = new List<string>() { "Central", "Isani", "Okriba", "Lilo", "Eliava", "Vagzali" };
+                var branches = new List<string>() { "Central", "Isani", "Okriba", "Lilo", "Eliava", "Vagzali", "Guga", "Sandro" };
                 foreach (var branch in branches)
                 {
                     if (Database.Connection.ConnectionString.Contains(branch))

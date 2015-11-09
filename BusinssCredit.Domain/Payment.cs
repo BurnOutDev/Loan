@@ -38,7 +38,7 @@ namespace BusinessCredit.Domain
         public DateTime PaymentDate { get; set; }
 
         #region CurrentDebt
-        private double? _currentDebt;
+        public double? _currentDebt;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "მიმდ. დავალიანება")]
         public double? CurrentDebt
@@ -63,7 +63,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region WholeDebt
-        private double? _wholeDebt;
+        public double? _wholeDebt;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "სულ განულება")]
         public double? WholeDebt
@@ -79,12 +79,17 @@ namespace BusinessCredit.Domain
 
         private double? InitWholeDebt()
         {
-            return EnforcementAndCourtFeeStartingBalance + LoanBalance + AccruingPenalty + AccruingOverdueInterest + PayableInterest - CurrentInterestPayment - AccruingPenaltyPayment - AccruingInterestPayment - EnforcementAndCourtFeePayment;
+            var wholeDebt = EnforcementAndCourtFeeStartingBalance + LoanBalance + AccruingPenalty + AccruingOverdueInterest + PayableInterest - CurrentInterestPayment - AccruingPenaltyPayment - AccruingInterestPayment - EnforcementAndCourtFeePayment;
+            if (wholeDebt <= 0)
+            {
+                Loan.LoanStatus = Domain.LoanStatus.Closed;
+            }
+            return wholeDebt;
         }
         #endregion
 
         #region StartingPlannedBalance
-        private double? _startingPlannedBalance;
+        public double? _startingPlannedBalance;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "საწყისი დაგეგმილი ნაშთი")]
         public double? StartingPlannedBalance
@@ -108,7 +113,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region StartingBalance
-        private double? _startingBalance;
+        public double? _startingBalance;
         [Display(Name = "საწყისი ნაშთი")]
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         public double? StartingBalance
@@ -178,7 +183,7 @@ namespace BusinessCredit.Domain
             //var t = Math.Round((StartingBalance.Value * Loan.LoanDailyInterestRate), 2);
             if (Loan.DateOfEnforcement.HasValue)
             {
-                if (DateTime.Today > Loan.DateOfEnforcement.Value)
+                if (PaymentDate > Loan.DateOfEnforcement.Value)
                     return 0;
             }
 
@@ -187,7 +192,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region PayablePrincipal
-        private double? _payablePrincipal;
+        public double? _payablePrincipal;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "გადასახდელი ძირი")]
         public double? PayablePrincipal
@@ -214,7 +219,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region CurrentOverduePrincipal
-        private double? _currentOverduePrincipal;
+        public double? _currentOverduePrincipal;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "მიმდინარე ვადაგად. ძირი")]
         public double? CurrentOverduePrincipal
@@ -237,7 +242,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region CurrentOverdueInterest
-        private double? _currentOverdueInterest;
+        public double? _currentOverdueInterest;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "მიმდინარე ვადაგად. პროცენტი")]
         public double? CurrentOverdueInterest
@@ -277,17 +282,29 @@ namespace BusinessCredit.Domain
 
         private double? InitCurrentPenalty()
         {
-            Debug.WriteLine("CurrentPenalty");
+            var penalty = Math.Round((AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate, 2);
+
+            if (PaymentDate.DayOfWeek == DayOfWeek.Monday)
+            {
+                if (GetPaymentList().ToList().OrderByDescending(x => x.PaymentDate).First().AccruingPenalty.Value == 0)
+                    penalty = 0;
+            }
+
+            //if (PaymentDate.DayOfWeek == DayOfWeek.Friday)
+            //{
+            //    if (GetPaymentList().ToList().OrderByDescending(x => x.PaymentDate).First().AccruingPenalty.Value == 0)
+            //        penalty = 0;
+            //}
 
             var res = Math.Round((CurrentOverduePrincipal.Value + CurrentOverdueInterest.Value) * Loan.LoanPenaltyRate, 2);
 
             //return Math.Round((CurrentOverduePrincipal.Value + CurrentOverdueInterest.Value) * Loan.LoanPenaltyRate, 2);
-            return Math.Round((AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate, 2);
+            return penalty;
         }
         #endregion
 
         #region AccruingOverduePrincipal
-        private double? _accruingOverduePrincipal;
+        public double? _accruingOverduePrincipal;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "დაგროვილი ვადაგად. ძირი")]
         public double? AccruingOverduePrincipal
@@ -417,17 +434,35 @@ namespace BusinessCredit.Domain
             {
                 var todaysPenalty = (AccruingOverduePrincipal.Value + AccruingOverdueInterest.Value) * Loan.LoanPenaltyRate;
 
+                // ჯარიმები კვირის
+                if (PaymentDate.DayOfWeek == DayOfWeek.Monday)
+                {
+                    if (GetPaymentList().ToList().OrderByDescending(x => x.PaymentDate).First().AccruingPenalty.Value == 0)
+                        todaysPenalty = 0;
+                }
+
+                //if (PaymentDate.DayOfWeek == DayOfWeek.Thursday)
+                //{
+                //    if (GetPaymentList().ToList().OrderByDescending(x => x.PaymentDate).First().AccruingPenalty.Value == 0)
+                //        todaysPenalty = 0;
+                //}
+
                 if (Loan.DateOfEnforcement.HasValue)
                 {
-                    if (DateTime.Today > Loan.DateOfEnforcement.Value)
+                    if (PaymentDate.Date > Loan.DateOfEnforcement.Value)
                         todaysPenalty = 0;
                 }
 
                 var result = todaysPenalty
-                                - GetPaymentList().ToList().Sum(x => x.AccruingPenaltyPayment.Value)
+                                - GetPaymentList().ToList().OrderByDescending(x => x.PaymentDate).First().AccruingPenaltyPayment.Value
                                 + GetPaymentList().ToList().OrderByDescending(x => x.PaymentDate).First().AccruingPenalty.Value;
 
                 return result < 0 ? 0 : result;
+            }
+            catch
+            {
+                return 0;
+            }
 
                 #region Comment
                 // sworia ??
@@ -440,16 +475,11 @@ namespace BusinessCredit.Domain
                 //     + GetPaymentList().Sum(x => x.CurrentPenalty) 
                 //     - GetPaymentList().Sum(x => x.AccruingPenaltyPayment); 
                 #endregion
-            }
-            catch
-            {
-                return 0;
-            }
         }
         #endregion
 
         #region AccruingInterestPayment
-        private double? _accruingInterestPayment;
+        public double? _accruingInterestPayment;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "დაგროვილი პროცენტის გადახდა")]
         public double? AccruingInterestPayment
@@ -475,7 +505,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region AccruingPrincipalPayment
-        private double? _accruingPrincipalPayment;
+        public double? _accruingPrincipalPayment;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "დაგროვილი ძირის გადახდა")]
         public double? AccruingPrincipalPayment
@@ -501,7 +531,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region CurrentInterestPayment
-        private double? _currentInterestPayment;
+        public double? _currentInterestPayment;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "მიმდინარე პროცენტის გადახდა")]
         public double? CurrentInterestPayment
@@ -540,7 +570,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region CurrentPrincipalPayment
-        private double? _currentPrincipalPayment;
+        public double? _currentPrincipalPayment;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "მიმდინარე ძირის გადახდა")]
         public double? CurrentPrincipalPayment
@@ -579,7 +609,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region PrincipalPrepaymant
-        private double? _principalPrepaymant;
+        public double? _principalPrepaymant;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "ძირის წინსწრ. გადახდა")]
         public double? PrincipalPrepaymant
@@ -642,7 +672,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region PaidInterest
-        private double? _paidInterest;
+        public double? _paidInterest;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "გადახდილი პროცენტი")]
         public double? PaidInterest
@@ -668,7 +698,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region PaidPenalty
-        private double? _paidPenalty;
+        public double? _paidPenalty;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "გადახდილი ჯარიმა")]
         public double? PaidPenalty
@@ -694,7 +724,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region PaidPrincipal
-        private double? _paidPrincipal;
+        public double? _paidPrincipal;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "გადახდილი ძირი")]
         public double? PaidPrincipal
@@ -719,7 +749,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region PrincipalPrepaid
-        private double? _principalPrepaid;
+        public double? _principalPrepaid;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "წინსწრ. გადახდილი ძირი")]
         public double? PrincipalPrepaid
@@ -742,7 +772,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region LoanBalance
-        private double? _loanBalance;
+        public double? _loanBalance;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "სესხის ნაშთი")]
         public double? LoanBalance
@@ -788,7 +818,7 @@ namespace BusinessCredit.Domain
         public double EnforcementAndCourtFee { get; set; } // manual
 
         #region EnforcementAndCourtFeePayment
-        private double? _enforcementAndCourtFeePayment;
+        public double? _enforcementAndCourtFeePayment;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "აღს. და სას. ხარჯის გადახდა")]
         public double? EnforcementAndCourtFeePayment
@@ -812,7 +842,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region EnforcementAndCourtFeeStartingBalance
-        private double? _enforcementAndCourtFeeStartingBalance;
+        public double? _enforcementAndCourtFeeStartingBalance;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "აღს. და სას. ხარჯის საწყ. ნაშთი")]
         public double? EnforcementAndCourtFeeStartingBalance
@@ -833,7 +863,7 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region EnforcementAndCourtFeeEndingBalance
-        private double? _enforcementAndCourtFeeEndingBalance;
+        public double? _enforcementAndCourtFeeEndingBalance;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
         [Display(Name = "აღს. და სას. ხარჯის საბ. ნაშთი")]
         public double? EnforcementAndCourtFeeEndingBalance
@@ -854,9 +884,9 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region TotalEnforcementAndCourtFee
-        private double? _totalEnforcementAndCourtFee;
+        public double? _totalEnforcementAndCourtFee;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
-        [Display(Name = "აღს. და სას. ხარჯის გადახდა")]
+        [Display(Name = "სუაღსრ. და სასამარ. ხარჯი სულ დარიცხული")]
         public double? TotalEnforcementAndCourtFee
         {
             get
@@ -875,9 +905,9 @@ namespace BusinessCredit.Domain
         #endregion
 
         #region TotalEnforcementAndCourtFeePayment
-        private double? _totalEnforcementAndCourtFeePayment;
+        public double? _totalEnforcementAndCourtFeePayment;
         [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
-        [Display(Name = "აღს. და სას. ხარჯის გადახდა")]
+        [Display(Name = "აღსრ. და სასამარ. ხარჯი სულ გადახდილი")]
         public double? TotalEnforcementAndCourtFeePayment
         {
             get
@@ -897,7 +927,7 @@ namespace BusinessCredit.Domain
 
 
         #region ScheduleCatchUp
-        private double? _scheduleCatchUp;
+        public double? _scheduleCatchUp;
         [Display(Name = "გრაფიკზე დაწევა")]
         [DisplayFormat(DataFormatString = "{0:N}")]
         public double? ScheduleCatchUp
@@ -934,5 +964,6 @@ namespace BusinessCredit.Domain
         public virtual CashCollectionAgent CashCollectionAgent { get; set; }
 
         public int BranchID { get; set; }
+        public string Comment { get; set; }
     }
 }

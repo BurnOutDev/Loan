@@ -22,5 +22,7 @@ namespace BusinessCredit.Domain
 
         [Display(Name = "პირადი ნომერი")]
         public string PrivateNumber { get; set; }
+
+        public string Comment { get; set; }
     }
 }

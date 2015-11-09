@@ -169,6 +169,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AltasoftLMSWebServiceAPI\AccountsService.cs" />
+    <Compile Include="AltasoftLMSWebServiceAPI\CatalogsService.cs" />
+    <Compile Include="AltasoftLMSWebServiceAPI\CustomersService.cs" />
+    <Compile Include="AltasoftLMSWebServiceAPI\OrdersService.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -182,8 +186,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoansController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MonitoringController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\PaymentsPlannedController.cs" />
+    <Compile Include="Controllers\ProblemManagerController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -217,24 +223,37 @@
       <DependentUpon>201506170837053_Payments_Added_BranchID.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AccountingReportModel2.cs" />
+    <Compile Include="Models\AccountingReportModel.cs" />
     <Compile Include="Models\AccountLoanViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\AgreementViewModel.cs" />
+    <Compile Include="Models\BranchReportModel.cs" />
     <Compile Include="Models\ChangePaymentModel.cs" />
+    <Compile Include="Models\CommentPaymentModel.cs" />
+    <Compile Include="Models\EditEnforcementLoanModel.cs" />
+    <Compile Include="Models\EditPaymentModel.cs" />
+    <Compile Include="Models\GuarantorEditModel.cs" />
     <Compile Include="Models\GuarantorViewModel.cs" />
     <Compile Include="Models\Json\AccountJson.cs" />
+    <Compile Include="Models\Json\CollectorJson.cs" />
     <Compile Include="Models\Json\DailyJson.cs" />
     <Compile Include="Models\Json\GuarantorJson.cs" />
     <Compile Include="Models\Json\LoanJson.cs" />
     <Compile Include="Models\Json\PaymentJson.cs" />
+    <Compile Include="Models\LawyerReportModel.cs" />
     <Compile Include="Models\LoanIssueReportModel.cs" />
     <Compile Include="Models\CreateLoanViewModel.cs" />
     <Compile Include="Models\DailyViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LoanStaticPropertiesModel.cs" />
     <Compile Include="Models\LstViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PaymentEditableModel.cs" />
     <Compile Include="Models\PaymentsReportViewModel.cs" />
+    <Compile Include="Models\PortfolioAnalizeModel.cs" />
+    <Compile Include="Models\RePlanLoanModel.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
@@ -327,8 +346,8 @@
     <Content Include="JS_BootstrapTable\dist\extensions\multiple-sort\bootstrap-table-multiple-sort.min.js" />
     <Content Include="JS_BootstrapTable\dist\extensions\natural-sorting\bootstrap-table-natural-sorting.js" />
     <Content Include="JS_BootstrapTable\dist\extensions\natural-sorting\bootstrap-table-natural-sorting.min.js" />
-    <Content Include="JS_BootstrapTable\dist\extensions\reorder-columns\bootstrap-table-reorder-columns.js" />
-    <Content Include="JS_BootstrapTable\dist\extensions\reorder-columns\bootstrap-table-reorder-columns.min.js" />
+    <None Include="JS_BootstrapTable\dist\extensions\reorder-columns\bootstrap-table-reorder-columns" />
+    <None Include="JS_BootstrapTable\dist\extensions\reorder-columns\bootstrap-table-reorder-columns.mi" />
     <Content Include="JS_BootstrapTable\dist\extensions\reorder-rows\bootstrap-table-reorder-rows.css" />
     <Content Include="JS_BootstrapTable\dist\extensions\reorder-rows\bootstrap-table-reorder-rows.js" />
     <Content Include="JS_BootstrapTable\dist\extensions\reorder-rows\bootstrap-table-reorder-rows.min.js" />
@@ -522,7 +541,9 @@
     <Content Include="Views\Reports\IncomeAnalize.cshtml" />
     <Content Include="Views\Reports\LoanIssueDaily.cshtml" />
     <Content Include="Views\Admin\ClientsAdmin.cshtml" />
-    <Content Include="Views\Payments\IndexAdmin.cshtml" />
+    <Content Include="Views\Payments\IndexAdmin.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Payments\ChangePenalty.cshtml" />
     <Content Include="Views\AdminReports\IncomeAnalize.cshtml" />
@@ -535,10 +556,19 @@
     <Content Include="Views\Admin\PaymentDelete.cshtml" />
     <Content Include="Views\Payments\IndexJson.cshtml" />
     <Content Include="Views\DailyView\IndexNew.cshtml" />
+    <Content Include="Views\Admin\ChangePaymentProperties.cshtml" />
+    <Content Include="Views\Admin\EditPaymentForm.cshtml" />
+    <Content Include="Views\Admin\LoanEditView.cshtml" />
+    <Content Include="Views\Monitoring\LoanEdit.cshtml" />
+    <Content Include="Views\Admin\LoanEditStaticProperties.cshtml" />
+    <Content Include="Views\Admin\RePlanLoan.cshtml" />
+    <Content Include="Views\Admin\EditEnforcementLoan.cshtml" />
+    <Content Include="Views\Monitoring\GuarantorEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="JS_BootstrapTable\dist\locale\" />
     <Folder Include="obj\Release\" />
+    <Folder Include="Views\ProblemManager\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
